@@ -6,5 +6,3 @@ public:
 	virtual int DoMessageLoop() = 0;
 	static Window *Create();
 };
-
-extern void system_AddMenu();

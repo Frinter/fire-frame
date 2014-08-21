@@ -1,6 +1,6 @@
 #include <windows.h>
 
-#include "../systemMain.h"
+#include "../window.h"
 
 #define FILE_EXIT_OPTION 9001
 

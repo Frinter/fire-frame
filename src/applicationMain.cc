@@ -1,4 +1,4 @@
-#include "systemMain.h"
+#include "window.h"
 
 int applicationMain()
 {
