@@ -1,9 +1,10 @@
 #pragma once
 
 class Window {
+public:
+	virtual ~Window() {};
+	virtual int DoMessageLoop() = 0;
+	static Window *Create();
 };
-
-extern Window &system_CreateWindow();
-extern int system_DoMessageLoop();
 
 extern void system_AddMenu();

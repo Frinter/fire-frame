@@ -2,7 +2,11 @@
 
 int applicationMain()
 {
-	Window windowHandle = system_CreateWindow();
+	Window *mainWindow = Window::Create();
 	// fileMenu = system_addMenu(windowHandle, "File")
-	return system_DoMessageLoop();
+	int exitValue = mainWindow->DoMessageLoop();
+
+	delete mainWindow;
+
+	return exitValue;
 }
