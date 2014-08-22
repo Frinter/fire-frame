@@ -13,7 +13,7 @@ HINSTANCE windows_parentInstance;
 LPSTR windows_arguments;
 int windows_commandShow;
 
-class WindowsWindow : public Window
+class WindowsWindow : public System::Window
 {
 public:
 	WindowsWindow() {
@@ -73,6 +73,7 @@ private:
 			AppendMenu(mainMenuHandle, MF_STRING | MF_POPUP, (UINT)fileMenuHandle, "File");
 
 			SetMenu(windowHandle, mainMenuHandle);
+
 			return 0;
 
 		case WM_COMMAND:
@@ -99,7 +100,7 @@ private:
 	}
 };
 
-Window *Window::Create()
+System::Window *System::Window::Create()
 {
 	return new WindowsWindow();
 }

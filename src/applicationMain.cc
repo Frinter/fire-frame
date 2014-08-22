@@ -1,5 +1,7 @@
 #include "window.h"
 
+using System::Window;
+
 int applicationMain()
 {
 	Window *mainWindow = Window::Create();
