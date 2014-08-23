@@ -5,8 +5,10 @@
 #include "window.h"
 
 using System::Window;
+using System::Thread;
+using System::ThreadEntry;
 
-class DisplayThreadEntry : public System::ThreadEntry {
+class DisplayThreadEntry : public ThreadEntry {
 public:
 	virtual ~DisplayThreadEntry() {}
 
@@ -20,7 +22,7 @@ public:
 int applicationMain()
 {
 	DisplayThreadEntry displayThreadEntry;
-	System::Thread *displayThread = System::Thread::Create(&displayThreadEntry);
+	Thread *displayThread = Thread::Create(&displayThreadEntry);
 	displayThread->Start();
 	displayThread->Wait();
 	return 0;
