@@ -4,12 +4,9 @@ ifeq ($(PLATFORM),windows)
   CXX = i686-pc-mingw32-g++
   PLATFORM_SRC = $(wildcard src/windows/*.cc)
   PLATFORM_LIBS = 
-  PLATFORM_POST_LIBS = -lopengl32
+  PLATFORM_POST_LIBS = -lglew32 -lopengl32
   PLATFORM_LINKFLAGS = -mwindows #-mconsole
-  PLATFORM_OBJECTS = $(wildcard build/windows/*.res)
-
-#build/glew.o: src/windows/glew.c
-#	$(CXX) -c -o $@  -DGLEW_STATIC $(CFLAGS) $<
+  PLATFORM_OBJECTS = 
 else
   CXX = g++
   PLATFORM_LIBS = -lGL
