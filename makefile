@@ -5,14 +5,18 @@ ifeq ($(PLATFORM),windows)
   PLATFORM_SRC = $(wildcard src/windows/*.cc)
   PLATFORM_LIBS = 
   PLATFORM_POST_LIBS = -lglew32 -lopengl32
-  PLATFORM_LINKFLAGS = -mwindows #-mconsole
+  PLATFORM_LINKFLAGS = -mwindows -mconsole
   PLATFORM_OBJECTS = 
+
+include $(wildcard build/windows/*.d)
 else
   CXX = g++
   PLATFORM_LIBS = -lGL
   PLATFORM_POST_LIBS = 
   PLATFORM_LINKFLAGS = 
   PLATFORM_OBJECTS =
+
+include $(wildcard build/linux/*.d)
 endif
 
 OBJ_DIR := build
@@ -35,19 +39,20 @@ TEST := $(BIN_DIR)/runtests
 $(TARGET) $(TEST): | $(BIN_DIR)
 $(OBJECTS): | $(OBJ_DIR) $(OBJ_PLATFORM_DIR)
 $(OBJ_DIR) $(OBJ_PLATFORM_DIR) $(BIN_DIR):
-	mkdir -p $@
+	@mkdir -p $@
 
 $(OBJ_DIR)/%.o: src/%.cc $(OBJ_DIR)/%.d
-	$(CXX) -c -o $@ $(CFLAGS) $<
+	@$(CXX) -c -o $@ $(CFLAGS) $<
+	@echo Building $@
 
 test-build/%.o: test-src/%.cc test-build/%.d
 	$(CXX) -c -o $@ $(CFLAGS) $<
 
 $(OBJ_DIR)/%.d: src/%.cc
-	$(CXX) $(INCLUDE_DIRS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
+	@$(CXX) $(CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
 
 test-build/%.d: test-src/%.cc
-	$(CXX) $(INCLUDE_DIRS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
+	$(CXX) $(CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
 
 release: $(TARGET)
 test: $(TEST)
@@ -57,9 +62,10 @@ test: $(TEST)
 $(TEST): $(filter-out build/main%.o, $(OBJECTS)) $(TEST_OBJECTS)
 	$(CXX) -g $(LINK_FLAGS) -o $@ $^ $(LIBS)
 $(TARGET): $(OBJECTS)
-	$(CXX) -g $(LINK_FLAGS) -o $@ $^ $(LIBS)
+	@$(CXX) -g $(LINK_FLAGS) -o $@ $^ $(LIBS)
+	@echo Linking: $@
 
 clean:
-	rm -R build
+	@rm -R build
 
 include $(wildcard build/*.d)
