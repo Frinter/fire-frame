@@ -22,6 +22,8 @@ private:
 	WindowsOpenGLContext *m_openGLContext;
 
 	void Ready();
+	void KeyDown(WPARAM key);
+	void KeyUp(WPARAM key);
 
 	static LRESULT CALLBACK WndProc(HWND windowHandle, UINT message, WPARAM wparam, LPARAM lparam);
 };

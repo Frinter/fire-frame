@@ -9,6 +9,7 @@ using System::Thread;
 using System::ThreadEntry;
 using System::OpenGLContext;
 using System::WindowController;
+using System::KeyCode;
 
 class TestWindowController : public WindowController
 {
@@ -32,6 +33,17 @@ public:
 	{
 		m_openGLContext = OpenGLContext::Create(m_window);
 	}
+
+	virtual void OnKeyDown(KeyCode key)
+	{
+		printf("Key Down\n");
+	}
+
+	virtual void OnKeyUp(KeyCode key)
+	{
+		printf("Key Up\n");
+	}
+
 private:
 	Window *m_window;
 	OpenGLContext *m_openGLContext;
