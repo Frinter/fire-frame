@@ -6,6 +6,7 @@ namespace System
 {
 	class WindowController {
 	public:
+		// The implementation of Window must guarantee that Create will return before OnWindowReady is called
 		virtual void OnWindowReady() { };
 	};
 
