@@ -30,6 +30,9 @@ TEST_OBJECTS := $(TEST_SRC:test/%.cc=build/%.o)
 LIBS := -Llib $(PLATFORM_LIBS) $(PLATFORM_POST_LIBS)
 CFLAGS := $(INCLUDE_DIRS) -std=c++0x -g -DPLATFORM=$(PLATFORM)
 LINK_FLAGS := -static-libgcc -static-libstdc++ $(PLATFORM_LINKFLAGS)
+ARCHIVE_SRC := $(PLATFORM_SRC)
+ARCHIVE_OBJECTS := $(patsubst src/%.cc,build/%.o,$(ARCHIVE_SRC))
+ARCHIVE_TARGET := $(BIN_DIR)/libfireframe.a
 TARGET := $(BIN_DIR)/test
 TEST := $(BIN_DIR)/runtests
 
@@ -42,8 +45,8 @@ $(OBJ_DIR) $(OBJ_PLATFORM_DIR) $(BIN_DIR):
 	@mkdir -p $@
 
 $(OBJ_DIR)/%.o: src/%.cc $(OBJ_DIR)/%.d
-	@$(CXX) -c -o $@ $(CFLAGS) $<
 	@echo Building $@
+	@$(CXX) -c -o $@ $(CFLAGS) $<
 
 test-build/%.o: test-src/%.cc test-build/%.d
 	$(CXX) -c -o $@ $(CFLAGS) $<
@@ -59,11 +62,13 @@ test: $(TEST)
 	echo "Running tests now..."
 	$(TEST)
 
+$(ARCHIVE_TARGET): $(ARCHIVE_OBJECTS)
+	ar cr $@ $^
 $(TEST): $(filter-out build/main%.o, $(OBJECTS)) $(TEST_OBJECTS)
 	$(CXX) -g $(LINK_FLAGS) -o $@ $^ $(LIBS)
-$(TARGET): $(OBJECTS)
-	@$(CXX) -g $(LINK_FLAGS) -o $@ $^ $(LIBS)
+$(TARGET): $(filter-out $(ARCHIVE_OBJECTS),$(OBJECTS)) $(ARCHIVE_TARGET)
 	@echo Linking: $@
+	$(CXX) -g $(LINK_FLAGS) -o $@ $^ $(LIBS)
 
 clean:
 	@rm -R build
