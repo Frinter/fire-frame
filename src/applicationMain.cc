@@ -3,6 +3,7 @@
 #include "mutex.hh"
 #include "thread.hh"
 #include "window.hh"
+#include "openglcontext.hh"
 
 using System::Window;
 using System::Thread;

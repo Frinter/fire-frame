@@ -1,6 +1,7 @@
 #pragma once
 
 #include <windows.h>
+#include "../openglcontext.hh"
 #include "windowswindow.hh"
 
 class WindowsOpenGLContext : public System::OpenGLContext {
