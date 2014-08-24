@@ -7,23 +7,53 @@
 using System::Window;
 using System::Thread;
 using System::ThreadEntry;
+using System::OpenGLContext;
+using System::WindowController;
 
-class DisplayThreadEntry : public ThreadEntry {
+class TestWindowController : public WindowController
+{
 public:
-	virtual ~DisplayThreadEntry() {}
+	TestWindowController() : m_window(NULL)
+	{ }
+
+	~TestWindowController()
+	{
+		if (m_window != NULL)
+			delete m_window;
+	}
+
+	void CreateWindow()
+	{
+		m_window = Window::Create(this);
+		m_window->DoMessageLoop();
+	}
+
+	virtual void OnWindowReady()
+	{
+		m_openGLContext = OpenGLContext::Create(m_window);
+	}
+private:
+	Window *m_window;
+	OpenGLContext *m_openGLContext;
+};
+
+class WindowThreadEntry : public ThreadEntry {
+public:
+	virtual ~WindowThreadEntry() {}
 
 	virtual void *Run(void *arg) {
-		Window *mainWindow = Window::Create();
-		int exitValue = mainWindow->DoMessageLoop();
-		delete mainWindow;
+		windowController.CreateWindow();
 	}
+
+private:
+	TestWindowController windowController;
 };
 
 int applicationMain()
 {
-	DisplayThreadEntry displayThreadEntry;
-	Thread *displayThread = Thread::Create(&displayThreadEntry);
-	displayThread->Start();
-	displayThread->Wait();
+	WindowThreadEntry windowThreadEntry;
+	Thread *windowThread = Thread::Create(&windowThreadEntry);
+	windowThread->Start();
+	windowThread->Wait();
 	return 0;
 }

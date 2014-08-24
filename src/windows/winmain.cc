@@ -13,9 +13,9 @@ HINSTANCE windows_parentInstance;
 LPSTR windows_arguments;
 int windows_commandShow;
 
-System::Window *System::Window::Create()
+System::Window *System::Window::Create(System::WindowController *controller)
 {
-	return new WindowsWindow(windows_instance, windows_commandShow);
+	return new WindowsWindow(controller, windows_instance, windows_commandShow);
 }
 
 System::OpenGLContext *System::OpenGLContext::Create(Window *window)

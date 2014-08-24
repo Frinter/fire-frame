@@ -7,10 +7,8 @@
 #define FILE_EXIT_OPTION 9001
 static char appName[] = "Test Application";
 
-std::map<HWND, WindowsWindow*> windowMap;
-
-WindowsWindow::WindowsWindow(HINSTANCE processInstance, int commandShow)
-	: m_openGLContext(NULL)
+WindowsWindow::WindowsWindow(System::WindowController *controller, HINSTANCE processInstance, int commandShow)
+	: m_controller(controller), m_openGLContext(NULL)
 {
 	WNDCLASSEX windowClass;
 
@@ -33,16 +31,15 @@ WindowsWindow::WindowsWindow(HINSTANCE processInstance, int commandShow)
 
 	ShowWindow(m_windowHandle, commandShow);
 	UpdateWindow(m_windowHandle);
-
-	windowMap[m_windowHandle] = this;
 }
 
 WindowsWindow::~WindowsWindow() {
-	windowMap[m_windowHandle] = NULL;
 }
 
 int WindowsWindow::DoMessageLoop() {
 	MSG message;
+
+	Ready();
 
 	while (GetMessage(&message, NULL, 0, 0))
 	{
@@ -51,6 +48,11 @@ int WindowsWindow::DoMessageLoop() {
 	}
 
 	return message.wParam;
+}
+
+void WindowsWindow::Ready()
+{
+	m_controller->OnWindowReady();
 }
 
 LRESULT CALLBACK WindowsWindow::WndProc(HWND windowHandle, UINT message, WPARAM wparam, LPARAM lparam) {
@@ -70,8 +72,6 @@ LRESULT CALLBACK WindowsWindow::WndProc(HWND windowHandle, UINT message, WPARAM 
 
 		SetMenu(windowHandle, mainMenuHandle);
 
-		windowMap[windowHandle]->m_openGLContext = dynamic_cast<WindowsOpenGLContext*>(System::OpenGLContext::Create(windowMap[windowHandle]));
-
 		return 0;
 
 	case WM_COMMAND:
@@ -90,7 +90,6 @@ LRESULT CALLBACK WindowsWindow::WndProc(HWND windowHandle, UINT message, WPARAM 
 		return 0;
 
 	case WM_DESTROY:
-		delete windowMap[windowHandle]->m_openGLContext;
 		PostQuitMessage(0);
 		return 0;
 	}
