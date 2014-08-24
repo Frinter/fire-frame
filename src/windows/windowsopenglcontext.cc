@@ -4,7 +4,7 @@
 #include <GL/glew.h>
 #include <GL/wglew.h>
 
-#include "windowsopenglcontext.h"
+#include "windowsopenglcontext.hh"
 
 WindowsOpenGLContext::WindowsOpenGLContext(WindowsWindow *window) {
 	PIXELFORMATDESCRIPTOR pfd;

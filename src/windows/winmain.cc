@@ -1,8 +1,8 @@
 #include <map>
 #include <windows.h>
 
-#include "windowswindow.h"
-#include "windowsopenglcontext.h"
+#include "windowswindow.hh"
+#include "windowsopenglcontext.hh"
 
 extern int applicationMain();
 

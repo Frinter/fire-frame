@@ -2,7 +2,7 @@
 
 #include <windows.h>
 
-#include "../window.h"
+#include "../window.hh"
 
 class WindowsOpenGLContext;
 

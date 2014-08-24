@@ -1,8 +1,8 @@
 #include <stdio.h>
 
-#include "mutex.h"
-#include "thread.h"
-#include "window.h"
+#include "mutex.hh"
+#include "thread.hh"
+#include "window.hh"
 
 using System::Window;
 using System::Thread;

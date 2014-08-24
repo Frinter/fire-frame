@@ -1,8 +1,8 @@
 #include <stdexcept>
 #include <unordered_map>
 
-#include "windowswindow.h"
-#include "windowsopenglcontext.h"
+#include "windowswindow.hh"
+#include "windowsopenglcontext.hh"
 
 #define FILE_EXIT_OPTION 9001
 static char appName[] = "Test Application";
