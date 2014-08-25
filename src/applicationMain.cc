@@ -6,17 +6,20 @@
 
 using System::Thread;
 using System::ThreadEntry;
+using System::SystemWindowController;
 
 class WindowThreadEntry : public ThreadEntry {
 public:
 	virtual ~WindowThreadEntry() {}
 
 	virtual void *Run(void *arg) {
+		keyboardState = windowController.GetKeyStateReader();
 		windowController.CreateWindow();
 	}
 
 private:
 	SystemWindowController windowController;
+	SystemWindowController::ReadingKeyboardState *keyboardState;
 };
 
 int applicationMain()

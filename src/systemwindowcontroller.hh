@@ -3,21 +3,63 @@
 #include "keycode.hh"
 #include "window.hh"
 #include "openglcontext.hh"
+#include "mutex.hh"
 
-class SystemWindowController : public System::WindowController
+namespace System
 {
-public:
-	SystemWindowController();
+	enum KeyState
+	{
+		Unpressed,
+		Pressed
+	};
 
-	virtual ~SystemWindowController();
+	class SystemWindowController : public WindowController
+	{
+	public:
+		class ReadingKeyboardState
+		{
+		public:
+			virtual KeyState GetKeyState(KeyCode key) = 0;
+		};
 
-	void CreateWindow();
+	private:
+		class WritingKeyboardState
+		{
+		public:
+			virtual void PressKey(KeyCode key) = 0;
+			virtual void UnpressKey(KeyCode key) = 0;
+		};
 
-	virtual void OnWindowReady();
-	virtual void OnKeyDown(System::KeyCode key);
-	virtual void OnKeyUp(System::KeyCode key);
+		class KeyboardState : public ReadingKeyboardState, public WritingKeyboardState
+		{
+		public:
+			KeyboardState();
+			virtual ~KeyboardState();
 
-private:
-	System::Window *m_window;
-	System::OpenGLContext *m_openGLContext;
-};
+			virtual KeyState GetKeyState(KeyCode key);
+			virtual void PressKey(KeyCode key);
+			virtual void UnpressKey(KeyCode key);
+
+		private:
+			Mutex *m_mutex;
+		};
+
+	public:
+		SystemWindowController();
+
+		virtual ~SystemWindowController();
+
+		void CreateWindow();
+
+		ReadingKeyboardState *GetKeyStateReader();
+
+		virtual void OnWindowReady();
+		virtual void OnKeyDown(KeyCode key);
+		virtual void OnKeyUp(KeyCode key);
+		
+	private:
+		Window *m_window;
+		OpenGLContext *m_openGLContext;
+		KeyboardState m_keyboardState;
+	};
+}
