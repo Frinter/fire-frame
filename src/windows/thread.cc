@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <windows.h>
 
-#include "../thread.hh"
+#include "system/thread.hh"
 
 using System::ThreadEntry;
 using System::Thread;

@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <windows.h>
 
-#include "../mutex.hh"
+#include "system/mutex.hh"
 
 using System::Mutex;
 

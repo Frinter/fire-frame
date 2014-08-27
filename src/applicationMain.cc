@@ -1,9 +1,9 @@
 #include <iostream>
 
-#include "mutex.hh"
-#include "thread.hh"
-#include "systemwindowcontroller.hh"
-#include "systemutility.hh"
+#include "system/mutex.hh"
+#include "system/thread.hh"
+#include "system/systemwindowcontroller.hh"
+#include "system/systemutility.hh"
 
 using System::Thread;
 using System::ThreadEntry;
