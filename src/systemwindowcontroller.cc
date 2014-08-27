@@ -56,7 +56,7 @@ KeyState SystemWindowController::KeyboardState::GetKeyState(KeyCode key)
 	KeyState state;
 
 	m_mutex->Lock();
-	state = Unpressed;
+	state = m_states[key];
 	m_mutex->Unlock();
 
 	return state;
@@ -65,13 +65,13 @@ KeyState SystemWindowController::KeyboardState::GetKeyState(KeyCode key)
 void SystemWindowController::KeyboardState::PressKey(KeyCode key)
 {
 	m_mutex->Lock();
-	printf("Key pressed\n");
+	m_states[key] = Pressed;
 	m_mutex->Unlock();
 }
 
 void SystemWindowController::KeyboardState::UnpressKey(KeyCode key)
 {
 	m_mutex->Lock();
-	printf("Key unpressed\n");
+	m_states[key] = Unpressed;
 	m_mutex->Unlock();
 }

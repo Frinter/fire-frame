@@ -1,12 +1,16 @@
-#include <stdio.h>
+#include <iostream>
 
 #include "mutex.hh"
 #include "thread.hh"
 #include "systemwindowcontroller.hh"
+#include "systemutility.hh"
 
 using System::Thread;
 using System::ThreadEntry;
 using System::SystemWindowController;
+using System::Utility;
+
+SystemWindowController::ReadingKeyboardState *keyboardState = NULL;
 
 class WindowThreadEntry : public ThreadEntry {
 public:
@@ -19,14 +23,36 @@ public:
 
 private:
 	SystemWindowController windowController;
-	SystemWindowController::ReadingKeyboardState *keyboardState;
+};
+
+class TimerThreadEntry : public ThreadEntry {
+public:
+	virtual ~TimerThreadEntry() {}
+
+	virtual void *Run(void *arg) {
+		for (int i = 0; i < 100; ++i) {
+			std::cout << "Hello: ";
+			if (keyboardState != NULL) {
+				std::cout << keyboardState->GetKeyState(System::KeyTab);
+			}
+			else {
+				std::cout << "No state";
+			}
+			std::cout << std::endl;
+			Utility::Sleep(1000);
+		}
+	}
 };
 
 int applicationMain()
 {
 	WindowThreadEntry windowThreadEntry;
+	TimerThreadEntry timerThreadEntry;
 	Thread *windowThread = Thread::Create(&windowThreadEntry);
+	Thread *timerThread = Thread::Create(&timerThreadEntry);
 	windowThread->Start();
+	timerThread->Start();
+	timerThread->Wait();
 	windowThread->Wait();
 	return 0;
 }

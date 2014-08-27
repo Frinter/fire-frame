@@ -1,5 +1,7 @@
 #pragma once
 
+#include <map>
+
 #include "keycode.hh"
 #include "window.hh"
 #include "openglcontext.hh"
@@ -42,6 +44,7 @@ namespace System
 
 		private:
 			Mutex *m_mutex;
+			std::map<KeyCode, KeyState> m_states;
 		};
 
 	public:
