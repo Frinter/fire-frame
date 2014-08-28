@@ -48,7 +48,3 @@ WindowsOpenGLContext::WindowsOpenGLContext(WindowsWindow *window) {
 WindowsOpenGLContext::~WindowsOpenGLContext() {
 	wglDeleteContext(m_openGLContext);
 }
-
-WindowsOpenGLContext::WindowsOpenGLContext(const WindowsOpenGLContext &o) {
-	throw new std::logic_error("WindowsOpenGLContext copy contructor called");
-}

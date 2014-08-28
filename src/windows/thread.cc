@@ -38,9 +38,7 @@ private:
 	HANDLE m_handle;
 	DWORD m_threadId;
 
-	WindowsThread(const WindowsThread &o) : Thread(NULL) {
-		throw new std::logic_error("WindowsThread copy contructor called");
-	}
+	WindowsThread(const WindowsThread &o) = delete;
 };
 
 Thread *Thread::Create(const ThreadEntry *entry)

@@ -13,5 +13,5 @@ public:
 private:
 	HGLRC m_openGLContext;
 
-	WindowsOpenGLContext(const WindowsOpenGLContext &o);
+	WindowsOpenGLContext(const WindowsOpenGLContext &o) = delete;
 };

@@ -9,6 +9,7 @@ using System::Thread;
 using System::ThreadEntry;
 using System::SystemWindowController;
 using System::Utility;
+using System::KeyCode;
 
 SystemWindowController::ReadingKeyboardState *keyboardState = NULL;
 
@@ -33,7 +34,7 @@ public:
 		for (int i = 0; i < 100; ++i) {
 			std::cout << "Hello: ";
 			if (keyboardState != NULL) {
-				std::cout << keyboardState->GetKeyState(System::KeyTab);
+				std::cout << keyboardState->GetKeyState(KeyCode::KeyTab);
 			}
 			else {
 				std::cout << "No state";
@@ -48,6 +49,7 @@ int applicationMain()
 {
 	WindowThreadEntry windowThreadEntry;
 	TimerThreadEntry timerThreadEntry;
+
 	Thread *windowThread = Thread::Create(&windowThreadEntry);
 	Thread *timerThread = Thread::Create(&timerThreadEntry);
 	windowThread->Start();

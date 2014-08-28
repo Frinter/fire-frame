@@ -2,7 +2,7 @@
 
 namespace System
 {
-	enum KeyCode {
+	enum class KeyCode {
 		KeyUnknown,
 		KeyEscape,
 		KeyBackspace,

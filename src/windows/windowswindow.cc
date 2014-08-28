@@ -7,90 +7,92 @@
 #define FILE_EXIT_OPTION 9001
 static char appName[] = "Test Application";
 
+using System::KeyCode;
+
 class KeyMap : public std::unordered_map<WPARAM, System::KeyCode> {
 public:
 	KeyMap() : std::unordered_map<WPARAM, System::KeyCode>() {
-		(*this)[VK_PRIOR]   = System::KeyPageUp;
-		(*this)[VK_NEXT]    = System::KeyPageDown;
-		(*this)[VK_END]     = System::KeyEnd;
-		(*this)[VK_HOME]    = System::KeyHome;
-		(*this)[VK_INSERT]  = System::KeyInsert;
-		(*this)[VK_DELETE]  = System::KeyDelete;
+		(*this)[VK_PRIOR]   = KeyCode::KeyPageUp;
+		(*this)[VK_NEXT]    = KeyCode::KeyPageDown;
+		(*this)[VK_END]     = KeyCode::KeyEnd;
+		(*this)[VK_HOME]    = KeyCode::KeyHome;
+		(*this)[VK_INSERT]  = KeyCode::KeyInsert;
+		(*this)[VK_DELETE]  = KeyCode::KeyDelete;
 
-		(*this)[VK_RIGHT]   = System::KeyRightArrow;
-		(*this)[VK_DOWN]    = System::KeyDownArrow;
-		(*this)[VK_LEFT]    = System::KeyLeftArrow;
-		(*this)[VK_UP]      = System::KeyUpArrow;
+		(*this)[VK_RIGHT]   = KeyCode::KeyRightArrow;
+		(*this)[VK_DOWN]    = KeyCode::KeyDownArrow;
+		(*this)[VK_LEFT]    = KeyCode::KeyLeftArrow;
+		(*this)[VK_UP]      = KeyCode::KeyUpArrow;
 
-		(*this)[VK_ESCAPE]  = System::KeyEscape;
-		(*this)[VK_TAB]     = System::KeyTab;
-		(*this)[VK_SHIFT]   = System::KeyShift;
-		(*this)[VK_MENU]    = System::KeyAlt;
-		(*this)[VK_CONTROL] = System::KeyControl;
-		(*this)[VK_CAPITAL] = System::KeyCapsLock;
+		(*this)[VK_ESCAPE]  = KeyCode::KeyEscape;
+		(*this)[VK_TAB]     = KeyCode::KeyTab;
+		(*this)[VK_SHIFT]   = KeyCode::KeyShift;
+		(*this)[VK_MENU]    = KeyCode::KeyAlt;
+		(*this)[VK_CONTROL] = KeyCode::KeyControl;
+		(*this)[VK_CAPITAL] = KeyCode::KeyCapsLock;
 
-		(*this)[VK_RCONTROL] = System::KeyRightControl;
-		(*this)[VK_LCONTROL] = System::KeyLeftControl;
-		(*this)[VK_RSHIFT]   = System::KeyRightShift;
-		(*this)[VK_LSHIFT]   = System::KeyLeftShift;
+		(*this)[VK_RCONTROL] = KeyCode::KeyRightControl;
+		(*this)[VK_LCONTROL] = KeyCode::KeyLeftControl;
+		(*this)[VK_RSHIFT]   = KeyCode::KeyRightShift;
+		(*this)[VK_LSHIFT]   = KeyCode::KeyLeftShift;
 
-		(*this)[VK_BACK]    = System::KeyBackspace;
-		(*this)[VK_RETURN]  = System::KeyEnter;
-		(*this)[VK_SPACE]   = System::KeySpace;
+		(*this)[VK_BACK]    = KeyCode::KeyBackspace;
+		(*this)[VK_RETURN]  = KeyCode::KeyEnter;
+		(*this)[VK_SPACE]   = KeyCode::KeySpace;
 
-		(*this)[0x30]       = System::Key0;
-		(*this)[0x31]       = System::Key1;
-		(*this)[0x32]       = System::Key2;
-		(*this)[0x33]       = System::Key3;
-		(*this)[0x34]       = System::Key4;
-		(*this)[0x35]       = System::Key5;
-		(*this)[0x36]       = System::Key6;
-		(*this)[0x37]       = System::Key7;
-		(*this)[0x38]       = System::Key8;
-		(*this)[0x39]       = System::Key9;
+		(*this)[0x30]       = KeyCode::Key0;
+		(*this)[0x31]       = KeyCode::Key1;
+		(*this)[0x32]       = KeyCode::Key2;
+		(*this)[0x33]       = KeyCode::Key3;
+		(*this)[0x34]       = KeyCode::Key4;
+		(*this)[0x35]       = KeyCode::Key5;
+		(*this)[0x36]       = KeyCode::Key6;
+		(*this)[0x37]       = KeyCode::Key7;
+		(*this)[0x38]       = KeyCode::Key8;
+		(*this)[0x39]       = KeyCode::Key9;
 
-		(*this)[VK_NUMPAD0] = System::KeyNumpad0;
-		(*this)[VK_NUMPAD1] = System::KeyNumpad1;
-		(*this)[VK_NUMPAD2] = System::KeyNumpad2;
-		(*this)[VK_NUMPAD3] = System::KeyNumpad3;
-		(*this)[VK_NUMPAD4] = System::KeyNumpad4;
-		(*this)[VK_NUMPAD5] = System::KeyNumpad5;
-		(*this)[VK_NUMPAD6] = System::KeyNumpad6;
-		(*this)[VK_NUMPAD7] = System::KeyNumpad7;
-		(*this)[VK_NUMPAD8] = System::KeyNumpad8;
-		(*this)[VK_NUMPAD9] = System::KeyNumpad9;
+		(*this)[VK_NUMPAD0] = KeyCode::KeyNumpad0;
+		(*this)[VK_NUMPAD1] = KeyCode::KeyNumpad1;
+		(*this)[VK_NUMPAD2] = KeyCode::KeyNumpad2;
+		(*this)[VK_NUMPAD3] = KeyCode::KeyNumpad3;
+		(*this)[VK_NUMPAD4] = KeyCode::KeyNumpad4;
+		(*this)[VK_NUMPAD5] = KeyCode::KeyNumpad5;
+		(*this)[VK_NUMPAD6] = KeyCode::KeyNumpad6;
+		(*this)[VK_NUMPAD7] = KeyCode::KeyNumpad7;
+		(*this)[VK_NUMPAD8] = KeyCode::KeyNumpad8;
+		(*this)[VK_NUMPAD9] = KeyCode::KeyNumpad9;
 
-		(*this)[VK_MULTIPLY] = System::KeyMultiply;
-		(*this)[VK_ADD]      = System::KeyPlus;
-		(*this)[VK_SUBTRACT] = System::KeyMinus;
-		(*this)[VK_DIVIDE]   = System::KeyDivide;
-		(*this)[VK_DECIMAL]  = System::KeyDecimal;
+		(*this)[VK_MULTIPLY] = KeyCode::KeyMultiply;
+		(*this)[VK_ADD]      = KeyCode::KeyPlus;
+		(*this)[VK_SUBTRACT] = KeyCode::KeyMinus;
+		(*this)[VK_DIVIDE]   = KeyCode::KeyDivide;
+		(*this)[VK_DECIMAL]  = KeyCode::KeyDecimal;
 
-		(*this)[0x41]       = System::KeyA;
-		(*this)[0x42]       = System::KeyB;
-		(*this)[0x43]       = System::KeyC;
-		(*this)[0x44]       = System::KeyD;
-		(*this)[0x45]       = System::KeyE;
-		(*this)[0x46]       = System::KeyF;
-		(*this)[0x47]       = System::KeyG;
-		(*this)[0x48]       = System::KeyH;
-		(*this)[0x49]       = System::KeyI;
-		(*this)[0x4A]       = System::KeyJ;
-		(*this)[0x4B]       = System::KeyK;
-		(*this)[0x4C]       = System::KeyL;
-		(*this)[0x4D]       = System::KeyM;
-		(*this)[0x4E]       = System::KeyN;
-		(*this)[0x4F]       = System::KeyO;
-		(*this)[0x50]       = System::KeyP;
-		(*this)[0x51]       = System::KeyQ;
-		(*this)[0x52]       = System::KeyR;
-		(*this)[0x53]       = System::KeyS;
-		(*this)[0x54]       = System::KeyT;
-		(*this)[0x55]       = System::KeyU;
-		(*this)[0x56]       = System::KeyV;
-		(*this)[0x57]       = System::KeyW;
-		(*this)[0x59]       = System::KeyY;
-		(*this)[0x5A]       = System::KeyZ;
+		(*this)[0x41]       = KeyCode::KeyA;
+		(*this)[0x42]       = KeyCode::KeyB;
+		(*this)[0x43]       = KeyCode::KeyC;
+		(*this)[0x44]       = KeyCode::KeyD;
+		(*this)[0x45]       = KeyCode::KeyE;
+		(*this)[0x46]       = KeyCode::KeyF;
+		(*this)[0x47]       = KeyCode::KeyG;
+		(*this)[0x48]       = KeyCode::KeyH;
+		(*this)[0x49]       = KeyCode::KeyI;
+		(*this)[0x4A]       = KeyCode::KeyJ;
+		(*this)[0x4B]       = KeyCode::KeyK;
+		(*this)[0x4C]       = KeyCode::KeyL;
+		(*this)[0x4D]       = KeyCode::KeyM;
+		(*this)[0x4E]       = KeyCode::KeyN;
+		(*this)[0x4F]       = KeyCode::KeyO;
+		(*this)[0x50]       = KeyCode::KeyP;
+		(*this)[0x51]       = KeyCode::KeyQ;
+		(*this)[0x52]       = KeyCode::KeyR;
+		(*this)[0x53]       = KeyCode::KeyS;
+		(*this)[0x54]       = KeyCode::KeyT;
+		(*this)[0x55]       = KeyCode::KeyU;
+		(*this)[0x56]       = KeyCode::KeyV;
+		(*this)[0x57]       = KeyCode::KeyW;
+		(*this)[0x59]       = KeyCode::KeyY;
+		(*this)[0x5A]       = KeyCode::KeyZ;
 	}
 };
 

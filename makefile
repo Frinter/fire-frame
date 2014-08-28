@@ -28,7 +28,7 @@ TEST_SRC := $(wildcard test-src/*.cc)
 OBJECTS := $(SRC:src/%.cc=$(OBJ_DIR)/%.o) $(PLATFORM_OBJECTS)
 TEST_OBJECTS := $(TEST_SRC:test/%.cc=build/%.o)
 LIBS := -Llib $(PLATFORM_LIBS) $(PLATFORM_POST_LIBS)
-CFLAGS := $(INCLUDE_DIRS) -std=c++0x -g -DPLATFORM=$(PLATFORM)
+CFLAGS := $(INCLUDE_DIRS) -std=c++11 -g -DPLATFORM=$(PLATFORM)
 LINK_FLAGS := -static-libgcc -static-libstdc++ $(PLATFORM_LINKFLAGS)
 ARCHIVE_SRC := $(PLATFORM_SRC) src/systemwindowcontroller.cc
 ARCHIVE_OBJECTS := $(patsubst src/%.cc,build/%.o,$(ARCHIVE_SRC))

@@ -33,9 +33,7 @@ private:
 	CRITICAL_SECTION m_criticalSection;
 	bool inCriticalSection;
 
-	WindowsMutex(const WindowsMutex &o) {
-		throw new std::logic_error("WindowsMutex copy contructor called");
-	}
+	WindowsMutex(const WindowsMutex &o) = delete;
 };
 
 Mutex *Mutex::Create()

@@ -25,5 +25,7 @@ private:
 	void KeyDown(WPARAM key);
 	void KeyUp(WPARAM key);
 
+	WindowsWindow(const WindowsWindow &o) = delete;
+
 	static LRESULT CALLBACK WndProc(HWND windowHandle, UINT message, WPARAM wparam, LPARAM lparam);
 };
