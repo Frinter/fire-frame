@@ -1,3 +1,4 @@
+#include <functional>
 #include <stdexcept>
 #include <windows.h>
 
@@ -8,12 +9,12 @@ using System::Thread;
 
 DWORD WINAPI threadEntryFunction(LPVOID param)
 {
-	((ThreadEntry *)param)->Run(NULL);
+	((ThreadEntry*)param)->operator()(NULL);
 }
 
 class WindowsThread : public Thread {
 public:
-	WindowsThread(const ThreadEntry *entry) 
+	WindowsThread(const ThreadEntry entry) 
 		: Thread(entry), m_entry(entry), m_handle(NULL)
 	{ }
 
@@ -21,7 +22,7 @@ public:
 	}
 
 	virtual void Start() {
-		m_handle = CreateThread(NULL, 0, threadEntryFunction, (LPVOID)m_entry, 0, &m_threadId);
+		m_handle = CreateThread(NULL, 0, threadEntryFunction, (LPVOID)&m_entry, 0, &m_threadId);
 	}
 
 	virtual void Wait() {
@@ -34,14 +35,16 @@ public:
 	}
 
 private:
-	const ThreadEntry *m_entry;
+	const ThreadEntry m_entry;
 	HANDLE m_handle;
 	DWORD m_threadId;
 
 	WindowsThread(const WindowsThread &o) = delete;
 };
 
-Thread *Thread::Create(const ThreadEntry *entry)
+Thread *Thread::Create(const ThreadEntry entry)
 {
 	return new WindowsThread(entry);
 }
+
+

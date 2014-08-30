@@ -1,23 +1,20 @@
 #pragma once
 
+#include <functional>
+
 namespace System
 {
-	class ThreadEntry {
-	public:
-		virtual ~ThreadEntry() {}
-
-		virtual void *Run(void *) = 0;
-	};
+	typedef std::function<void* (void*)> ThreadEntry;
 
 	class Thread {
 	public:
-		Thread(const ThreadEntry *entry) {}
+		Thread(const ThreadEntry entry) {}
 
 		virtual ~Thread() {}
 
 		virtual void Start() = 0;
 		virtual void Wait() = 0;
 
-		static Thread *Create(const ThreadEntry *entry);
+		static Thread *Create(const ThreadEntry entry);
 	};
 }
