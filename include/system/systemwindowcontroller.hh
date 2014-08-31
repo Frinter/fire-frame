@@ -45,6 +45,9 @@ namespace System
 		private:
 			Mutex *m_mutex;
 			std::map<KeyCode, KeyState> m_states;
+
+			KeyboardState(const KeyboardState &o) = delete;
+			KeyboardState(KeyboardState &&o) = delete;
 		};
 
 	public:
