@@ -14,28 +14,29 @@ using System::KeyCode;
 int applicationMain()
 {
 	SystemWindowController windowController;
-	SystemWindowController::ReadingKeyboardState *keyboardState = NULL;
 
-	Thread *windowThread = Thread::Create([&windowController, &keyboardState] (void *arg) -> void *
-										  {
-											  keyboardState = windowController.GetKeyStateReader();
-											  windowController.CreateWindow();
-										  });
+	ThreadEntry windowThreadEntry = [&windowController] (void*) -> void* {
+		windowController.CreateWindow();
+	};
 
-	Thread *timerThread = Thread::Create([&keyboardState] (void *) -> void *
-										 {
-											 for (int i = 0; i < 100; ++i) {
-												 std::cout << "Hello: ";
-												 if (keyboardState != NULL) {
-													 std::cout << keyboardState->GetKeyState(KeyCode::KeyTab);
-												 }
-												 else {
-													 std::cout << "No state";
-												 }
-												 std::cout << std::endl;
-												 Utility::Sleep(1000);
-											 }
-										 });
+	ThreadEntry timerThreadEntry = [&windowController] (void*) -> void* {
+		SystemWindowController::ReadingKeyboardState *keyboardState = NULL;
+		for (int i = 0; i < 100; ++i) {
+			std::cout << "Hello: ";
+			keyboardState = windowController.GetKeyStateReader();
+			if (keyboardState != NULL) {
+				std::cout << keyboardState->GetKeyState(KeyCode::KeyTab);
+			}
+			else {
+				std::cout << "No state";
+			}
+			std::cout << std::endl;
+			Utility::Sleep(1000);
+		}
+	};
+
+	Thread *windowThread = Thread::Create(windowThreadEntry);
+	Thread *timerThread = Thread::Create(timerThreadEntry);
 
 	windowThread->Start();
 	timerThread->Start();

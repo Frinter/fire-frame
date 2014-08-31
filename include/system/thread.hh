@@ -15,6 +15,6 @@ namespace System
 		virtual void Start() = 0;
 		virtual void Wait() = 0;
 
-		static Thread *Create(const ThreadEntry entry);
+		static Thread *Create(const ThreadEntry entry, void *params = NULL);
 	};
 }
