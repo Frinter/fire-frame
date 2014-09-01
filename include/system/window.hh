@@ -8,10 +8,14 @@ namespace System
 {
 	class WindowController {
 	public:
+		WindowController() {}
+
 		// The implementation of Window must guarantee that Create will return before any callbacks are called
 		virtual void OnWindowReady() { };
 		virtual void OnKeyUp(KeyCode key) { };
 		virtual void OnKeyDown(KeyCode key) { };
+
+		WindowController(const WindowController &o) = delete;
 	};
 
 	class Window {
