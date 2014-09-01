@@ -2,26 +2,26 @@
 
 #include "system/mutex.hh"
 #include "system/thread.hh"
-#include "system/systemwindowcontroller.hh"
 #include "system/systemutility.hh"
+#include "framework/windowcontroller.hh"
 
 using System::Thread;
 using System::ThreadEntry;
-using System::SystemWindowController;
 using System::Utility;
 using System::KeyCode;
+using Framework::WindowController;
 
 int applicationMain()
 {
-	SystemWindowController windowController;
+	WindowController windowController;
 
 	ThreadEntry windowThreadEntry = [&windowController] (void*) -> void* {
 		windowController.CreateWindow();
 	};
 
 	ThreadEntry timerThreadEntry = [&windowController] (void*) -> void* {
-		SystemWindowController::ReadingKeyboardState *keyboardState = NULL;
-		for (int i = 0; i < 100; ++i) {
+		WindowController::ReadingKeyboardState *keyboardState = NULL;
+		for (int i = 0; i < 15; ++i) {
 			std::cout << "Hello: ";
 			keyboardState = windowController.GetKeyStateReader();
 			if (keyboardState != NULL) {
