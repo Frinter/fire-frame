@@ -8,7 +8,14 @@ namespace Framework
 	class GameController {
 	public:
 		GameController();
+		virtual ~GameController() {}
 		
-		virtual void SetKeyboardState() = 0;
+		void SetKeyboardState(ReadingKeyboardState *state);
+		
+	protected:
+		ReadingKeyboardState *GetKeyboardState();
+		
+	private:
+		ReadingKeyboardState *m_keyboardState;
 	};
 }
