@@ -1,4 +1,4 @@
-#include <cstring>
+#include <cstddef>
 
 #include "framework/gamecontroller.hh"
 
