@@ -119,7 +119,7 @@ WindowsWindow::WindowsWindow(System::WindowController *controller, HINSTANCE pro
 
 	RegisterClassEx(&windowClass);
 
-	m_windowHandle = CreateWindow(appName, "Fire Frame", WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, processInstance, NULL);
+	m_windowHandle = CreateWindow(appName, "Fire Frame", WS_OVERLAPPEDWINDOW, -1920, 0, 800, 600, NULL, NULL, processInstance, NULL);
 
 	windowMap[m_windowHandle] = this;
 
