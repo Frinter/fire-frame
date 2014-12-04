@@ -2,6 +2,8 @@
 
 #include <map>
 
+#include "framework/keystate.hh"
+#include "framework/readingkeyboardstate.hh"
 #include "system/keycode.hh"
 #include "system/window.hh"
 #include "system/openglcontext.hh"
@@ -9,21 +11,8 @@
 
 namespace Framework
 {
-	enum KeyState
-	{
-		Unpressed,
-		Pressed
-	};
-
 	class WindowController : public System::WindowController
 	{
-	public:
-		class ReadingKeyboardState
-		{
-		public:
-			virtual KeyState GetKeyState(System::KeyCode key) = 0;
-		};
-
 	private:
 		class WritingKeyboardState
 		{

@@ -20,7 +20,7 @@ int applicationMain()
 	};
 
 	ThreadEntry timerThreadEntry = [&windowController] (void*) -> void* {
-		WindowController::ReadingKeyboardState *keyboardState = NULL;
+		Framework::ReadingKeyboardState *keyboardState = NULL;
 		for (int i = 0; i < 15; ++i) {
 			std::cout << "Hello: ";
 			keyboardState = windowController.GetKeyStateReader();
