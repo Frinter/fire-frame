@@ -3,6 +3,7 @@
 #include "system/mutex.hh"
 #include "system/thread.hh"
 #include "system/systemutility.hh"
+#include "framework/controllerstack.hh"
 #include "framework/gamecontroller.hh"
 #include "framework/windowcontroller.hh"
 
@@ -10,15 +11,18 @@ using System::Thread;
 using System::ThreadEntry;
 using System::Utility;
 using System::KeyCode;
+using Framework::ControllerStack;
+using Framework::GameController;
+using Framework::ReadingKeyboardState;
 using Framework::WindowController;
 
-class TestController : public Framework::GameController {
+class TestController : public GameController {
 public:
 	void Check()
 	{
-		Framework::ReadingKeyboardState *keyboardState = GetKeyboardState();
+		ReadingKeyboardState *keyboardState = GetKeyboardState();
 
-		std::cout << "Hello: ";
+		std::cout << "TestController: ";
 		if (keyboardState != NULL) {
 			std::cout << keyboardState->GetKeyState(KeyCode::KeyTab);
 		}
@@ -32,19 +36,24 @@ public:
 int applicationMain()
 {
 	WindowController windowController;
+	ControllerStack controllerStack(&windowController);
 
 	ThreadEntry windowThreadEntry = [&windowController] (void*) -> void* {
 		windowController.CreateWindow();
 	};
 
-	ThreadEntry timerThreadEntry = [&windowController] (void*) -> void* {
-		TestController controller;
+	ThreadEntry timerThreadEntry = [&controllerStack] (void*) -> void* {
+		TestController *controller = new TestController();
+		
+		controllerStack.Push(controller);
+		
 		for (int i = 0; i < 15; ++i) {
-			controller.SetKeyboardState(windowController.GetKeyStateReader());
-			controller.Check();
+			controller->Check();
 
 			Utility::Sleep(1000);
 		}
+		
+		delete controller;
 	};
 
 	Thread *windowThread = Thread::Create(windowThreadEntry);

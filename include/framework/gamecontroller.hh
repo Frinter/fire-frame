@@ -1,3 +1,4 @@
+#pragma once
 
 #include "framework/keystate.hh"
 #include "framework/readingkeyboardstate.hh"
