@@ -15,8 +15,10 @@ namespace Framework
 		void SetKeyboardState(ReadingKeyboardState *state);
 		void SetControllerStack(IControllerStack *stack);
 		
-		// void *OnInit();
-		// void *OnDestroy();
+		virtual void OnStackAdd() {};
+		virtual void OnStackRemove() {};
+		
+		// void OnFocus()?
 		
 	protected:
 		ReadingKeyboardState *GetKeyboardState();

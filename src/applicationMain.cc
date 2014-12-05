@@ -18,7 +18,15 @@ using Framework::WindowController;
 
 class OtherTestController : public GameController {
 public:
-	
+	virtual void OnStackAdd()
+	{
+		std::cout << "OtherTestController added to stack" << std::endl;
+	}
+
+	virtual void OnStackRemove()
+	{
+		std::cout << "OtherTestController removed from stack" << std::endl;
+	}	
 };
 
 class TestController : public GameController {
@@ -36,6 +44,16 @@ public:
 			delete m_otherController;
 			m_otherController = NULL;			
 		}
+	}
+	
+	virtual void OnStackAdd()
+	{
+		std::cout << "TestController added to stack" << std::endl;
+	}
+
+	virtual void OnStackRemove()
+	{
+		std::cout << "TestController removed from stack" << std::endl;
 	}
 	
 	void Check()
