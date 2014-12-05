@@ -16,8 +16,28 @@ using Framework::GameController;
 using Framework::ReadingKeyboardState;
 using Framework::WindowController;
 
+class OtherTestController : public GameController {
+public:
+	
+};
+
 class TestController : public GameController {
 public:
+	TestController()
+		: m_otherController(NULL)
+	{
+	}
+	
+	~TestController()
+	{
+		if (m_otherController != NULL)
+		{
+			GetControllerStack()->Pop();
+			delete m_otherController;
+			m_otherController = NULL;			
+		}
+	}
+	
 	void Check()
 	{
 		ReadingKeyboardState *keyboardState = GetKeyboardState();
@@ -30,7 +50,22 @@ public:
 			std::cout << "No state";
 		}
 		std::cout << std::endl;
+
+		if (m_otherController == NULL)
+		{
+			m_otherController = new OtherTestController();
+			GetControllerStack()->Push(m_otherController);
+		}
+		else
+		{
+			GetControllerStack()->Pop();
+			delete m_otherController;
+			m_otherController = NULL;
+		}
 	}
+	
+private:
+	OtherTestController *m_otherController;
 };
 
 int applicationMain()
@@ -53,6 +88,7 @@ int applicationMain()
 			Utility::Sleep(1000);
 		}
 		
+		controllerStack.Pop();
 		delete controller;
 	};
 

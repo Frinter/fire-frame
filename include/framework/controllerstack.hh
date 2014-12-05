@@ -2,18 +2,12 @@
 
 #include <stack>
 
+#include "framework/icontrollerstack.hh"
 #include "framework/gamecontroller.hh"
 #include "framework/windowcontroller.hh"
 
 namespace Framework
-{
-	class IControllerStack
-	{
-	public:
-		virtual void Push(GameController *controller) = 0;
-		virtual void Pop() = 0;
-	};
-	
+{	
 	class ControllerStack : public IControllerStack
 	{
 	public:

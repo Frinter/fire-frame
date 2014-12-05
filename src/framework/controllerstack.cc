@@ -16,6 +16,7 @@ void Framework::ControllerStack::Push(GameController *controller)
 	}
 	
 	controller->SetKeyboardState(m_windowController->GetKeyStateReader());
+	controller->SetControllerStack(this);
 	m_controllers.push(controller);
 }
 
