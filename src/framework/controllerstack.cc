@@ -12,6 +12,8 @@ void Framework::ControllerStack::Push(GameController *controller)
 	if (m_controllers.size() != 0)
 	{
 		GameController *prev = m_controllers.top();
+		
+		prev->OnStackBlur();
 		prev->SetKeyboardState(NULL);
 	}
 	
@@ -21,6 +23,7 @@ void Framework::ControllerStack::Push(GameController *controller)
 	m_controllers.push(controller);
 
 	controller->OnStackAdd();
+	controller->OnStackFocus();
 }
 
 void Framework::ControllerStack::Pop()
@@ -29,6 +32,7 @@ void Framework::ControllerStack::Pop()
 	{
 		GameController *top = m_controllers.top();
 		
+		top->OnStackBlur();
 		top->OnStackRemove();
 		
 		m_controllers.pop();
@@ -40,5 +44,6 @@ void Framework::ControllerStack::Pop()
 		GameController *next = m_controllers.top();
 
 		next->SetKeyboardState(m_windowController->GetKeyStateReader());
+		next->OnStackFocus();
 	}
 }

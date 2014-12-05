@@ -27,6 +27,16 @@ public:
 	{
 		std::cout << "OtherTestController removed from stack" << std::endl;
 	}	
+
+	virtual void OnStackFocus()
+	{
+		std::cout << "OtherTestController stack focus" << std::endl;
+	}
+
+	virtual void OnStackBlur()
+	{
+		std::cout << "OtherTestController stack blur" << std::endl;
+	}
 };
 
 class TestController : public GameController {
@@ -56,6 +66,16 @@ public:
 		std::cout << "TestController removed from stack" << std::endl;
 	}
 	
+	virtual void OnStackFocus()
+	{
+		std::cout << "TestController stack focus" << std::endl;
+	}
+
+	virtual void OnStackBlur()
+	{
+		std::cout << "TestController stack blur" << std::endl;
+	}
+
 	void Check()
 	{
 		ReadingKeyboardState *keyboardState = GetKeyboardState();

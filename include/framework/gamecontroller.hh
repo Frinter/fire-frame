@@ -17,8 +17,8 @@ namespace Framework
 		
 		virtual void OnStackAdd() {};
 		virtual void OnStackRemove() {};
-		
-		// void OnFocus()?
+		virtual void OnStackFocus() {};
+		virtual void OnStackBlur() {};
 		
 	protected:
 		ReadingKeyboardState *GetKeyboardState();
