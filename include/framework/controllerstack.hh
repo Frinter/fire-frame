@@ -7,7 +7,7 @@
 #include "framework/windowcontroller.hh"
 
 namespace Framework
-{	
+{
 	class ControllerStack : public IControllerStack
 	{
 	public:
