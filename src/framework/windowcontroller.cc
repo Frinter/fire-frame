@@ -1,3 +1,5 @@
+#include "framework/keystate.hh"
+#include "framework/readingkeyboardstate.hh"
 #include "framework/windowcontroller.hh"
 
 using System::KeyCode;
@@ -5,6 +7,7 @@ using System::Mutex;
 using System::OpenGLContext;
 using System::Window;
 using Framework::KeyState;
+using Framework::ReadingKeyboardState;
 using Framework::WindowController;
 
 WindowController::WindowController() : m_window(NULL)
@@ -22,7 +25,7 @@ void WindowController::CreateWindow()
 	m_window->DoMessageLoop();
 }
 
-WindowController::ReadingKeyboardState *WindowController::GetKeyStateReader()
+ReadingKeyboardState *WindowController::GetKeyStateReader()
 {
 	return &m_keyboardState;
 }
