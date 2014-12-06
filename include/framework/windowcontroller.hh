@@ -11,7 +11,7 @@
 
 namespace Framework
 {
-	class WindowController : public System::WindowController
+	class WindowController : public System::IWindowController
 	{
 	private:
 		class WritingKeyboardState

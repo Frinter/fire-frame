@@ -99,7 +99,7 @@ public:
 static KeyMap keyMap;
 static std::unordered_map<HWND, WindowsWindow*> windowMap;
 
-WindowsWindow::WindowsWindow(System::WindowController *controller, HINSTANCE processInstance, int commandShow)
+WindowsWindow::WindowsWindow(System::IWindowController *controller, HINSTANCE processInstance, int commandShow)
 	: m_controller(controller), m_openGLContext(NULL)
 {
 	WNDCLASSEX windowClass;
