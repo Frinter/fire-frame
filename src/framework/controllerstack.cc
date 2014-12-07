@@ -39,3 +39,9 @@ void Framework::ControllerStack::Pop()
 		next->SetKeyboardState(m_windowController->GetKeyStateReader());
 	}
 }
+
+void Framework::ControllerStack::Clear()
+{
+	if (EventHandlerStack::Size() > 0)
+		Pop();
+}

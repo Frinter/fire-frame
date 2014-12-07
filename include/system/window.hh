@@ -12,9 +12,12 @@ namespace System
 
 		// The implementation of Window must guarantee that Create will return before any callbacks are called
 		virtual void OnWindowReady() { };
+		virtual void OnWindowClose() { };
 		virtual void OnKeyUp(KeyCode key) { };
 		virtual void OnKeyDown(KeyCode key) { };
 
+		virtual bool ShouldDestroyWindow() = 0;
+		
 		IWindowController(const IWindowController &o) = delete;
 	};
 
@@ -22,6 +25,8 @@ namespace System
 	public:
 		virtual ~Window() {};
 		virtual int DoMessageLoop() = 0;
+		virtual void Destroy() = 0;
+		
 		static Window *Create(IWindowController *controller);
 	};
 }

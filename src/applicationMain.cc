@@ -3,6 +3,7 @@
 #include "system/mutex.hh"
 #include "system/thread.hh"
 #include "system/systemutility.hh"
+#include "framework/applicationcontext.hh"
 #include "framework/controllerstack.hh"
 #include "framework/gamecontroller.hh"
 #include "framework/windowcontroller.hh"
@@ -11,13 +12,14 @@ using System::Thread;
 using System::ThreadEntry;
 using System::Utility;
 using System::KeyCode;
+using Framework::ApplicationContext;
 using Framework::ControllerStack;
 using Framework::GameController;
 using Framework::ReadingKeyboardState;
 using Framework::WindowController;
 
 class OtherTestController : public GameController {
-public:
+public:	
 	virtual void OnStackAdd()
 	{
 		std::cout << "OtherTestController added to stack" << std::endl;
@@ -108,35 +110,41 @@ private:
 
 int applicationMain()
 {
-	WindowController windowController;
-	ControllerStack controllerStack(&windowController);
+	ApplicationContext applicationContext;
+	WindowController windowController(&applicationContext);
 
 	ThreadEntry windowThreadEntry = [&windowController] (void*) -> void* {
 		windowController.CreateWindow();
 	};
 
-	ThreadEntry timerThreadEntry = [&controllerStack] (void*) -> void* {
+	ThreadEntry timerThreadEntry = [&applicationContext, &windowController] (void*) -> void* {
+		ControllerStack controllerStack(&windowController);
 		TestController *controller = new TestController();
 		
 		controllerStack.Push(controller);
 		
-		for (int i = 0; i < 15; ++i) {
+		while (!applicationContext.IsClosing())
+		{
 			controller->Check();
 
 			Utility::Sleep(1000);
 		}
 		
-		controllerStack.Pop();
+		controllerStack.Clear();
 		delete controller;
-	};
 
+		windowController.DestroyWindow();
+	};
+	
 	Thread *windowThread = Thread::Create(windowThreadEntry);
 	Thread *timerThread = Thread::Create(timerThreadEntry);
 
+	
 	windowThread->Start();
 	timerThread->Start();
+	
 	timerThread->Wait();
 	windowThread->Wait();
-
+	
 	return 0;
 }

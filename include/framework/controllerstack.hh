@@ -16,6 +16,7 @@ namespace Framework
 		
 		virtual void Push(GameController *controller);
 		virtual void Pop();
+		virtual void Clear();
 		
 	private:
 		WindowController *m_windowController;

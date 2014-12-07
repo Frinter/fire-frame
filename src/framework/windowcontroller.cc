@@ -10,7 +10,8 @@ using Framework::KeyState;
 using Framework::ReadingKeyboardState;
 using Framework::WindowController;
 
-WindowController::WindowController() : m_window(NULL)
+WindowController::WindowController(ApplicationContext *applicationContext)
+	: m_window(NULL), m_shouldDestroyWindow(false), m_applicationContext(applicationContext)
 { }
 
 WindowController::~WindowController()
@@ -25,6 +26,16 @@ void WindowController::CreateWindow()
 	m_window->DoMessageLoop();
 }
 
+void WindowController::DestroyWindow()
+{
+	m_shouldDestroyWindow = true;
+}
+
+bool WindowController::ShouldDestroyWindow()
+{
+	return m_shouldDestroyWindow;
+}
+
 ReadingKeyboardState *WindowController::GetKeyStateReader()
 {
 	return &m_keyboardState;
@@ -33,6 +44,11 @@ ReadingKeyboardState *WindowController::GetKeyStateReader()
 void WindowController::OnWindowReady()
 {
 	m_openGLContext = OpenGLContext::Create(m_window);
+}
+
+void WindowController::OnWindowClose()
+{
+	m_applicationContext->Close();
 }
 
 void WindowController::OnKeyDown(KeyCode key)

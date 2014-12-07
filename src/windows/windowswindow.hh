@@ -15,6 +15,8 @@ public:
 	virtual ~WindowsWindow();
 
 	virtual int DoMessageLoop();
+	
+	virtual void Destroy();
 
 private:
 	HWND m_windowHandle;
@@ -22,6 +24,7 @@ private:
 	WindowsOpenGLContext *m_openGLContext;
 
 	void Ready();
+	void Close();
 	void KeyDown(WPARAM key);
 	void KeyUp(WPARAM key);
 

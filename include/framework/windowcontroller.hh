@@ -2,6 +2,7 @@
 
 #include <map>
 
+#include "framework/applicationcontext.hh"
 #include "framework/keystate.hh"
 #include "framework/readingkeyboardstate.hh"
 #include "system/keycode.hh"
@@ -40,21 +41,28 @@ namespace Framework
 		};
 
 	public:
-		WindowController();
+		WindowController(ApplicationContext *applicationContext);
 
 		virtual ~WindowController();
 
 		void CreateWindow();
+		void DestroyWindow();
 
 		ReadingKeyboardState *GetKeyStateReader();
 
 		virtual void OnWindowReady();
+		virtual void OnWindowClose();
 		virtual void OnKeyDown(System::KeyCode key);
 		virtual void OnKeyUp(System::KeyCode key);
+		
+		virtual bool ShouldDestroyWindow();
 		
 	private:
 		System::Window *m_window;
 		System::OpenGLContext *m_openGLContext;
+		ApplicationContext *m_applicationContext;
 		KeyboardState m_keyboardState;
+		
+		bool m_shouldDestroyWindow;
 	};
 }

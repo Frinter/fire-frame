@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include <stdexcept>
 #include <unordered_map>
 
@@ -140,14 +142,28 @@ int WindowsWindow::DoMessageLoop() {
 	{
 		TranslateMessage(&message);
 		DispatchMessage(&message);
+		
+		// Don't do this here?
+		if (m_controller->ShouldDestroyWindow())
+			Destroy();
 	}
 
 	return message.wParam;
 }
 
+void WindowsWindow::Destroy()
+{
+	DestroyWindow(m_windowHandle);
+}
+
 void WindowsWindow::Ready()
 {
 	m_controller->OnWindowReady();
+}
+
+void WindowsWindow::Close()
+{
+	m_controller->OnWindowClose();
 }
 
 void WindowsWindow::KeyDown(WPARAM key)
@@ -202,6 +218,10 @@ LRESULT CALLBACK WindowsWindow::WndProc(HWND windowHandle, UINT message, WPARAM 
 		EndPaint(windowHandle, &ps);
 		return 0;
 
+	case WM_CLOSE:
+		windowMap[windowHandle]->Close();
+		return 0;
+		
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0;
