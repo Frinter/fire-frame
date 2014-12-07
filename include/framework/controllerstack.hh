@@ -3,12 +3,13 @@
 #include <stack>
 
 #include "framework/icontrollerstack.hh"
+#include "framework/eventhandlerstack.hh"
 #include "framework/gamecontroller.hh"
 #include "framework/windowcontroller.hh"
 
 namespace Framework
 {
-	class ControllerStack : public IControllerStack
+	class ControllerStack : public IControllerStack, public EventHandlerStack
 	{
 	public:
 		ControllerStack(WindowController *windowController);

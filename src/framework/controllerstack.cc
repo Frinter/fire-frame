@@ -9,41 +9,33 @@ Framework::ControllerStack::ControllerStack(WindowController *windowController)
 
 void Framework::ControllerStack::Push(GameController *controller)
 {
-	if (m_controllers.size() != 0)
+	if (EventHandlerStack::Size() != 0)
 	{
-		GameController *prev = m_controllers.top();
+		GameController *prev = (GameController *)EventHandlerStack::Top();
 		
-		prev->OnStackBlur();
 		prev->SetKeyboardState(NULL);
 	}
 	
 	controller->SetKeyboardState(m_windowController->GetKeyStateReader());
 	controller->SetControllerStack(this);
 	
-	m_controllers.push(controller);
-
-	controller->OnStackAdd();
-	controller->OnStackFocus();
+	EventHandlerStack::Push(controller);
 }
 
 void Framework::ControllerStack::Pop()
 {
-	if (m_controllers.size() != 0)
+	if (EventHandlerStack::Size() != 0)
 	{
-		GameController *top = m_controllers.top();
+		GameController *top = (GameController *)EventHandlerStack::Top();
 		
-		top->OnStackBlur();
-		top->OnStackRemove();
-		
-		m_controllers.pop();
+		EventHandlerStack::Pop();
 		top->SetKeyboardState(NULL);
 	}
 
-	if (m_controllers.size() != 0)
+	if (EventHandlerStack::Size() != 0)
 	{
-		GameController *next = m_controllers.top();
+		GameController *next = (GameController *)EventHandlerStack::Top();
 
 		next->SetKeyboardState(m_windowController->GetKeyStateReader());
-		next->OnStackFocus();
 	}
 }

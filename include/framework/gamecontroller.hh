@@ -1,5 +1,6 @@
 #pragma once
 
+#include "framework/istackeventhandler.hh"
 #include "framework/icontrollerstack.hh"
 #include "framework/keystate.hh"
 #include "framework/readingkeyboardstate.hh"
@@ -7,7 +8,7 @@
 
 namespace Framework
 {
-	class GameController {
+	class GameController : public Framework::IStackEventHandler {
 	public:
 		GameController();
 		virtual ~GameController() {}
