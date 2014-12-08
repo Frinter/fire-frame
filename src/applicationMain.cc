@@ -6,6 +6,7 @@
 #include "framework/applicationcontext.hh"
 #include "framework/controllerstack.hh"
 #include "framework/gamecontroller.hh"
+#include "framework/igraphicsthreadcontroller.hh"
 #include "framework/windowcontroller.hh"
 
 using System::Thread;
@@ -15,6 +16,7 @@ using System::KeyCode;
 using Framework::ApplicationContext;
 using Framework::ControllerStack;
 using Framework::GameController;
+using Framework::IGraphicsThreadController;
 using Framework::ReadingKeyboardState;
 using Framework::WindowController;
 
@@ -108,6 +110,8 @@ private:
 	OtherTestController *m_otherController;
 };
 
+extern IGraphicsThreadController *GetGraphicsThreadController();
+
 int applicationMain()
 {
 	ApplicationContext applicationContext;
@@ -135,14 +139,22 @@ int applicationMain()
 
 		applicationContext.SignalWindowDestruction();
 	};
+		
+	ThreadEntry graphicsThreadEntry = [] (void*) -> void* {
+		IGraphicsThreadController *graphicsThreadController = GetGraphicsThreadController();
+		
+		graphicsThreadController->Run();
+	};
 	
 	Thread *windowThread = Thread::Create(windowThreadEntry);
 	Thread *timerThread = Thread::Create(timerThreadEntry);
-
+	Thread *graphicsThread = Thread::Create(graphicsThreadEntry);
 	
 	windowThread->Start();
 	timerThread->Start();
+	graphicsThread->Start();
 	
+	graphicsThread->Wait();
 	timerThread->Wait();
 	windowThread->Wait();
 	
