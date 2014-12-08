@@ -101,8 +101,8 @@ public:
 static KeyMap keyMap;
 static std::unordered_map<HWND, WindowsWindow*> windowMap;
 
-WindowsWindow::WindowsWindow(System::IWindowController *controller, HINSTANCE processInstance, int commandShow)
-	: m_controller(controller), m_openGLContext(NULL)
+WindowsWindow::WindowsWindow(Framework::ApplicationContext *applicationContext, System::IWindowController *controller, HINSTANCE processInstance, int commandShow)
+	: m_applicationContext(applicationContext), m_controller(controller), m_openGLContext(NULL)
 {
 	WNDCLASSEX windowClass;
 
@@ -144,7 +144,7 @@ int WindowsWindow::DoMessageLoop() {
 		DispatchMessage(&message);
 		
 		// Don't do this here?
-		if (m_controller->ShouldDestroyWindow())
+		if (m_applicationContext->ShouldDestroyWindow())
 			Destroy();
 	}
 

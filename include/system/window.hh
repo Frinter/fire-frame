@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 
+#include "framework/applicationcontext.hh"
 #include "system/keycode.hh"
 
 namespace System
@@ -15,8 +16,6 @@ namespace System
 		virtual void OnWindowClose() { };
 		virtual void OnKeyUp(KeyCode key) { };
 		virtual void OnKeyDown(KeyCode key) { };
-
-		virtual bool ShouldDestroyWindow() = 0;
 		
 		IWindowController(const IWindowController &o) = delete;
 	};
@@ -27,6 +26,6 @@ namespace System
 		virtual int DoMessageLoop() = 0;
 		virtual void Destroy() = 0;
 		
-		static Window *Create(IWindowController *controller);
+		static Window *Create(Framework::ApplicationContext *applicationContext, IWindowController *controller);
 	};
 }

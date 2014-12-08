@@ -133,7 +133,7 @@ int applicationMain()
 		controllerStack.Clear();
 		delete controller;
 
-		windowController.DestroyWindow();
+		applicationContext.SignalWindowDestruction();
 	};
 	
 	Thread *windowThread = Thread::Create(windowThreadEntry);

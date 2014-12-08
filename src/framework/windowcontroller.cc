@@ -22,18 +22,8 @@ WindowController::~WindowController()
 
 void WindowController::CreateWindow()
 {
-	m_window = Window::Create(this);
+	m_window = Window::Create(m_applicationContext, this);
 	m_window->DoMessageLoop();
-}
-
-void WindowController::DestroyWindow()
-{
-	m_shouldDestroyWindow = true;
-}
-
-bool WindowController::ShouldDestroyWindow()
-{
-	return m_shouldDestroyWindow;
 }
 
 ReadingKeyboardState *WindowController::GetKeyStateReader()

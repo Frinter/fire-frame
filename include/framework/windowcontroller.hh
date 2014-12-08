@@ -46,7 +46,6 @@ namespace Framework
 		virtual ~WindowController();
 
 		void CreateWindow();
-		void DestroyWindow();
 
 		ReadingKeyboardState *GetKeyStateReader();
 
@@ -54,8 +53,6 @@ namespace Framework
 		virtual void OnWindowClose();
 		virtual void OnKeyDown(System::KeyCode key);
 		virtual void OnKeyUp(System::KeyCode key);
-		
-		virtual bool ShouldDestroyWindow();
 		
 	private:
 		System::Window *m_window;
