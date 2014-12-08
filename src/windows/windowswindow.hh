@@ -11,7 +11,7 @@ class WindowsWindow : public System::Window
 	friend class WindowsOpenGLContext;
 
 public:
-	WindowsWindow(Framework::ApplicationContext *applicationContext, System::IWindowController *controller, HINSTANCE processInstance, int commandShow);
+	WindowsWindow(Framework::ApplicationContext *applicationContext, Framework::IWindowController *controller, HINSTANCE processInstance, int commandShow);
 	virtual ~WindowsWindow();
 
 	virtual int DoMessageLoop();
@@ -20,7 +20,7 @@ public:
 
 private:
 	HWND m_windowHandle;
-	System::IWindowController *m_controller;
+	Framework::IWindowController *m_controller;
 	Framework::ApplicationContext *m_applicationContext;
 	WindowsOpenGLContext *m_openGLContext;
 

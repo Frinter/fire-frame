@@ -5,6 +5,7 @@
 #include "framework/applicationcontext.hh"
 #include "framework/keystate.hh"
 #include "framework/readingkeyboardstate.hh"
+#include "framework/iwindowcontroller.hh"
 #include "system/keycode.hh"
 #include "system/window.hh"
 #include "system/openglcontext.hh"
@@ -12,7 +13,7 @@
 
 namespace Framework
 {
-	class WindowController : public System::IWindowController
+	class WindowController : public IWindowController
 	{
 	private:
 		class WritingKeyboardState

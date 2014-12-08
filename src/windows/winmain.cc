@@ -13,7 +13,7 @@ HINSTANCE windows_parentInstance;
 LPSTR windows_arguments;
 int windows_commandShow;
 
-System::Window *System::Window::Create(Framework::ApplicationContext *applicationContext, System::IWindowController *controller)
+System::Window *System::Window::Create(Framework::ApplicationContext *applicationContext, Framework::IWindowController *controller)
 {
 	return new WindowsWindow(applicationContext, controller, windows_instance, windows_commandShow);
 }
