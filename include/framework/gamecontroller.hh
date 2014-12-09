@@ -16,10 +16,12 @@ namespace Framework
 		void SetKeyboardState(ReadingKeyboardState *state);
 		void SetControllerStack(IControllerStack *stack);
 		
-		virtual void OnStackAdd() {};
-		virtual void OnStackRemove() {};
-		virtual void OnStackFocus() {};
-		virtual void OnStackBlur() {};
+		virtual void OnStackAdd() {}
+		virtual void OnStackRemove() {}
+		virtual void OnStackFocus() {}
+		virtual void OnStackBlur() {}
+		
+		virtual void OnTick() {}
 		
 	protected:
 		ReadingKeyboardState *GetKeyboardState();
