@@ -31,7 +31,7 @@ int applicationMain()
 		windowController.CreateWindow();
 	};
 
-	ThreadEntry timerThreadEntry = [&applicationContext, &windowController] (void*) -> void* {
+	ThreadEntry controllerThreadEntry = [&applicationContext, &windowController] (void*) -> void* {
 		ControllerStack controllerStack(&windowController);
 		GameController *controller = GetBaseController();
 		
@@ -56,15 +56,15 @@ int applicationMain()
 	};
 	
 	Thread *windowThread = Thread::Create(windowThreadEntry);
-	Thread *timerThread = Thread::Create(timerThreadEntry);
+	Thread *controllerThread = Thread::Create(controllerThreadEntry);
 	Thread *graphicsThread = Thread::Create(graphicsThreadEntry);
 	
 	windowThread->Start();
-	timerThread->Start();
+	controllerThread->Start();
 	graphicsThread->Start();
 	
 	graphicsThread->Wait();
-	timerThread->Wait();
+	controllerThread->Wait();
 	windowThread->Wait();
 	
 	return 0;
