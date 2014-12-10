@@ -2,7 +2,7 @@
 
 #include "system/mutex.hh"
 #include "system/thread.hh"
-#include "system/systemutility.hh"
+#include "system/utility.hh"
 #include "framework/applicationcontext.hh"
 #include "framework/controllerstack.hh"
 #include "framework/gamecontroller.hh"
