@@ -4,7 +4,7 @@ ifeq ($(PLATFORM),windows)
   CXX = g++
   PLATFORM_SRC = $(wildcard src/windows/*.cc)
   PLATFORM_LIBS = 
-  PLATFORM_POST_LIBS = -lglew32 -lopengl32
+  PLATFORM_POST_LIBS = -lglew32 -lopengl32 -lwinmm
   PLATFORM_LINKFLAGS = -mwindows -mconsole
   PLATFORM_OBJECTS = 
 

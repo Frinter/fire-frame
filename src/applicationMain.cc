@@ -22,6 +22,12 @@ using Framework::WindowController;
 extern IGraphicsThreadController *GetGraphicsThreadController();
 extern GameController *GetBaseController();
 
+unsigned int GetSleepLength(unsigned int newTicks, unsigned int originalTicks, unsigned int length)
+{
+	unsigned int difference = newTicks - originalTicks;
+	return difference > length ? 0 : length - difference;
+}
+
 int applicationMain()
 {
 	ApplicationContext applicationContext;
@@ -37,11 +43,20 @@ int applicationMain()
 		
 		controllerStack.Push(controller);
 		
+		unsigned int ticks = Utility::GetTicks();
+		unsigned int newTicks;
+		unsigned int sleepLength;
+
 		while (!applicationContext.IsClosing())
 		{
 			controller->OnTick();
 
-			Utility::Sleep(1000);
+			newTicks = Utility::GetTicks();
+			sleepLength = GetSleepLength(newTicks, ticks, 500);
+			ticks = newTicks;
+
+			if (sleepLength > 0)
+				Utility::Sleep(sleepLength);
 		}
 		
 		controllerStack.Clear();

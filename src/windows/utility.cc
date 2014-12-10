@@ -8,3 +8,8 @@ void Utility::Sleep(int milliseconds)
 {
 	::Sleep(milliseconds);
 }
+
+int Utility::GetTicks()
+{
+	return timeGetTime();
+}
