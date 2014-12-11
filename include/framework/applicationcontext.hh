@@ -1,5 +1,7 @@
 #pragma once
 
+#include "system/event.hh"
+
 namespace Framework
 {
 	class ApplicationContext
@@ -12,9 +14,12 @@ namespace Framework
 
 		bool IsClosing() const;
 		bool ShouldDestroyWindow() const;
+		
+		System::Event *WindowReady() const;
 
 	private:
 		bool m_isClosing;
 		bool m_destroyWindowFlag;
+		System::Event *m_windowReady;
 	};
 }

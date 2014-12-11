@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "framework/keystate.hh"
 #include "framework/readingkeyboardstate.hh"
 #include "framework/windowcontroller.hh"
@@ -26,6 +28,11 @@ void WindowController::CreateWindow()
 	m_window->DoMessageLoop();
 }
 
+void WindowController::CreateContext()
+{
+	m_openGLContext = OpenGLContext::Create(m_window);
+}
+
 ReadingKeyboardState *WindowController::GetKeyStateReader()
 {
 	return &m_keyboardState;
@@ -33,7 +40,7 @@ ReadingKeyboardState *WindowController::GetKeyStateReader()
 
 void WindowController::OnWindowReady()
 {
-	m_openGLContext = OpenGLContext::Create(m_window);
+	m_applicationContext->WindowReady()->Trigger();
 }
 
 void WindowController::OnWindowClose()

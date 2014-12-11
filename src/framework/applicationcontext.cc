@@ -3,7 +3,7 @@
 using namespace Framework;
 
 ApplicationContext::ApplicationContext()
-	: m_isClosing(false), m_destroyWindowFlag(false)
+	: m_isClosing(false), m_destroyWindowFlag(false), m_windowReady(System::Event::Create("WindowReady"))
 {
 }
 
@@ -25,4 +25,9 @@ bool ApplicationContext::IsClosing() const
 bool ApplicationContext::ShouldDestroyWindow() const
 {
 	return m_isClosing;
+}
+
+System::Event *ApplicationContext::WindowReady() const
+{
+	return m_windowReady;
 }

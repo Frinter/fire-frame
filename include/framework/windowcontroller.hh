@@ -47,6 +47,7 @@ namespace Framework
 		virtual ~WindowController();
 
 		void CreateWindow();
+		void CreateContext();
 
 		ReadingKeyboardState *GetKeyStateReader();
 

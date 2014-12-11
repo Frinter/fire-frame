@@ -49,6 +49,7 @@ int applicationMain()
 
 		while (!applicationContext.IsClosing())
 		{
+			controller = (GameController *)controllerStack.Top();
 			controller->OnTick();
 
 			newTicks = Utility::GetTicks();
@@ -64,9 +65,11 @@ int applicationMain()
 		applicationContext.SignalWindowDestruction();
 	};
 		
-	ThreadEntry graphicsThreadEntry = [] (void*) -> void* {
+	ThreadEntry graphicsThreadEntry = [&applicationContext, &windowController] (void*) -> void* {
+		applicationContext.WindowReady()->Wait();
+		windowController.CreateContext();
+
 		IGraphicsThreadController *graphicsThreadController = GetGraphicsThreadController();
-		
 		graphicsThreadController->Run();
 	};
 	

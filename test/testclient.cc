@@ -1,5 +1,8 @@
 #include <iostream>
 
+#define GLEW_STATIC 1
+#include <GL/glew.h>
+
 #include "framework/gamecontroller.hh"
 #include "framework/igraphicsthreadcontroller.hh"
 #include "framework/readingkeyboardstate.hh"
@@ -13,7 +16,8 @@ class GraphicsThreadController : public Framework::IGraphicsThreadController
 public:
 	void Run()
 	{
-		std::cout << "Graphics thread running" << std::endl;
+		std::cout << "VERTEX SHADER!!!" << std::endl;
+		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	}
 };
 
