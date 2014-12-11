@@ -5,7 +5,7 @@ ifeq ($(PLATFORM),windows)
   PLATFORM_SRC = $(wildcard src/windows/*.cc)
   PLATFORM_LIBS = 
   PLATFORM_POST_LIBS = -lglew32 -lopengl32 -lwinmm
-  PLATFORM_LINKFLAGS = -mwindows -mconsole
+  PLATFORM_LINKFLAGS = -mwindows -mconsole -lmingw32
   PLATFORM_OBJECTS = 
 
 include $(wildcard build/windows/*.d)
@@ -29,9 +29,9 @@ SRC := $(wildcard src/*.cc) $(wildcard src/framework/*.cc) $(PLATFORM_SRC)
 TEST_SRC := $(wildcard test/*.cc)
 OBJECTS := $(SRC:src/%.cc=$(OBJ_DIR)/%.o) $(PLATFORM_OBJECTS)
 TEST_OBJECTS := $(patsubst test/%.cc,build/%.o,$(TEST_SRC))
-LIBS := -Llib $(PLATFORM_LIBS) $(PLATFORM_POST_LIBS)
+LIBS := $(PLATFORM_LIBS) $(PLATFORM_POST_LIBS)
 CFLAGS := $(INCLUDE_DIRS) -std=c++11 -g -DPLATFORM=$(PLATFORM)
-LINK_FLAGS := -static-libgcc -static-libstdc++ $(PLATFORM_LINKFLAGS)
+LINK_FLAGS := -static-libgcc -static-libstdc++ -Llib $(PLATFORM_LINKFLAGS)
 ARCHIVE_SRC := $(SRC)
 ARCHIVE_OBJECTS := $(patsubst src/%.cc,build/%.o,$(ARCHIVE_SRC))
 ARCHIVE_TARGET := $(BIN_DIR)/libfireframe.a
@@ -70,7 +70,7 @@ $(ARCHIVE_TARGET): $(ARCHIVE_OBJECTS)
 	@ar cr $@ $^
 $(TEST_TARGET): $(TEST_OBJECTS) $(ARCHIVE_TARGET)
 	@echo '(Test) Linking: $@'
-	@$(CXX) -g $(LINK_FLAGS) -o $@ -lmingw32 $^ $(LIBS)
+	@$(CXX) -g $(LINK_FLAGS) -o $@ $^ $(LIBS)
 
 clean:
 	@rm -R build
