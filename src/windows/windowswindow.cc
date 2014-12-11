@@ -183,18 +183,10 @@ LRESULT CALLBACK WindowsWindow::WndProc(HWND windowHandle, UINT message, WPARAM 
 			
 	switch(message)
 	{
-	case WM_CREATE:
-		mainMenuHandle = CreateMenu();
-		fileMenuHandle = CreatePopupMenu();
-
-		AppendMenu(fileMenuHandle, MF_STRING, FILE_EXIT_OPTION, "Exit");
-
-		AppendMenu(mainMenuHandle, MF_STRING | MF_POPUP, (UINT)fileMenuHandle, "File");
-
-		SetMenu(windowHandle, mainMenuHandle);
-
-		return 0;
-
+	case WM_ACTIVATEAPP:
+		std::cout << "WndProc handling WM_ACTIVATEAPP: " << wparam << " : " << lparam << std::endl;
+		break;
+		
 	case WM_KEYDOWN:
 		windowMap[windowHandle]->KeyDown(wparam);
 		return 0;
@@ -202,15 +194,6 @@ LRESULT CALLBACK WindowsWindow::WndProc(HWND windowHandle, UINT message, WPARAM 
 	case WM_KEYUP:
 		windowMap[windowHandle]->KeyUp(wparam);
 		return 0;
-
-	case WM_COMMAND:
-		switch (LOWORD(wparam))
-		{
-		case FILE_EXIT_OPTION:
-			PostMessage(windowHandle, WM_CLOSE, 0, 0);
-			break;
-		}
-		break;
 
 	case WM_PAINT:
 		hdc = BeginPaint(windowHandle, &ps);
@@ -225,7 +208,8 @@ LRESULT CALLBACK WindowsWindow::WndProc(HWND windowHandle, UINT message, WPARAM 
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		return 0;
+		
+	default:
+		return DefWindowProc(windowHandle, message, wparam, lparam);
 	}
-
-	return DefWindowProc(windowHandle, message, wparam, lparam);
 }
