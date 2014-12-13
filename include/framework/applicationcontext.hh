@@ -16,10 +16,12 @@ namespace Framework
 		bool ShouldDestroyWindow() const;
 		
 		System::Event *WindowReady() const;
+		System::Event *GraphicsThreadQuit() const;
 
 	private:
 		bool m_isClosing;
 		bool m_destroyWindowFlag;
 		System::Event *m_windowReady;
+		System::Event *m_graphicsThreadQuit;
 	};
 }

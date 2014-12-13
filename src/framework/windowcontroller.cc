@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "framework/keystate.hh"
 #include "framework/readingkeyboardstate.hh"
 #include "framework/windowcontroller.hh"
@@ -13,11 +11,13 @@ using Framework::ReadingKeyboardState;
 using Framework::WindowController;
 
 WindowController::WindowController(ApplicationContext *applicationContext)
-	: m_window(NULL), m_shouldDestroyWindow(false), m_applicationContext(applicationContext)
+	: m_window(NULL), m_openGLContext(NULL), m_shouldDestroyWindow(false), m_applicationContext(applicationContext)
 { }
 
 WindowController::~WindowController()
 {
+	if (m_openGLContext != NULL)
+		delete m_openGLContext;
 	if (m_window != NULL)
 		delete m_window;
 }

@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "system/mutex.hh"
 #include "system/thread.hh"
 #include "system/utility.hh"
@@ -33,8 +31,9 @@ int applicationMain()
 	ApplicationContext applicationContext;
 	WindowController windowController(&applicationContext);
 
-	ThreadEntry windowThreadEntry = [&windowController] (void*) -> void* {
+	ThreadEntry windowThreadEntry = [&applicationContext, &windowController] (void*) -> void* {
 		windowController.CreateWindow();
+		applicationContext.GraphicsThreadQuit()->Wait();
 	};
 
 	ThreadEntry controllerThreadEntry = [&applicationContext, &windowController] (void*) -> void* {
@@ -71,6 +70,8 @@ int applicationMain()
 
 		IGraphicsThreadController *graphicsThreadController = GetGraphicsThreadController();
 		graphicsThreadController->Run(&applicationContext);
+
+		applicationContext.GraphicsThreadQuit()->Trigger();;
 	};
 	
 	Thread *windowThread = Thread::Create(windowThreadEntry);

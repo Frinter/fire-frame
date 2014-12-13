@@ -3,7 +3,7 @@
 using namespace Framework;
 
 ApplicationContext::ApplicationContext()
-	: m_isClosing(false), m_destroyWindowFlag(false), m_windowReady(System::Event::Create("WindowReady"))
+	: m_isClosing(false), m_destroyWindowFlag(false), m_windowReady(System::Event::Create("WindowReady")), m_graphicsThreadQuit(System::Event::Create("GraphicsThreadQuit"))
 {
 }
 
@@ -30,4 +30,9 @@ bool ApplicationContext::ShouldDestroyWindow() const
 System::Event *ApplicationContext::WindowReady() const
 {
 	return m_windowReady;
+}
+
+System::Event *ApplicationContext::GraphicsThreadQuit() const
+{
+	return m_graphicsThreadQuit;
 }
