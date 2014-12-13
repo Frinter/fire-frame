@@ -70,7 +70,7 @@ int applicationMain()
 		windowController.CreateContext();
 
 		IGraphicsThreadController *graphicsThreadController = GetGraphicsThreadController();
-		graphicsThreadController->Run();
+		graphicsThreadController->Run(&applicationContext);
 	};
 	
 	Thread *windowThread = Thread::Create(windowThreadEntry);

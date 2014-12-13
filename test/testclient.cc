@@ -14,10 +14,16 @@ using System::KeyCode;
 class GraphicsThreadController : public Framework::IGraphicsThreadController
 {
 public:
-	void Run()
+	virtual void Run(Framework::ApplicationContext *applicationContext)
 	{
-		std::cout << "VERTEX SHADER!!!" << std::endl;
 		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+		GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+		
+		std::cout << "graphics thread main loop" << std::endl;
+		while (!applicationContext->IsClosing())
+		{
+		}
+		std::cout << "graphics thread exiting" << std::endl;
 	}
 };
 
