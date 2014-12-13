@@ -1,5 +1,6 @@
+#include <thread>
+
 #include "system/mutex.hh"
-#include "system/thread.hh"
 #include "system/utility.hh"
 #include "framework/applicationcontext.hh"
 #include "framework/controllerstack.hh"
@@ -7,8 +8,6 @@
 #include "framework/igraphicsthreadcontroller.hh"
 #include "framework/windowcontroller.hh"
 
-using System::Thread;
-using System::ThreadEntry;
 using System::Utility;
 using System::KeyCode;
 using Framework::ApplicationContext;
@@ -30,13 +29,13 @@ int applicationMain()
 {
 	ApplicationContext applicationContext;
 	WindowController windowController(&applicationContext);
-
-	ThreadEntry windowThreadEntry = [&applicationContext, &windowController] (void*) -> void* {
+		
+	auto windowThreadEntry = [&applicationContext, &windowController] () {
 		windowController.CreateWindow();
 		applicationContext.GraphicsThreadQuit()->Wait();
 	};
 
-	ThreadEntry controllerThreadEntry = [&applicationContext, &windowController] (void*) -> void* {
+	auto controllerThreadEntry = [&applicationContext, &windowController] () {
 		ControllerStack controllerStack(&windowController);
 		GameController *controller = GetBaseController();
 		
@@ -63,8 +62,8 @@ int applicationMain()
 
 		applicationContext.SignalWindowDestruction();
 	};
-		
-	ThreadEntry graphicsThreadEntry = [&applicationContext, &windowController] (void*) -> void* {
+
+	auto graphicsThreadEntry = [&applicationContext, &windowController] () {
 		applicationContext.WindowReady()->Wait();
 		windowController.CreateContext();
 
@@ -73,18 +72,14 @@ int applicationMain()
 
 		applicationContext.GraphicsThreadQuit()->Trigger();;
 	};
+
+	std::thread windowThread = std::thread(windowThreadEntry);
+	std::thread controllerThread = std::thread(controllerThreadEntry);
+	std::thread graphicsThread = std::thread(graphicsThreadEntry);
 	
-	Thread *windowThread = Thread::Create(windowThreadEntry);
-	Thread *controllerThread = Thread::Create(controllerThreadEntry);
-	Thread *graphicsThread = Thread::Create(graphicsThreadEntry);
-	
-	windowThread->Start();
-	controllerThread->Start();
-	graphicsThread->Start();
-	
-	graphicsThread->Wait();
-	controllerThread->Wait();
-	windowThread->Wait();
+	graphicsThread.join();
+	controllerThread.join();
+	windowThread.join();
 	
 	return 0;
 }
