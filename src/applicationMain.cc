@@ -1,3 +1,4 @@
+#include <iostream>
 #include <thread>
 
 #include "system/mutex.hh"
@@ -7,6 +8,7 @@
 #include "framework/gamecontroller.hh"
 #include "framework/igraphicsthreadcontroller.hh"
 #include "framework/windowcontroller.hh"
+#include "framework/ticker.hh"
 
 using System::Utility;
 using System::KeyCode;
@@ -14,16 +16,31 @@ using Framework::ApplicationContext;
 using Framework::ControllerStack;
 using Framework::GameController;
 using Framework::IGraphicsThreadController;
+using Framework::ISleepService;
+using Framework::ISystemTimer;
+using Framework::Ticker;
 using Framework::WindowController;
 
 extern IGraphicsThreadController *GetGraphicsThreadController();
 extern GameController *GetBaseController();
 
-unsigned int GetSleepLength(unsigned int newTicks, unsigned int originalTicks, unsigned int length)
+class SleepService : public ISleepService
 {
-	unsigned int difference = newTicks - originalTicks;
-	return difference > length ? 0 : length - difference;
-}
+public:
+	virtual void Sleep(unsigned int milliseconds)
+	{
+		Utility::Sleep(milliseconds);
+	}
+};
+
+class SystemTimer : public ISystemTimer
+{
+public:
+	virtual unsigned int GetTicks()
+	{
+		return Utility::GetTicks();
+	}
+};
 
 int applicationMain()
 {
@@ -36,26 +53,29 @@ int applicationMain()
 	};
 
 	auto controllerThreadEntry = [&applicationContext, &windowController] () {
+		SystemTimer systemTimer;
+		SleepService sleepService;
+		Ticker ticker = Ticker(&systemTimer, &sleepService);
+		
+		unsigned int ticks = Utility::GetTicks();
+		unsigned int newTicks;
+	
 		ControllerStack controllerStack(&windowController);
 		GameController *controller = GetBaseController();
 		
 		controllerStack.Push(controller);
 		
-		unsigned int ticks = Utility::GetTicks();
-		unsigned int newTicks;
-		unsigned int sleepLength;
-
+		ticker.Start();
+		
 		while (!applicationContext.IsClosing())
 		{
 			controller = (GameController *)controllerStack.Top();
 			controller->OnTick();
 
 			newTicks = Utility::GetTicks();
-			sleepLength = GetSleepLength(newTicks, ticks, 500);
-			ticks = newTicks;
-
-			if (sleepLength > 0)
-				Utility::Sleep(sleepLength);
+			ticker.Wait(700);
+			std::cout << "tick (" << ticks << " -> " << newTicks << ")" << std::endl;
+			ticks = newTicks;			
 		}
 		
 		controllerStack.Clear();
