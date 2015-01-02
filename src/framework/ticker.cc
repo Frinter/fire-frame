@@ -15,17 +15,17 @@ void Framework::Ticker::Start()
 
 void Framework::Ticker::Wait(unsigned int milliseconds)
 {
-	unsigned int newTicks = m_systemTimer->GetTicks();
-	unsigned int difference = newTicks - m_ticks;
+	unsigned int currentTicks = m_systemTimer->GetTicks();
+	unsigned int targetTicks = m_ticks + milliseconds;
 	
-	if (difference <= milliseconds)
+	if (targetTicks > currentTicks)
 	{
-		unsigned int sleepTime = milliseconds - difference;
+		unsigned int sleepTime = targetTicks - currentTicks;
 		m_sleepService->Sleep(sleepTime);
-		m_ticks += sleepTime;
+		m_ticks = targetTicks;
 	}
 	else
 	{
-		m_ticks += milliseconds;
+		m_ticks = targetTicks;
 	}
 }
