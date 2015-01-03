@@ -3,20 +3,17 @@
 #define GLEW_STATIC 1
 #include <GL/glew.h>
 
-#include "framework/controllerstack.hh"
-#include "framework/gamecontroller.hh"
 #include "framework/igraphicsthreadcontroller.hh"
 #include "framework/ilogicthreadcontroller.hh"
 #include "framework/readingkeyboardstate.hh"
-#include "framework/ticker.hh"
 #include "system/keycode.hh"
 #include "system/utility.hh"
 
-using Framework::ControllerStack;
+#include "controllerstack.hh"
+#include "gamecontroller.hh"
+#include "ticker.hh"
+
 using Framework::ReadingKeyboardState;
-using Framework::ISystemTimer;
-using Framework::ISleepService;
-using Framework::Ticker;
 using System::KeyCode;
 using System::Utility;
 
@@ -52,7 +49,7 @@ public:
 	}
 };
 
-class OtherTestController : public Framework::GameController {
+class OtherTestController : public GameController {
 public:	
 	virtual void OnStackAdd()
 	{
@@ -75,7 +72,7 @@ public:
 	}
 };
 
-class TestController : public Framework::GameController {
+class TestController : public GameController {
 public:
 	TestController()
 		: m_otherController(NULL)
@@ -142,20 +139,20 @@ private:
 	OtherTestController *m_otherController;
 };
 
-class ControllerThreadController : public Framework::ILogicThreadController
+class LogicThreadController : public Framework::ILogicThreadController
 {
 public:
 	virtual void Run(Framework::ApplicationContext *applicationContext, Framework::WindowController *windowController)
 	{
 		SystemTimer systemTimer;
 		SleepService sleepService;
-		Framework::Ticker ticker = Framework::Ticker(&systemTimer, &sleepService);
+		Ticker ticker = Ticker(&systemTimer, &sleepService);
 		
 		unsigned int ticks = Utility::GetTicks();
 		unsigned int newTicks;
 	
-		Framework::ControllerStack controllerStack(windowController);
-		Framework::GameController *controller = new TestController();
+		ControllerStack controllerStack(windowController);
+		GameController *controller = new TestController();
 		
 		controllerStack.Push(controller);
 		
@@ -163,7 +160,7 @@ public:
 		
 		while (!applicationContext->IsClosing())
 		{
-			controller = (Framework::GameController *)controllerStack.Top();
+			controller = (GameController *)controllerStack.Top();
 			controller->OnTick();
 
 			newTicks = Utility::GetTicks();
@@ -185,5 +182,5 @@ Framework::IGraphicsThreadController *GetGraphicsThreadController()
 Framework::ILogicThreadController *GetLogicThreadController()
 {
 	// memory leak
-	return new ControllerThreadController();
+	return new LogicThreadController();
 }

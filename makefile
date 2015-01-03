@@ -23,7 +23,7 @@ OBJ_DIR := build
 OBJ_PLATFORM_DIR := $(OBJ_DIR)/$(PLATFORM)
 BIN_DIR := bin
 SUB_DIRS := $(shell find src -type d -print)
-BUILD_DIRS := $(patsubst src/%,build/%,$(SUB_DIRS))
+BUILD_DIRS := $(patsubst src/%,build/%,$(SUB_DIRS)) build/demo
 INCLUDE_DIRS := -Iinclude
 SRC := $(wildcard src/*.cc) $(wildcard src/framework/*.cc) $(PLATFORM_SRC)
 OBJECTS := $(SRC:src/%.cc=$(OBJ_DIR)/%.o) $(PLATFORM_OBJECTS)
@@ -36,15 +36,15 @@ ARCHIVE_TARGET := $(BIN_DIR)/libfireframe.a
 
 TEST_SRC := $(wildcard test/*.cc)
 TEST_OBJECTS := $(patsubst test/%.cc,build/%.o,$(TEST_SRC))
-TESTABLES_OBJECTS := $(OBJ_DIR)/framework/ticker.o
-TEST_INCLUDE :=
+TESTABLES_OBJECTS := $(OBJ_DIR)/demo/ticker.o
+TEST_INCLUDE := -Idemo
 TEST_CFLAGS := $(TEST_INCLUDE)
 TEST_LIBS :=
 TEST_TARGET := $(BIN_DIR)/test
 TEST_LINK_FLAGS := -static-libgcc -static-libstdc++
 
 DEMO_SRC := $(wildcard demo/*.cc)
-DEMO_OBJECTS := $(patsubst demo/%.cc,build/%.o,$(DEMO_SRC))
+DEMO_OBJECTS := $(patsubst demo/%.cc,build/demo/%.o,$(DEMO_SRC))
 DEMO_TARGET := $(BIN_DIR)/demo
 
 .DEFAULT_GOAL = release
@@ -67,7 +67,7 @@ $(OBJ_DIR)/%.o: test/%.cc $(OBJ_DIR)/%.d
 	@echo '(Test) Building $@'
 	@$(CXX) -c -o $@ $(CFLAGS) $(TEST_CFLAGS) $<
 
-$(OBJ_DIR)/%.o: demo/%.cc $(OBJ_DIR)/%.d
+$(OBJ_DIR)/demo/%.o: demo/%.cc $(OBJ_DIR)/demo/%.d
 	@echo '(Demo) Building $@'
 	@$(CXX) -c -o $@ $(CFLAGS) $(TEST_CFLAGS) $<
 
@@ -79,7 +79,7 @@ $(OBJ_DIR)/%.d: test/%.cc
 	@echo '(Test) Building dependencies for $< -> $@'
 	@$(CXX) $(CFLAGS) $(TEST_CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
 
-$(OBJ_DIR)/%.d: demo/%.cc
+$(OBJ_DIR)/demo/%.d: demo/%.cc
 	@echo '(Demo) Building dependencies for $< -> $@'
 	@$(CXX) $(CFLAGS) $(TEST_CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
 

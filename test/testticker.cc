@@ -1,9 +1,9 @@
-#include "framework/ticker.hh"
+#include "ticker.hh"
 #include "tests.hh"
 
 FIXTURE("Ticker")
 {
-	class MockTimer : public Framework::ISystemTimer
+	class MockTimer : public ISystemTimer
 	{
 	public:
 		MockTimer()
@@ -22,7 +22,7 @@ FIXTURE("Ticker")
 		bool wasCalled;
 	};
 
-	class MockSleeper : public Framework::ISleepService
+	class MockSleeper : public ISleepService
 	{
 	public:
 		MockSleeper()
@@ -44,7 +44,7 @@ FIXTURE("Ticker")
 	{
 		MockTimer timer = MockTimer();
 		MockSleeper sleeper = MockSleeper();
-		Framework::Ticker ticker = Framework::Ticker(&timer, &sleeper);
+		Ticker ticker = Ticker(&timer, &sleeper);
 
 		assert(timer.wasCalled == false);
 		ticker.Start();
@@ -55,7 +55,7 @@ FIXTURE("Ticker")
 	{
 		MockTimer timer = MockTimer();
 		MockSleeper sleeper = MockSleeper();
-		Framework::Ticker ticker = Framework::Ticker(&timer, &sleeper);
+		Ticker ticker = Ticker(&timer, &sleeper);
 		
 		timer.ticks = 1;
 		ticker.Start();
@@ -68,7 +68,7 @@ FIXTURE("Ticker")
 	{
 		MockTimer timer = MockTimer();
 		MockSleeper sleeper = MockSleeper();
-		Framework::Ticker ticker = Framework::Ticker(&timer, &sleeper);
+		Ticker ticker = Ticker(&timer, &sleeper);
 
 		timer.ticks = 1;
 		ticker.Start();
@@ -81,7 +81,7 @@ FIXTURE("Ticker")
 	{
 		MockTimer timer = MockTimer();
 		MockSleeper sleeper = MockSleeper();
-		Framework::Ticker ticker = Framework::Ticker(&timer, &sleeper);
+		Ticker ticker = Ticker(&timer, &sleeper);
 
 		timer.ticks = 1;
 		ticker.Start();

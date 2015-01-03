@@ -1,13 +1,13 @@
 #include <cstddef>
 
-#include "framework/controllerstack.hh"
+#include "controllerstack.hh"
 
-Framework::ControllerStack::ControllerStack(WindowController *windowController)
+ControllerStack::ControllerStack(Framework::WindowController *windowController)
 	: m_windowController(windowController)
 {
 }
 
-void Framework::ControllerStack::Push(GameController *controller)
+void ControllerStack::Push(GameController *controller)
 {
 	if (EventHandlerStack::Size() != 0)
 	{
@@ -22,7 +22,7 @@ void Framework::ControllerStack::Push(GameController *controller)
 	EventHandlerStack::Push(controller);
 }
 
-void Framework::ControllerStack::Pop()
+void ControllerStack::Pop()
 {
 	if (EventHandlerStack::Size() != 0)
 	{
@@ -40,7 +40,7 @@ void Framework::ControllerStack::Pop()
 	}
 }
 
-void Framework::ControllerStack::Clear()
+void ControllerStack::Clear()
 {
 	if (EventHandlerStack::Size() > 0)
 		Pop();

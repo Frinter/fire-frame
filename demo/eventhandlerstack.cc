@@ -1,6 +1,6 @@
-#include "framework/eventhandlerstack.hh"
+#include "eventhandlerstack.hh"
 
-void Framework::EventHandlerStack::Push(IStackEventHandler *handler)
+void EventHandlerStack::Push(IStackEventHandler *handler)
 {
 	if (m_handlers.size() != 0)
 	{
@@ -15,7 +15,7 @@ void Framework::EventHandlerStack::Push(IStackEventHandler *handler)
 	handler->OnStackFocus();
 }
 
-void Framework::EventHandlerStack::Pop()
+void EventHandlerStack::Pop()
 {
 	if (m_handlers.size() != 0)
 	{
@@ -35,12 +35,12 @@ void Framework::EventHandlerStack::Pop()
 	}
 }
 
-Framework::IStackEventHandler *Framework::EventHandlerStack::Top()
+IStackEventHandler *EventHandlerStack::Top()
 {
 	return m_handlers.top();
 }
 
-int Framework::EventHandlerStack::Size()
+int EventHandlerStack::Size()
 {
 	return m_handlers.size();
 }
