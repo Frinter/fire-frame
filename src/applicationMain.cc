@@ -1,22 +1,26 @@
 #include <iostream>
 #include <thread>
 
+#include "framework/applicationstate.hh"
 #include "framework/applicationcontext.hh"
 #include "framework/igraphicsthreadcontroller.hh"
 #include "framework/ilogicthreadcontroller.hh"
 #include "framework/windowcontroller.hh"
 
+using Framework::ApplicationState;
 using Framework::ApplicationContext;
 using Framework::IGraphicsThreadController;
 using Framework::ILogicThreadController;
 using Framework::WindowController;
 
+extern ApplicationState *GetApplicationState();
 extern IGraphicsThreadController *GetGraphicsThreadController();
 extern ILogicThreadController *GetLogicThreadController();
 
 int applicationMain()
 {
-	ApplicationContext applicationContext;
+	ApplicationState *applicationState = GetApplicationState();
+	ApplicationContext applicationContext(applicationState);
 	WindowController windowController(&applicationContext);
 		
 	auto windowThreadEntry = [&applicationContext, &windowController] () {

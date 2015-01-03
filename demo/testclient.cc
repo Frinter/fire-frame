@@ -1,8 +1,11 @@
 #include <iostream>
 
-#define GLEW_STATIC 1
-#include <GL/glew.h>
+#if PLATFORM == windows
+  #define GLEW_STATIC 1
+  #include <GL/glew.h>
+#endif
 
+#include "framework/applicationstate.hh"
 #include "framework/igraphicsthreadcontroller.hh"
 #include "framework/ilogicthreadcontroller.hh"
 #include "framework/readingkeyboardstate.hh"
@@ -32,20 +35,6 @@ public:
 	virtual unsigned int GetTicks()
 	{
 		return Utility::GetTicks();
-	}
-};
-
-class GraphicsThreadController : public Framework::IGraphicsThreadController
-{
-public:
-	virtual void Run(Framework::ApplicationContext *applicationContext)
-	{
-		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-		GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-		
-		while (!applicationContext->IsClosing())
-		{
-		}
 	}
 };
 
@@ -165,13 +154,49 @@ public:
 
 			newTicks = Utility::GetTicks();
 			ticker.Wait(500);
-			std::cout << "tick (" << ticks << " -> " << newTicks << ")" << std::endl;
+			std::cout << "Logic Thread (" << ticks << " -> " << newTicks << ")" << std::endl;
 			ticks = newTicks;			
 		}
 		
 		controllerStack.Clear();
 	}
 };
+
+class GraphicsThreadController : public Framework::IGraphicsThreadController
+{
+public:
+	virtual void Run(Framework::ApplicationContext *applicationContext)
+	{
+		SystemTimer systemTimer;
+		SleepService sleepService;
+		Ticker ticker = Ticker(&systemTimer, &sleepService);
+
+		unsigned int ticks = Utility::GetTicks();
+		unsigned int newTicks;
+
+		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+		GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+		
+		ticker.Start();
+
+		while (!applicationContext->IsClosing())
+		{
+			newTicks = Utility::GetTicks();
+			ticker.Wait(100);
+			std::cout << "Graphics Thread (" << ticks << " -> " << newTicks << ")" << std::endl;
+			ticks = newTicks;			
+		}
+	}
+};
+
+Framework::ApplicationState applicationState = {
+	.windowName = "Fire Frame Demo"
+};
+
+Framework::ApplicationState *GetApplicationState()
+{
+	return &applicationState;
+}
 
 Framework::IGraphicsThreadController *GetGraphicsThreadController()
 {
