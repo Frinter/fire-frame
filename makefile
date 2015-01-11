@@ -28,7 +28,7 @@ INCLUDE_DIRS := -Iinclude
 SRC := $(wildcard src/*.cc) $(wildcard src/framework/*.cc) $(PLATFORM_SRC)
 OBJECTS := $(SRC:src/%.cc=$(OBJ_DIR)/%.o) $(PLATFORM_OBJECTS)
 LIBS := $(PLATFORM_LIBS) $(PLATFORM_POST_LIBS)
-CFLAGS := $(INCLUDE_DIRS) -std=c++11 -g -DPLATFORM=$(PLATFORM)
+CFLAGS := $(INCLUDE_DIRS) -std=c++11 -g -m64 -DPLATFORM=$(PLATFORM)
 LINK_FLAGS := -static-libgcc -static-libstdc++ -Llib $(PLATFORM_LINKFLAGS)
 
 PLATFORM_LAYER_SRC := $(SRC)
