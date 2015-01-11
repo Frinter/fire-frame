@@ -30,21 +30,24 @@ OBJECTS := $(SRC:src/%.cc=$(OBJ_DIR)/%.o) $(PLATFORM_OBJECTS)
 LIBS := $(PLATFORM_LIBS) $(PLATFORM_POST_LIBS)
 CFLAGS := $(INCLUDE_DIRS) -std=c++11 -g -DPLATFORM=$(PLATFORM)
 LINK_FLAGS := -static-libgcc -static-libstdc++ -Llib $(PLATFORM_LINKFLAGS)
-ARCHIVE_SRC := $(SRC)
-ARCHIVE_OBJECTS := $(patsubst src/%.cc,build/%.o,$(ARCHIVE_SRC))
-ARCHIVE_TARGET := $(BIN_DIR)/libfireframe.a
+
+PLATFORM_LAYER_SRC := $(SRC)
+PLATFORM_LAYER_OBJECTS := $(patsubst src/%.cc,build/%.o,$(PLATFORM_LAYER_SRC))
+PLATFORM_LAYER_LIBS := $(LINK_FLAGS) $(PLATFORM_LIBS) $(PLATFORM_POST_LIBS) -lglew32 -lopengl32 -lwinmm
+PLATFORM_LAYER_TARGET := $(BIN_DIR)/platform.a
 
 TEST_SRC := $(wildcard test/*.cc)
 TEST_OBJECTS := $(patsubst test/%.cc,build/%.o,$(TEST_SRC))
 TESTABLES_OBJECTS := $(OBJ_DIR)/demo/ticker.o
 TEST_INCLUDE := -Idemo
 TEST_CFLAGS := $(TEST_INCLUDE)
-TEST_LIBS :=
+TEST_LIBS := 
 TEST_TARGET := $(BIN_DIR)/test
 TEST_LINK_FLAGS := -static-libgcc -static-libstdc++
 
 DEMO_SRC := $(wildcard demo/*.cc)
 DEMO_OBJECTS := $(patsubst demo/%.cc,build/demo/%.o,$(DEMO_SRC))
+DEMO_LIBS := $(PLATFORM_POST_LIBS)
 DEMO_TARGET := $(BIN_DIR)/demo
 
 .DEFAULT_GOAL = release
@@ -54,7 +57,7 @@ DEMO_TARGET := $(BIN_DIR)/demo
 clean:
 	rm -R build
 
-$(TEST_TARGET) $(ARCHIVE_TARGET): | $(BIN_DIR)
+$(TEST_TARGET) $(PLATFORM_LAYER_TARGET): | $(BIN_DIR)
 $(OBJECTS) $(TEST_OBJECTS) $(DEMO_OBJECTS): | $(OBJ_DIR) $(BUILD_DIRS)
 $(BUILD_DIRS) $(OBJ_DIR) $(BIN_DIR):
 	mkdir -p $@
@@ -83,18 +86,18 @@ $(OBJ_DIR)/demo/%.d: demo/%.cc
 	@echo '(Demo) Building dependencies for $< -> $@'
 	@$(CXX) $(CFLAGS) $(TEST_CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
 
-release: $(ARCHIVE_TARGET)
+release: $(PLATFORM_LAYER_TARGET)
 demo: $(DEMO_TARGET)
 test: $(TEST_TARGET)
 	@$(TEST_TARGET)
 
-$(ARCHIVE_TARGET): $(ARCHIVE_OBJECTS)
+$(PLATFORM_LAYER_TARGET): $(PLATFORM_LAYER_OBJECTS)
 	@echo Linking: $@
 	@ar cr $@ $^
 
-$(DEMO_TARGET): $(DEMO_OBJECTS) $(ARCHIVE_TARGET)
+$(DEMO_TARGET): $(DEMO_OBJECTS) $(PLATFORM_LAYER_TARGET)
 	@echo '(Demo) Linking: $@'
-	@$(CXX) -g $(LINK_FLAGS) -o $@ $^ $(LIBS)
+	$(CXX) $(LINK_FLAGS) -o $@ $^ $(DEMO_LIBS)
 
 $(TEST_TARGET): $(TEST_OBJECTS) $(TESTABLES_OBJECTS)
 	@echo '(Test) Linking: $@'

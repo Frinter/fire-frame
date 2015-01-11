@@ -2,7 +2,7 @@
 
 #include <stack>
 
-#include "framework/windowcontroller.hh"
+#include "framework/iwindowcontroller.hh"
 
 #include "icontrollerstack.hh"
 #include "eventhandlerstack.hh"
@@ -11,13 +11,13 @@
 class ControllerStack : public IControllerStack, public EventHandlerStack
 {
 public:
-	ControllerStack(Framework::WindowController *windowController);
+	ControllerStack(Framework::IWindowController *windowController);
 
 	virtual void Push(GameController *controller);
 	virtual void Pop();
 	virtual void Clear();
 
 private:
-	Framework::WindowController *m_windowController;
+	Framework::IWindowController *m_windowController;
 	std::stack<GameController *> m_controllers;
 };

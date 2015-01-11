@@ -41,3 +41,8 @@ ApplicationState *ApplicationContext::GetState() const
 {
 	return m_applicationState;
 }
+
+System::Utility *ApplicationContext::GetSystemUtility() const
+{
+	return System::Utility::GetInstance();
+}

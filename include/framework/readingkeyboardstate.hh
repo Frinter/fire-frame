@@ -1,5 +1,6 @@
 #pragma once
 
+#include "framework/keystate.hh"
 #include "system/keycode.hh"
 
 namespace Framework {

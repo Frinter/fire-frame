@@ -49,7 +49,7 @@ namespace Framework
 		void CreateWindow();
 		void CreateContext();
 
-		ReadingKeyboardState *GetKeyStateReader();
+		virtual ReadingKeyboardState *GetKeyStateReader();
 
 		virtual void OnWindowReady();
 		virtual void OnWindowClose();

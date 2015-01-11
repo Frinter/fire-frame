@@ -4,12 +4,26 @@
 
 using namespace System;
 
-void Utility::Sleep(int milliseconds)
+class WindowsUtility : public Utility
 {
-	::Sleep(milliseconds);
-}
+public:
+	virtual void Sleep(int milliseconds)
+	{
+		::Sleep(milliseconds);
+	}
+	
+	virtual int GetTicks()
+	{
+		return timeGetTime();
+	}
+};
 
-int Utility::GetTicks()
+Utility *Utility::GetInstance()
 {
-	return timeGetTime();
+	static Utility *instance = NULL;
+	
+	if (instance == NULL)
+		instance = new WindowsUtility();
+	
+	return instance;
 }

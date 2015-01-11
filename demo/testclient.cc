@@ -5,10 +5,7 @@
   #include <GL/glew.h>
 #endif
 
-#include "framework/applicationstate.hh"
-#include "framework/igraphicsthreadcontroller.hh"
-#include "framework/ilogicthreadcontroller.hh"
-#include "framework/readingkeyboardstate.hh"
+#include "framework/platform.hh"
 #include "system/keycode.hh"
 #include "system/utility.hh"
 
@@ -23,19 +20,35 @@ using System::Utility;
 class SleepService : public ISleepService
 {
 public:
+	SleepService(System::Utility *utility)
+		: m_utility(utility)
+	{
+	}
+	
 	virtual void Sleep(unsigned int milliseconds)
 	{
-		Utility::Sleep(milliseconds);
+		m_utility->Sleep(milliseconds);
 	}
+	
+private:
+	System::Utility *m_utility;
 };
 
 class SystemTimer : public ISystemTimer
 {
 public:
+	SystemTimer(System::Utility *utility)
+		: m_utility(utility)
+	{
+	}
+
 	virtual unsigned int GetTicks()
 	{
-		return Utility::GetTicks();
+		return m_utility->GetTicks();
 	}
+
+private:
+	System::Utility *m_utility;
 };
 
 class OtherTestController : public GameController {
@@ -128,84 +141,73 @@ private:
 	OtherTestController *m_otherController;
 };
 
-class LogicThreadController : public Framework::ILogicThreadController
-{
-public:
-	virtual void Run(Framework::ApplicationContext *applicationContext, Framework::WindowController *windowController)
-	{
-		SystemTimer systemTimer;
-		SleepService sleepService;
-		Ticker ticker = Ticker(&systemTimer, &sleepService);
-		
-		unsigned int ticks = Utility::GetTicks();
-		unsigned int newTicks;
-	
-		ControllerStack controllerStack(windowController);
-		GameController *controller = new TestController();
-		
-		controllerStack.Push(controller);
-		
-		ticker.Start();
-		
-		while (!applicationContext->IsClosing())
-		{
-			controller = (GameController *)controllerStack.Top();
-			controller->OnTick();
-
-			newTicks = Utility::GetTicks();
-			ticker.Wait(500);
-			std::cout << "Logic Thread (" << ticks << " -> " << newTicks << ")" << std::endl;
-			ticks = newTicks;			
-		}
-		
-		controllerStack.Clear();
-	}
-};
-
-class GraphicsThreadController : public Framework::IGraphicsThreadController
-{
-public:
-	virtual void Run(Framework::ApplicationContext *applicationContext)
-	{
-		SystemTimer systemTimer;
-		SleepService sleepService;
-		Ticker ticker = Ticker(&systemTimer, &sleepService);
-
-		unsigned int ticks = Utility::GetTicks();
-		unsigned int newTicks;
-
-		GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-		GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-		
-		ticker.Start();
-
-		while (!applicationContext->IsClosing())
-		{
-			newTicks = Utility::GetTicks();
-			ticker.Wait(100);
-			std::cout << "Graphics Thread (" << ticks << " -> " << newTicks << ")" << std::endl;
-			ticks = newTicks;			
-		}
-	}
-};
-
-Framework::ApplicationState applicationState = {
+static Framework::ApplicationState applicationState = {
 	.windowName = "Fire Frame Demo"
 };
 
-Framework::ApplicationState *GetApplicationState()
+GetApplicationState_FunctionSignature(GetApplicationState)
 {
 	return &applicationState;
 }
 
-Framework::IGraphicsThreadController *GetGraphicsThreadController()
+GraphicsThreadEntry_FunctionSignature(GraphicsThreadEntry)
 {
-	// memory leak
-	return new GraphicsThreadController();
+	std::cout << "GraphicsThreadEntry: " << std::endl;
+
+	windowController->CreateContext();
+
+	const GLubyte *renderer = glGetString(GL_RENDERER);
+	const GLubyte *vendor = glGetString(GL_VENDOR);
+	const GLubyte *version = glGetString(GL_VERSION);
+	const GLubyte *glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
+	
+	std::cout << "- renderer: " << renderer << std::endl;
+	std::cout << "- vendor: " << vendor << std::endl;
+	std::cout << "- version: " << version << std::endl;
+	std::cout << "- GLSL version: " << version << std::endl;
+
+	//GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	//GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+
+	unsigned int framerateTicks = 1000 / 60;
+
+	SystemTimer systemTimer(applicationContext->GetSystemUtility());
+	SleepService sleepService(applicationContext->GetSystemUtility());
+	Ticker ticker = Ticker(&systemTimer, &sleepService);
+	ticker.Start();
+
+	while (!applicationContext->IsClosing())
+	{
+		ticker.Wait(framerateTicks);
+	}
 }
 
-Framework::ILogicThreadController *GetLogicThreadController()
+LogicThreadEntry_FunctionSignature(LogicThreadEntry)
 {
-	// memory leak
-	return new LogicThreadController();
+	SystemTimer systemTimer(applicationContext->GetSystemUtility());
+	SleepService sleepService(applicationContext->GetSystemUtility());
+	Ticker ticker = Ticker(&systemTimer, &sleepService);
+
+	unsigned int ticks = systemTimer.GetTicks();
+	unsigned int newTicks;
+
+	ControllerStack controllerStack(windowController);
+	GameController *controller = new TestController();
+
+	controllerStack.Push(controller);
+
+	ticker.Start();
+
+	while (!applicationContext->IsClosing())
+	{
+		controller = (GameController *)controllerStack.Top();
+		controller->OnTick();
+
+		newTicks = systemTimer.GetTicks();
+		ticker.Wait(500);
+		std::cout << "Logic Thread (" << ticks << " -> " << newTicks << ")" << std::endl;
+		ticks = newTicks;			
+	}
+
+	controllerStack.Clear();
 }

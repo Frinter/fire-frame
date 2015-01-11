@@ -2,7 +2,7 @@
 
 #include "controllerstack.hh"
 
-ControllerStack::ControllerStack(Framework::WindowController *windowController)
+ControllerStack::ControllerStack(Framework::IWindowController *windowController)
 	: m_windowController(windowController)
 {
 }
