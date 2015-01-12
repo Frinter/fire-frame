@@ -34,7 +34,7 @@ LINK_FLAGS := -static-libgcc -static-libstdc++ -Llib $(PLATFORM_LINKFLAGS)
 PLATFORM_LAYER_SRC := $(SRC)
 PLATFORM_LAYER_OBJECTS := $(patsubst src/%.cc,build/%.o,$(PLATFORM_LAYER_SRC))
 PLATFORM_LAYER_LIBS := $(LINK_FLAGS) $(PLATFORM_LIBS) $(PLATFORM_POST_LIBS) -lglew32 -lopengl32 -lwinmm
-PLATFORM_LAYER_TARGET := $(BIN_DIR)/platform.a
+PLATFORM_LAYER_TARGET := $(BIN_DIR)/platform.$(PLATFORM).64.a
 
 TEST_SRC := $(wildcard test/*.cc)
 TEST_OBJECTS := $(patsubst test/%.cc,build/%.o,$(TEST_SRC))
