@@ -175,10 +175,6 @@ void WindowsWindow::KeyUp(WPARAM key)
 }
 
 LRESULT CALLBACK WindowsWindow::WndProc(HWND windowHandle, UINT message, WPARAM wparam, LPARAM lparam) {
-	PAINTSTRUCT ps;
-	HDC hdc;
-	HMENU fileMenuHandle, mainMenuHandle;
-			
 	switch(message)
 	{
 	case WM_KEYDOWN:
