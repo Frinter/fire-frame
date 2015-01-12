@@ -9,9 +9,11 @@ static char appName[] = "Test Application";
 
 using System::KeyCode;
 
-class KeyMap : public std::unordered_map<WPARAM, System::KeyCode> {
+class KeyMap : public std::unordered_map<WPARAM, System::KeyCode>
+{
 public:
-	KeyMap() : std::unordered_map<WPARAM, System::KeyCode>() {
+	KeyMap() : std::unordered_map<WPARAM, System::KeyCode>()
+	{
 		(*this)[VK_PRIOR]   = KeyCode::KeyPageUp;
 		(*this)[VK_NEXT]    = KeyCode::KeyPageDown;
 		(*this)[VK_END]     = KeyCode::KeyEnd;
@@ -127,11 +129,13 @@ WindowsWindow::WindowsWindow(Framework::ApplicationContext *applicationContext, 
 	UpdateWindow(m_windowHandle);
 }
 
-WindowsWindow::~WindowsWindow() {
+WindowsWindow::~WindowsWindow()
+{
 	windowMap[m_windowHandle] = NULL;
 }
 
-int WindowsWindow::DoMessageLoop() {
+int WindowsWindow::DoMessageLoop()
+{
 	MSG message;
 
 	Ready();
@@ -174,7 +178,8 @@ void WindowsWindow::KeyUp(WPARAM key)
 	m_controller->OnKeyUp(keyMap[key]);
 }
 
-LRESULT CALLBACK WindowsWindow::WndProc(HWND windowHandle, UINT message, WPARAM wparam, LPARAM lparam) {
+LRESULT CALLBACK WindowsWindow::WndProc(HWND windowHandle, UINT message, WPARAM wparam, LPARAM lparam)
+{
 	switch(message)
 	{
 	case WM_KEYDOWN:
