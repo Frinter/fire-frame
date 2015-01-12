@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include <stdexcept>
 #include <unordered_map>
 
@@ -183,22 +181,12 @@ LRESULT CALLBACK WindowsWindow::WndProc(HWND windowHandle, UINT message, WPARAM 
 			
 	switch(message)
 	{
-	case WM_ACTIVATEAPP:
-		std::cout << "WndProc handling WM_ACTIVATEAPP: " << wparam << " : " << lparam << std::endl;
-		break;
-		
 	case WM_KEYDOWN:
 		windowMap[windowHandle]->KeyDown(wparam);
 		return 0;
 
 	case WM_KEYUP:
 		windowMap[windowHandle]->KeyUp(wparam);
-		return 0;
-
-	case WM_PAINT:
-		hdc = BeginPaint(windowHandle, &ps);
-		TextOut(hdc, 100, 100, "Hello world", 11);
-		EndPaint(windowHandle, &ps);
 		return 0;
 
 	case WM_CLOSE:
