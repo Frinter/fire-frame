@@ -15,6 +15,8 @@ namespace Framework
 		virtual void OnKeyUp(System::KeyCode key) { };
 		virtual void OnKeyDown(System::KeyCode key) { };
 		
+		virtual void SwapBuffers() = 0;
+
 		ISystemWindowController(const ISystemWindowController &o) = delete;
 	};
 	

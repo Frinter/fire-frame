@@ -33,6 +33,11 @@ void WindowController::CreateContext()
 	m_openGLContext = OpenGLContext::Create(m_window);
 }
 
+void WindowController::SwapBuffers()
+{
+	m_openGLContext->SwapBuffers();
+}
+
 ReadingKeyboardState *WindowController::GetKeyStateReader()
 {
 	return &m_keyboardState;

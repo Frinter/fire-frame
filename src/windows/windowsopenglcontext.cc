@@ -17,12 +17,12 @@ WindowsOpenGLContext::WindowsOpenGLContext(WindowsWindow *window) {
 	pfd.cDepthBits = 32;
 	pfd.iLayerType = PFD_MAIN_PLANE;
 
-	HDC deviceContext = GetDC(window->m_windowHandle);
-	int pixelFormatIndex = ChoosePixelFormat(deviceContext, &pfd);
-	SetPixelFormat(deviceContext, pixelFormatIndex, &pfd);
+	m_deviceContext = GetDC(window->m_windowHandle);
+	int pixelFormatIndex = ChoosePixelFormat(m_deviceContext, &pfd);
+	SetPixelFormat(m_deviceContext, pixelFormatIndex, &pfd);
 
-	HGLRC tempContext = wglCreateContext(deviceContext);
-	wglMakeCurrent(deviceContext, tempContext);
+	HGLRC tempContext = wglCreateContext(m_deviceContext);
+	wglMakeCurrent(m_deviceContext, tempContext);
 
 	glewExperimental = GL_TRUE;
 	GLenum err = glewInit();
@@ -39,12 +39,18 @@ WindowsOpenGLContext::WindowsOpenGLContext(WindowsWindow *window) {
 		0
 	};
 
-	m_openGLContext = wglCreateContextAttribsARB(deviceContext, 0, attributes);
+	m_openGLContext = wglCreateContextAttribsARB(m_deviceContext, 0, attributes);
 	wglMakeCurrent(NULL, NULL);
 	wglDeleteContext(tempContext);
-	wglMakeCurrent(deviceContext, m_openGLContext);
+	wglMakeCurrent(m_deviceContext, m_openGLContext);
 }
 
-WindowsOpenGLContext::~WindowsOpenGLContext() {
+WindowsOpenGLContext::~WindowsOpenGLContext()
+{
 	wglDeleteContext(m_openGLContext);
+}
+
+void WindowsOpenGLContext::SwapBuffers()
+{
+	::SwapBuffers(m_deviceContext);
 }

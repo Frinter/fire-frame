@@ -48,6 +48,8 @@ namespace Framework
 
 		void CreateWindow();
 		void CreateContext();
+		
+		void SwapBuffers();
 
 		virtual ReadingKeyboardState *GetKeyStateReader();
 
