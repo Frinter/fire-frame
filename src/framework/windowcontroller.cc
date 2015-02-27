@@ -56,11 +56,21 @@ void WindowController::OnWindowClose()
 void WindowController::OnKeyDown(KeyCode key)
 {
 	m_keyboardState.PressKey(key);
+
+	for (std::list<IWritingKeyboardState*>::iterator iter = m_keyboardEventHandlers.begin(); iter != m_keyboardEventHandlers.end(); iter++)
+	{
+		(*iter)->PressKey(key);
+	}
 }
 
 void WindowController::OnKeyUp(KeyCode key)
 {
 	m_keyboardState.UnpressKey(key);
+
+	for (std::list<IWritingKeyboardState*>::iterator iter = m_keyboardEventHandlers.begin(); iter != m_keyboardEventHandlers.end(); iter++)
+	{
+		(*iter)->UnpressKey(key);
+	}
 }
 
 WindowController::KeyboardState::KeyboardState()
@@ -96,4 +106,9 @@ void WindowController::KeyboardState::UnpressKey(KeyCode key)
 	m_mutex->Lock();
 	m_states[key] = Unpressed;
 	m_mutex->Unlock();
+}
+
+void WindowController::AddKeyboardEventHandler(IWritingKeyboardState *handler)
+{
+	m_keyboardEventHandlers.push_back(handler);
 }

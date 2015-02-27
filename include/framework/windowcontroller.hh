@@ -1,6 +1,7 @@
 #pragma once
 
 #include <map>
+#include <list>
 
 #include "framework/applicationcontext.hh"
 #include "framework/keystate.hh"
@@ -16,14 +17,7 @@ namespace Framework
 	class WindowController : public IWindowController
 	{
 	private:
-		class WritingKeyboardState
-		{
-		public:
-			virtual void PressKey(System::KeyCode key) = 0;
-			virtual void UnpressKey(System::KeyCode key) = 0;
-		};
-
-		class KeyboardState : public ReadingKeyboardState, public WritingKeyboardState
+		class KeyboardState : public ReadingKeyboardState, public IWritingKeyboardState
 		{
 		public:
 			KeyboardState();
@@ -49,8 +43,9 @@ namespace Framework
 		void CreateWindow();
 		void CreateContext();
 		
-		void SwapBuffers();
+		virtual void SwapBuffers();
 
+		virtual void AddKeyboardEventHandler(IWritingKeyboardState *handler);
 		virtual ReadingKeyboardState *GetKeyStateReader();
 
 		virtual void OnWindowReady();
@@ -63,6 +58,7 @@ namespace Framework
 		System::OpenGLContext *m_openGLContext;
 		ApplicationContext *m_applicationContext;
 		KeyboardState m_keyboardState;
+		std::list<IWritingKeyboardState*> m_keyboardEventHandlers;
 		
 		bool m_shouldDestroyWindow;
 	};
