@@ -17,6 +17,7 @@ namespace Framework
 		virtual void OnKeyDown(System::KeyCode key) { };
 		
 		virtual void AddKeyboardEventHandler(IWritingKeyboardState *handler) = 0;
+		virtual void RemoveKeyboardEventHandler(IWritingKeyboardState *handler) = 0;
 		virtual void SwapBuffers() = 0;
 
 		ISystemWindowController(const ISystemWindowController &o) = delete;

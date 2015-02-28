@@ -46,6 +46,7 @@ namespace Framework
 		virtual void SwapBuffers();
 
 		virtual void AddKeyboardEventHandler(IWritingKeyboardState *handler);
+		virtual void RemoveKeyboardEventHandler(IWritingKeyboardState *handler);
 		virtual ReadingKeyboardState *GetKeyStateReader();
 
 		virtual void OnWindowReady();

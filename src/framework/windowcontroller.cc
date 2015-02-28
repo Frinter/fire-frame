@@ -112,3 +112,8 @@ void WindowController::AddKeyboardEventHandler(IWritingKeyboardState *handler)
 {
 	m_keyboardEventHandlers.push_back(handler);
 }
+
+void WindowController::RemoveKeyboardEventHandler(IWritingKeyboardState *handler)
+{
+	m_keyboardEventHandlers.remove(handler);
+}
