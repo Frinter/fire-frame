@@ -121,7 +121,7 @@ WindowsWindow::WindowsWindow(Framework::ApplicationContext *applicationContext, 
 
 	RegisterClassEx(&windowClass);
 
-	m_windowHandle = CreateWindow(appName, m_applicationContext->GetState()->windowName, WS_OVERLAPPEDWINDOW, -1920, 0, 800, 600, NULL, NULL, processInstance, NULL);
+	m_windowHandle = CreateWindow(appName, m_applicationContext->GetState()->windowName, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, processInstance, NULL);
 
 	windowMap[m_windowHandle] = this;
 
