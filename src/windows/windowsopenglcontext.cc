@@ -1,12 +1,13 @@
+#include <iostream>
 #include <stdexcept>
 
-#define GLEW_STATIC 1
-#include <GL/glew.h>
-#include <GL/wglew.h>
-
+//#include "GL/wgl_mingw.h"
+#include "GL/gl_core_3_3.h"
 #include "windowsopenglcontext.hh"
 
 WindowsOpenGLContext::WindowsOpenGLContext(WindowsWindow *window) {
+	std::cout << "openGL context constructor" << std::endl;
+
 	PIXELFORMATDESCRIPTOR pfd;
 	memset(&pfd, 0, sizeof(PIXELFORMATDESCRIPTOR));
 	pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
@@ -24,25 +25,24 @@ WindowsOpenGLContext::WindowsOpenGLContext(WindowsWindow *window) {
 	HGLRC tempContext = wglCreateContext(m_deviceContext);
 	wglMakeCurrent(m_deviceContext, tempContext);
 
-	glewExperimental = GL_TRUE;
-	GLenum err = glewInit();
-	if (err != GLEW_OK)
-		throw new std::runtime_error("Failed to initialize GLEW");
+	if (ogl_LoadFunctions() == ogl_LOAD_FAILED)
+		throw new std::runtime_error("Failed to initialize OpenGL functions");
 
-	if (wglewIsSupported("WGL_ARB_create_context") != 1)
-		throw new std::runtime_error("WGL_ARB_create_context is not supported");
+	//if (wglewIsSupported("WGL_ARB_create_context") != 1)
+	//	throw new std::runtime_error("WGL_ARB_create_context is not supported");
 
-	int attributes[] = {
+	/*int attributes[] = {
 		WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
 		WGL_CONTEXT_MINOR_VERSION_ARB, 3,
 		WGL_CONTEXT_FLAGS_ARB, 0,
 		0
 	};
-
+*/
+	/*std::cout << "Creating windows openGL context" << std::endl;
 	m_openGLContext = wglCreateContextAttribsARB(m_deviceContext, 0, attributes);
 	wglMakeCurrent(NULL, NULL);
 	wglDeleteContext(tempContext);
-	wglMakeCurrent(m_deviceContext, m_openGLContext);
+	wglMakeCurrent(m_deviceContext, m_openGLContext);*/
 }
 
 WindowsOpenGLContext::~WindowsOpenGLContext()

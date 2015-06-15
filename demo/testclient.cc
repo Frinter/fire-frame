@@ -1,10 +1,6 @@
 #include <iostream>
 
-#if PLATFORM == windows
-  #define GLEW_STATIC 1
-  #include <GL/glew.h>
-#endif
-
+#include "GL/gl_core_3_3.h"
 #include "framework/platform.hh"
 #include "system/keycode.hh"
 #include "system/utility.hh"

@@ -40,7 +40,7 @@ namespace Framework
 
 		virtual ~WindowController();
 
-		void CreateWindow();
+		void CreateClientWindow();
 		void CreateContext();
 		
 		virtual void SwapBuffers();

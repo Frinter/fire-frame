@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "framework/keystate.hh"
 #include "framework/readingkeyboardstate.hh"
 #include "framework/windowcontroller.hh"
@@ -22,7 +24,7 @@ WindowController::~WindowController()
 		delete m_window;
 }
 
-void WindowController::CreateWindow()
+void WindowController::CreateClientWindow()
 {
 	m_window = Window::Create(m_applicationContext, this);
 	m_window->DoMessageLoop();
@@ -30,6 +32,7 @@ void WindowController::CreateWindow()
 
 void WindowController::CreateContext()
 {
+	std::cout << "window controller CreateContext" << std::endl;
 	m_openGLContext = OpenGLContext::Create(m_window);
 }
 
