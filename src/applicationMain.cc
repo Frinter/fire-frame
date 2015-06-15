@@ -1,4 +1,5 @@
-#include <thread>
+#include <iostream>
+//#include <thread>
 
 #include "framework/applicationstate.hh"
 #include "framework/applicationcontext.hh"
@@ -6,6 +7,7 @@
 #include "framework/ilogicthreadcontroller.hh"
 #include "framework/windowcontroller.hh"
 #include "framework/clientcode.hh"
+#include "system/thread.hh"
 
 using Framework::ApplicationState;
 using Framework::ApplicationContext;
@@ -14,6 +16,8 @@ using Framework::IGraphicsThreadController;
 using Framework::ILogicThreadController;
 using Framework::LoadClientCode;
 using Framework::WindowController;
+
+using System::thread;
 
 int applicationMain()
 {
@@ -24,7 +28,7 @@ int applicationMain()
 	WindowController windowController(&applicationContext);
 		
 	auto windowThreadEntry = [&applicationContext, &windowController] () {
-		windowController.CreateWindow();
+		windowController.CreateClientWindow();
 		applicationContext.GraphicsThreadQuit()->Wait();
 	};
 
@@ -35,6 +39,7 @@ int applicationMain()
 	};
 
 	auto graphicsThreadEntry = [&applicationContext, &windowController, &clientCode] () {
+		std::cout << "new graphics thread" << std::endl;
 		applicationContext.WindowReady()->Wait();
 
 		clientCode.GraphicsThreadEntry(&applicationContext, &windowController);
@@ -42,9 +47,10 @@ int applicationMain()
 		applicationContext.GraphicsThreadQuit()->Trigger();
 	};
 
-	std::thread windowThread = std::thread(windowThreadEntry);
-	std::thread logicThread = std::thread(logicThreadEntry);
-	std::thread graphicsThread = std::thread(graphicsThreadEntry);
+	std::cout << "creating threads" << std::endl;
+	thread windowThread = thread(windowThreadEntry);
+	thread logicThread = thread(logicThreadEntry);
+	thread graphicsThread = thread(graphicsThreadEntry);
 	
 	graphicsThread.join();
 	logicThread.join();
