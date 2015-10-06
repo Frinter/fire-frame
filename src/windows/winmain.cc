@@ -14,20 +14,20 @@ int windows_commandShow;
 
 System::Window *System::Window::Create(Framework::ApplicationContext *applicationContext, Framework::ISystemWindowController *controller)
 {
-	return new WindowsWindow(applicationContext, controller, windows_instance, windows_commandShow);
+    return new WindowsWindow(applicationContext, controller, windows_instance, windows_commandShow);
 }
 
 System::OpenGLContext *System::OpenGLContext::Create(Window *window)
 {
-	return new WindowsOpenGLContext(dynamic_cast<WindowsWindow*>(window));
+    return new WindowsOpenGLContext(dynamic_cast<WindowsWindow*>(window));
 }
 
 int WINAPI WinMain(HINSTANCE instance, HINSTANCE parentInstance, LPSTR arguments, int commandShow)
 {
-	windows_instance = instance;
-	windows_parentInstance = parentInstance;
-	windows_arguments = arguments;
-	windows_commandShow = commandShow;
+    windows_instance = instance;
+    windows_parentInstance = parentInstance;
+    windows_arguments = arguments;
+    windows_commandShow = commandShow;
 
-	return applicationMain();
+    return applicationMain();
 }

@@ -21,40 +21,40 @@ using System::thread;
 
 int applicationMain()
 {
-	ClientCode clientCode = LoadClientCode();
+    ClientCode clientCode = LoadClientCode();
 	
-	ApplicationState *applicationState = clientCode.GetApplicationState();
-	ApplicationContext applicationContext(applicationState);
-	WindowController windowController(&applicationContext);
+    ApplicationState *applicationState = clientCode.GetApplicationState();
+    ApplicationContext applicationContext(applicationState);
+    WindowController windowController(&applicationContext);
 		
-	auto windowThreadEntry = [&applicationContext, &windowController] () {
-		windowController.CreateClientWindow();
-		applicationContext.GraphicsThreadQuit()->Wait();
-	};
+    auto windowThreadEntry = [&applicationContext, &windowController] () {
+        windowController.CreateClientWindow();
+        applicationContext.GraphicsThreadQuit()->Wait();
+    };
 
-	auto logicThreadEntry = [&applicationContext, &windowController, &clientCode] () {
-		clientCode.LogicThreadEntry(&applicationContext, &windowController);
+    auto logicThreadEntry = [&applicationContext, &windowController, &clientCode] () {
+        clientCode.LogicThreadEntry(&applicationContext, &windowController);
 
-		applicationContext.SignalWindowDestruction();
-	};
+        applicationContext.SignalWindowDestruction();
+    };
 
-	auto graphicsThreadEntry = [&applicationContext, &windowController, &clientCode] () {
-		std::cout << "new graphics thread" << std::endl;
-		applicationContext.WindowReady()->Wait();
+    auto graphicsThreadEntry = [&applicationContext, &windowController, &clientCode] () {
+        std::cout << "new graphics thread" << std::endl;
+        applicationContext.WindowReady()->Wait();
 
-		clientCode.GraphicsThreadEntry(&applicationContext, &windowController);
+        clientCode.GraphicsThreadEntry(&applicationContext, &windowController);
 
-		applicationContext.GraphicsThreadQuit()->Trigger();
-	};
+        applicationContext.GraphicsThreadQuit()->Trigger();
+    };
 
-	std::cout << "creating threads" << std::endl;
-	thread windowThread = thread(windowThreadEntry);
-	thread logicThread = thread(logicThreadEntry);
-	thread graphicsThread = thread(graphicsThreadEntry);
+    std::cout << "creating threads" << std::endl;
+    thread windowThread = thread(windowThreadEntry);
+    thread logicThread = thread(logicThreadEntry);
+    thread graphicsThread = thread(graphicsThreadEntry);
 	
-	graphicsThread.join();
-	logicThread.join();
-	windowThread.join();
+    graphicsThread.join();
+    logicThread.join();
+    windowThread.join();
 	
-	return 0;
+    return 0;
 }
