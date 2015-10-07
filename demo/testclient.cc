@@ -16,194 +16,197 @@ using System::Utility;
 class SleepService : public ISleepService
 {
 public:
-	SleepService(System::Utility *utility)
-		: m_utility(utility)
+    SleepService(System::Utility *utility)
+        : m_utility(utility)
 	{
 	}
 	
-	virtual void Sleep(unsigned int milliseconds)
+    virtual void Sleep(unsigned int milliseconds)
 	{
-		m_utility->Sleep(milliseconds);
+            m_utility->Sleep(milliseconds);
 	}
 	
 private:
-	System::Utility *m_utility;
+    System::Utility *m_utility;
 };
 
 class SystemTimer : public ISystemTimer
 {
 public:
-	SystemTimer(System::Utility *utility)
-		: m_utility(utility)
+    SystemTimer(System::Utility *utility)
+        : m_utility(utility)
 	{
 	}
 
-	virtual unsigned int GetTicks()
+    virtual unsigned int GetTicks()
 	{
-		return m_utility->GetTicks();
+            return m_utility->GetTicks();
 	}
 
 private:
-	System::Utility *m_utility;
+    System::Utility *m_utility;
 };
 
 class OtherTestController : public GameController {
 public:	
-	virtual void OnStackAdd()
+    virtual void OnStackAdd()
 	{
-		std::cout << "OtherTestController added to stack" << std::endl;
+            std::cout << "OtherTestController added to stack" << std::endl;
 	}
 
-	virtual void OnStackRemove()
+    virtual void OnStackRemove()
 	{
-		std::cout << "OtherTestController removed from stack" << std::endl;
+            std::cout << "OtherTestController removed from stack" << std::endl;
 	}	
 
-	virtual void OnStackFocus()
+    virtual void OnStackFocus()
 	{
-		std::cout << "OtherTestController stack focus" << std::endl;
+            std::cout << "OtherTestController stack focus" << std::endl;
 	}
 
-	virtual void OnStackBlur()
+    virtual void OnStackBlur()
 	{
-		std::cout << "OtherTestController stack blur" << std::endl;
+            std::cout << "OtherTestController stack blur" << std::endl;
 	}
 };
 
 class TestController : public GameController {
 public:
-	TestController()
-		: m_otherController(NULL)
+    TestController()
+        : m_otherController(NULL)
 	{
 	}
 	
-	~TestController()
+    ~TestController()
 	{
-		if (m_otherController != NULL)
-		{
-			GetControllerStack()->Pop();
-			delete m_otherController;
-			m_otherController = NULL;			
-		}
+            if (m_otherController != NULL)
+            {
+                GetControllerStack()->Pop();
+                delete m_otherController;
+                m_otherController = NULL;			
+            }
 	}
 	
-	virtual void OnStackAdd()
+    virtual void OnStackAdd()
 	{
-		std::cout << "TestController added to stack" << std::endl;
+            std::cout << "TestController added to stack" << std::endl;
 	}
 
-	virtual void OnStackRemove()
+    virtual void OnStackRemove()
 	{
-		std::cout << "TestController removed from stack" << std::endl;
+            std::cout << "TestController removed from stack" << std::endl;
 	}
 	
-	virtual void OnStackFocus()
+    virtual void OnStackFocus()
 	{
-		std::cout << "TestController stack focus" << std::endl;
+            std::cout << "TestController stack focus" << std::endl;
 	}
 
-	virtual void OnStackBlur()
+    virtual void OnStackBlur()
 	{
-		std::cout << "TestController stack blur" << std::endl;
+            std::cout << "TestController stack blur" << std::endl;
 	}
 
-	virtual void OnTick()
+    virtual void OnTick()
 	{
-		ReadingKeyboardState *keyboardState = GetKeyboardState();
+            ReadingKeyboardState *keyboardState = GetKeyboardState();
 
-		std::cout << "TestController: ";
-		if (keyboardState != NULL) {
-			std::cout << keyboardState->GetKeyState(KeyCode::KeyTab);
-		}
-		else {
-			std::cout << "No state";
-		}
-		std::cout << std::endl;
+            std::cout << "TestController: ";
+            if (keyboardState != NULL) {
+                std::cout << keyboardState->GetKeyState(KeyCode::KeyTab);
+            }
+            else {
+                std::cout << "No state";
+            }
+            std::cout << std::endl;
 
-		if (m_otherController == NULL)
-		{
-			m_otherController = new OtherTestController();
-			GetControllerStack()->Push(m_otherController);
-		}
-		else
-		{
-			GetControllerStack()->Pop();
-			delete m_otherController;
-			m_otherController = NULL;
-		}
+            if (m_otherController == NULL)
+            {
+                m_otherController = new OtherTestController();
+                GetControllerStack()->Push(m_otherController);
+            }
+            else
+            {
+                GetControllerStack()->Pop();
+                delete m_otherController;
+                m_otherController = NULL;
+            }
 	}
 	
 private:
-	OtherTestController *m_otherController;
+    OtherTestController *m_otherController;
 };
 
 static Framework::ApplicationState applicationState = {
-	.windowName = "Fire Frame Demo"
+    .windowName = "Fire Frame Demo"
 };
 
 GetApplicationState_FunctionSignature(GetApplicationState)
 {
-	return &applicationState;
+    return &applicationState;
 }
 
 GraphicsThreadEntry_FunctionSignature(GraphicsThreadEntry)
 {
-	std::cout << "GraphicsThreadEntry: " << std::endl;
+    std::cout << "GraphicsThreadEntry: " << std::endl;
+/*
+    windowController->CreateContext();
 
-	windowController->CreateContext();
-
-	const GLubyte *renderer = glGetString(GL_RENDERER);
-	const GLubyte *vendor = glGetString(GL_VENDOR);
-	const GLubyte *version = glGetString(GL_VERSION);
-	const GLubyte *glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
+    const GLubyte *renderer = glGetString(GL_RENDERER);
+    const GLubyte *vendor = glGetString(GL_VENDOR);
+    const GLubyte *version = glGetString(GL_VERSION);
+    const GLubyte *glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
 	
-	std::cout << "- renderer: " << renderer << std::endl;
-	std::cout << "- vendor: " << vendor << std::endl;
-	std::cout << "- version: " << version << std::endl;
-	std::cout << "- GLSL version: " << version << std::endl;
+    std::cout << "- renderer: " << renderer << std::endl;
+    std::cout << "- vendor: " << vendor << std::endl;
+    std::cout << "- version: " << version << std::endl;
+    std::cout << "- GLSL version: " << version << std::endl;
 
-	//GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	//GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    //GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    //GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
-	unsigned int framerateTicks = 1000 / 60;
+    unsigned int framerateTicks = 1000 / 60;
 
-	SystemTimer systemTimer(applicationContext->GetSystemUtility());
-	SleepService sleepService(applicationContext->GetSystemUtility());
-	Ticker ticker = Ticker(&systemTimer, &sleepService);
-	ticker.Start();
+    SystemTimer systemTimer(applicationContext->GetSystemUtility());
+    SleepService sleepService(applicationContext->GetSystemUtility());
+    Ticker ticker = Ticker(&systemTimer, &sleepService);
+    ticker.Start();
 
-	while (!applicationContext->IsClosing())
-	{
-		ticker.Wait(framerateTicks);
-	}
+    while (!applicationContext->IsClosing())
+    {
+        ticker.Wait(framerateTicks);
+    }
+*/
 }
 
 LogicThreadEntry_FunctionSignature(LogicThreadEntry)
 {
-	SystemTimer systemTimer(applicationContext->GetSystemUtility());
-	SleepService sleepService(applicationContext->GetSystemUtility());
-	Ticker ticker = Ticker(&systemTimer, &sleepService);
+    /*
+    SystemTimer systemTimer(applicationContext->GetSystemUtility());
+    SleepService sleepService(applicationContext->GetSystemUtility());
+    Ticker ticker = Ticker(&systemTimer, &sleepService);
 
-	unsigned int ticks = systemTimer.GetTicks();
-	unsigned int newTicks;
+    unsigned int ticks = systemTimer.GetTicks();
+    unsigned int newTicks;
 
-	ControllerStack controllerStack(windowController);
-	GameController *controller = new TestController();
+    ControllerStack controllerStack(windowController);
+    GameController *controller = new TestController();
 
-	controllerStack.Push(controller);
+    controllerStack.Push(controller);
 
-	ticker.Start();
+    ticker.Start();
 
-	while (!applicationContext->IsClosing())
-	{
-		controller = (GameController *)controllerStack.Top();
-		controller->OnTick();
-
-		newTicks = systemTimer.GetTicks();
-		ticker.Wait(500);
-		std::cout << "Logic Thread (" << ticks << " -> " << newTicks << ")" << std::endl;
-		ticks = newTicks;			
-	}
-
-	controllerStack.Clear();
+    while (!applicationContext->IsClosing())
+    {
+        controller = (GameController *)controllerStack.Top();
+        controller->OnTick();
+        
+        newTicks = systemTimer.GetTicks();
+        ticker.Wait(500);
+        std::cout << "Logic Thread (" << ticks << " -> " << newTicks << ")" << std::endl;
+        ticks = newTicks;			
+    }
+    
+    controllerStack.Clear();
+    */
 }
