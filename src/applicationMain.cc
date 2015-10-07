@@ -1,5 +1,5 @@
 #include <iostream>
-//#include <thread>
+#include <thread>
 
 #include "framework/applicationstate.hh"
 #include "framework/applicationcontext.hh"
@@ -55,6 +55,6 @@ int applicationMain()
     graphicsThread.join();
     logicThread.join();
     windowThread.join();
-	
+
     return 0;
 }
