@@ -25,7 +25,7 @@ SUB_DIRS := $(shell find src -type d -print)
 BUILD_DIRS := $(patsubst src/%,build/%,$(SUB_DIRS)) build/demo
 INCLUDE_DIRS := -Iinclude
 SRC := $(wildcard src/*.cc) $(wildcard src/framework/*.cc)
-OBJECTS := $(SRC:src/%.cc=$(OBJ_DIR)/%.o) $(PLATFORM_OBJECTS)
+OBJECTS := $(SRC:src/%.cc=$(OBJ_DIR)/%.o) $(PLATFORM_OBJECTS) build/gl_core_3_3.o
 LIBS := $(PLATFORM_LIBS) $(PLATFORM_POST_LIBS)
 CFLAGS := $(INCLUDE_DIRS) -DSYSTEM_TARGET=$(SYSTEM_TARGET)
 
