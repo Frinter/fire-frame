@@ -1,68 +1,33 @@
 #pragma once
 
+#include <functional>
+
 namespace System
 {
-	class thread
-	{
-	public:
-		class IThreadImplementation
-		{
-		public:
-			virtual void Run() = 0;
-		};
-		
-	private:
-		template <typename Callable>
-		class ThreadImplementation : IThreadImplementation
-		{
-		public:
-			ThreadImplementation(Callable *function)
-				: m_function(function)
-			{
-			}
+    class thread
+    {
+    public:
+        typedef std::function<void()> Callable;
 
-			ThreadImplementation(ThreadImplementation &other) = delete;
-			ThreadImplementation(ThreadImplementation &&other) = delete;
+        class IThreadImplementation
+        {
+        public:
+            virtual ~IThreadImplementation() {}
+            
+            virtual void start() = 0;
+            virtual void join() = 0;
+        };
 
-			void Run()
-			{
-				m_function();
-			}
-
-		private:
-			Callable *m_function;
-		};
+    private:
+        IThreadImplementation *createImplementation(Callable function);
+        
+    public:
+        thread(Callable function);
+        ~thread();
 		
-		template <typename Callable>
-		IThreadImplementation *createImplementation(Callable function)
-		{
-			return NULL;
-		}
+        void join();
 		
-	public:
-		template <class Callable>
-		thread(Callable &&function)
-			: m_joinable(false)
-		{
-			m_implementation = createImplementation(function);
-			m_implementation->Run();
-		}
-		
-		~thread()
-		{
-			if (m_joinable)
-				join();
-		};
-		
-		void join()
-		{
-		}
-		
-	private:
-		void StartThread();
-		
-	private:
-		IThreadImplementation *m_implementation;
-		bool m_joinable;
-	};
+    private:
+        IThreadImplementation *_implementation;
+    };
 }
