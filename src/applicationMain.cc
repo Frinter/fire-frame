@@ -1,4 +1,3 @@
-#include <iostream>
 #include <thread>
 
 #include "framework/applicationstate.hh"
@@ -39,7 +38,6 @@ int applicationMain()
     };
 
     auto graphicsThreadEntry = [&applicationContext, &windowController, &clientCode] () {
-        std::cout << "new graphics thread" << std::endl;
         applicationContext.WindowReady()->Wait();
 
         clientCode.GraphicsThreadEntry(&applicationContext, &windowController);
@@ -47,11 +45,10 @@ int applicationMain()
         applicationContext.GraphicsThreadQuit()->Trigger();
     };
 
-    std::cout << "creating threads" << std::endl;
     thread windowThread = thread(windowThreadEntry);
     thread logicThread = thread(logicThreadEntry);
     thread graphicsThread = thread(graphicsThreadEntry);
-	
+
     graphicsThread.join();
     logicThread.join();
     windowThread.join();
