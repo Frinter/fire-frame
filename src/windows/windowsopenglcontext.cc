@@ -1,4 +1,3 @@
-#include <iostream>
 #include <stdexcept>
 
 #include "GL/gl_core_3_3.h"
@@ -6,8 +5,6 @@
 #include "windowsopenglcontext.hh"
 
 WindowsOpenGLContext::WindowsOpenGLContext(WindowsWindow *window) {
-    std::cout << "openGL context constructor" << std::endl;
-
     PIXELFORMATDESCRIPTOR pfd;
     memset(&pfd, 0, sizeof(PIXELFORMATDESCRIPTOR));
     pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
@@ -25,8 +22,8 @@ WindowsOpenGLContext::WindowsOpenGLContext(WindowsWindow *window) {
     HGLRC tempContext = wglCreateContext(m_deviceContext);
     wglMakeCurrent(m_deviceContext, tempContext);
 
-    if (ogl_LoadFunctions() == ogl_LOAD_FAILED)
-        throw new std::runtime_error("Failed to initialize OpenGL functions");
+    if (wgl_LoadFunctions(m_deviceContext) == wgl_LOAD_FAILED)
+        throw new std::runtime_error("Failed to load WGL functions");
 
     int attributes[] = {
         WGL_CONTEXT_MAJOR_VERSION_ARB, 3,
@@ -35,11 +32,13 @@ WindowsOpenGLContext::WindowsOpenGLContext(WindowsWindow *window) {
         0
     };
 
-    std::cout << "Creating windows openGL context" << std::endl;
     m_openGLContext = wglCreateContextAttribsARB(m_deviceContext, 0, attributes);
     wglMakeCurrent(NULL, NULL);
     wglDeleteContext(tempContext);
     wglMakeCurrent(m_deviceContext, m_openGLContext);
+
+    if (ogl_LoadFunctions() == ogl_LOAD_FAILED)
+        throw new std::runtime_error("Failed to initialize OpenGL functions");
 }
 
 WindowsOpenGLContext::~WindowsOpenGLContext()
