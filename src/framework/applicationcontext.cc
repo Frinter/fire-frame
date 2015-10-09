@@ -24,7 +24,7 @@ bool ApplicationContext::IsClosing() const
 
 bool ApplicationContext::ShouldDestroyWindow() const
 {
-	return m_isClosing;
+	return m_isClosing || m_destroyWindowFlag;
 }
 
 System::Event *ApplicationContext::WindowReady() const
