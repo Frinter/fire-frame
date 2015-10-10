@@ -149,7 +149,7 @@ GetApplicationState_FunctionSignature(GetApplicationState)
 GraphicsThreadEntry_FunctionSignature(GraphicsThreadEntry)
 {
     std::cout << "GraphicsThreadEntry: " << std::endl;
-/*
+
     windowController->CreateContext();
 
     const GLubyte *renderer = glGetString(GL_RENDERER);
@@ -176,12 +176,10 @@ GraphicsThreadEntry_FunctionSignature(GraphicsThreadEntry)
     {
         ticker.Wait(framerateTicks);
     }
-*/
 }
 
 LogicThreadEntry_FunctionSignature(LogicThreadEntry)
 {
-    /*
     SystemTimer systemTimer(applicationContext->GetSystemUtility());
     SleepService sleepService(applicationContext->GetSystemUtility());
     Ticker ticker = Ticker(&systemTimer, &sleepService);
@@ -208,5 +206,4 @@ LogicThreadEntry_FunctionSignature(LogicThreadEntry)
     }
     
     controllerStack.Clear();
-    */
 }
