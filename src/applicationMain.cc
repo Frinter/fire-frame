@@ -1,5 +1,3 @@
-#include <thread>
-
 #include "framework/applicationstate.hh"
 #include "framework/applicationcontext.hh"
 #include "framework/igraphicsthreadcontroller.hh"
