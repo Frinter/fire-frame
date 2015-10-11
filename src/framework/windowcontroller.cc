@@ -97,14 +97,14 @@ KeyState WindowController::KeyboardState::GetKeyState(KeyCode key)
 void WindowController::KeyboardState::PressKey(KeyCode key)
 {
     m_mutex->Lock();
-    m_states[key] = Pressed;
+    m_states[key] = KeyState::Pressed;
     m_mutex->Unlock();
 }
 
 void WindowController::KeyboardState::UnpressKey(KeyCode key)
 {
     m_mutex->Lock();
-    m_states[key] = Unpressed;
+    m_states[key] = KeyState::Unpressed;
     m_mutex->Unlock();
 }
 

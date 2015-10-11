@@ -111,15 +111,6 @@ public:
 	{
             ReadingKeyboardState *keyboardState = GetKeyboardState();
 
-            std::cout << "TestController: ";
-            if (keyboardState != NULL) {
-                std::cout << keyboardState->GetKeyState(KeyCode::KeyTab);
-            }
-            else {
-                std::cout << "No state";
-            }
-            std::cout << std::endl;
-
             if (m_otherController == NULL)
             {
                 m_otherController = new OtherTestController();
