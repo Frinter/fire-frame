@@ -9,6 +9,7 @@ namespace Framework
 	class IApplicationContext
 	{
 	public:
+		virtual void Close() = 0;
 		virtual bool IsClosing() const = 0;
 		virtual System::Utility *GetSystemUtility() const = 0;
 	};
