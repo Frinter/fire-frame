@@ -26,7 +26,7 @@ namespace Framework
 		bool ShouldDestroyWindow() const;
 		
 		System::Event *WindowReady() const;
-		System::Event *GraphicsThreadQuit() const;
+		System::Event *ApplicationThreadQuit() const;
 
 		ApplicationState *GetState() const;
 		System::Utility *GetSystemUtility() const;
@@ -36,6 +36,6 @@ namespace Framework
 		bool m_destroyWindowFlag;
 		ApplicationState *m_applicationState;
 		System::Event *m_windowReady;
-		System::Event *m_graphicsThreadQuit;
+		System::Event *m_applicationThreadQuit;
 	};
 }

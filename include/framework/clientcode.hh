@@ -7,12 +7,11 @@
 
 namespace Framework
 {
-	struct ClientCode
-	{
-		GetApplicationState_FunctionType *GetApplicationState;
-		GraphicsThreadEntry_FunctionType *GraphicsThreadEntry;
-		LogicThreadEntry_FunctionType *LogicThreadEntry;
-	};
+    struct ClientCode
+    {
+        GetApplicationState_FunctionType *GetApplicationState;
+        ApplicationThreadEntry_FunctionType *ApplicationThreadEntry;
+    };
 	
-	ClientCode LoadClientCode();
+    ClientCode LoadClientCode();
 }

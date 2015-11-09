@@ -3,7 +3,9 @@
 using namespace Framework;
 
 ApplicationContext::ApplicationContext(ApplicationState *applicationState)
-	: m_isClosing(false), m_destroyWindowFlag(false), m_applicationState(applicationState), m_windowReady(System::Event::Create("WindowReady")), m_graphicsThreadQuit(System::Event::Create("GraphicsThreadQuit"))
+	: m_isClosing(false), m_destroyWindowFlag(false),
+          m_applicationState(applicationState), m_windowReady(System::Event::Create("WindowReady")),
+          m_applicationThreadQuit(System::Event::Create("GraphicsThreadQuit"))
 {
 }
 
@@ -32,9 +34,9 @@ System::Event *ApplicationContext::WindowReady() const
 	return m_windowReady;
 }
 
-System::Event *ApplicationContext::GraphicsThreadQuit() const
+System::Event *ApplicationContext::ApplicationThreadQuit() const
 {
-	return m_graphicsThreadQuit;
+	return m_applicationThreadQuit;
 }
 
 ApplicationState *ApplicationContext::GetState() const

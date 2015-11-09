@@ -3,16 +3,14 @@
 #include "framework/clientcode.hh"
 
 extern GetApplicationState_FunctionSignature(GetApplicationState);
-extern GraphicsThreadEntry_FunctionSignature(GraphicsThreadEntry);
-extern LogicThreadEntry_FunctionSignature(LogicThreadEntry);
+extern ApplicationThreadEntry_FunctionSignature(ApplicationThreadEntry);
 
 Framework::ClientCode Framework::LoadClientCode()
 {
-	ClientCode clientCode;
+    ClientCode clientCode;
 
-	clientCode.GetApplicationState = GetApplicationState;
-	clientCode.GraphicsThreadEntry = GraphicsThreadEntry;
-	clientCode.LogicThreadEntry = LogicThreadEntry;
+    clientCode.GetApplicationState = GetApplicationState;
+    clientCode.ApplicationThreadEntry = ApplicationThreadEntry;
 		
-	return clientCode;
+    return clientCode;
 }

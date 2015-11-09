@@ -26,29 +26,22 @@ int applicationMain()
 		
     auto windowThreadEntry = [&applicationContext, &windowController] () {
         windowController.CreateClientWindow();
-        applicationContext.GraphicsThreadQuit()->Wait();
+        applicationContext.ApplicationThreadQuit()->Wait();
     };
 
-    auto logicThreadEntry = [&applicationContext, &windowController, &clientCode] () {
-        clientCode.LogicThreadEntry(&applicationContext, &windowController);
-
-        applicationContext.SignalWindowDestruction();
-    };
-
-    auto graphicsThreadEntry = [&applicationContext, &windowController, &clientCode] () {
+    auto applicationThreadEntry = [&applicationContext, &windowController, &clientCode] () {
         applicationContext.WindowReady()->Wait();
 
-        clientCode.GraphicsThreadEntry(&applicationContext, &windowController);
+        clientCode.ApplicationThreadEntry(&applicationContext, &windowController);
 
-        applicationContext.GraphicsThreadQuit()->Trigger();
+        applicationContext.SignalWindowDestruction();
+        applicationContext.ApplicationThreadQuit()->Trigger();
     };
 
     thread windowThread = thread(windowThreadEntry);
-    thread logicThread = thread(logicThreadEntry);
-    thread graphicsThread = thread(graphicsThreadEntry);
+    thread applicationThread = thread(applicationThreadEntry);
 
-    graphicsThread.join();
-    logicThread.join();
+    applicationThread.join();
     windowThread.join();
 
     return 0;
