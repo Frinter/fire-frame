@@ -8,6 +8,7 @@ using System::OpenGLContext;
 using System::Window;
 using Framework::KeyState;
 using Framework::ReadingKeyboardState;
+using Framework::ReadingMouseState;
 using Framework::WindowController;
 
 WindowController::WindowController(ApplicationContext *applicationContext)
@@ -43,6 +44,11 @@ ReadingKeyboardState *WindowController::GetKeyStateReader()
     return &m_keyboardState;
 }
 
+ReadingMouseState *WindowController::GetMouseReader()
+{
+    return &m_mouseState;
+}
+
 void WindowController::OnWindowReady()
 {
     m_applicationContext->WindowReady()->Trigger();
@@ -71,6 +77,11 @@ void WindowController::OnKeyUp(KeyCode key)
     {
         (*iter)->UnpressKey(key);
     }
+}
+
+void WindowController::OnMouseMove(int xPos, int yPos)
+{
+    m_mouseState.MouseMove(xPos, yPos);
 }
 
 WindowController::KeyboardState::KeyboardState()
@@ -116,4 +127,30 @@ void WindowController::AddKeyboardEventHandler(IWritingKeyboardState *handler)
 void WindowController::RemoveKeyboardEventHandler(IWritingKeyboardState *handler)
 {
     m_keyboardEventHandlers.remove(handler);
+}
+
+WindowController::MouseState::MouseState()
+{
+    m_mutex = Mutex::Create();
+}
+
+WindowController::MouseState::~MouseState()
+{
+    delete m_mutex;
+}
+
+int WindowController::MouseState::GetMouseX() const
+{
+    return _xPos;
+}
+
+int WindowController::MouseState::GetMouseY() const
+{
+    return _yPos;
+}
+
+void WindowController::MouseState::MouseMove(int xPos, int yPos)
+{
+    _xPos = xPos;
+    _yPos = yPos;
 }

@@ -8,28 +8,29 @@ class WindowsOpenGLContext;
 
 class WindowsWindow : public System::Window
 {
-	friend class WindowsOpenGLContext;
+    friend class WindowsOpenGLContext;
 
 public:
-	WindowsWindow(Framework::ApplicationContext *applicationContext, Framework::ISystemWindowController *controller, HINSTANCE processInstance, int commandShow);
-	virtual ~WindowsWindow();
+    WindowsWindow(Framework::ApplicationContext *applicationContext, Framework::ISystemWindowController *controller, HINSTANCE processInstance, int commandShow);
+    virtual ~WindowsWindow();
 
-	virtual int DoMessageLoop();
+    virtual int DoMessageLoop();
 	
-	virtual void Destroy();
+    virtual void Destroy();
 
 private:
-	HWND m_windowHandle;
-	Framework::ISystemWindowController *m_controller;
-	Framework::ApplicationContext *m_applicationContext;
-	WindowsOpenGLContext *m_openGLContext;
+    HWND m_windowHandle;
+    Framework::ISystemWindowController *m_controller;
+    Framework::ApplicationContext *m_applicationContext;
+    WindowsOpenGLContext *m_openGLContext;
 
-	void Ready();
-	void Close();
-	void KeyDown(WPARAM key);
-	void KeyUp(WPARAM key);
+    void Ready();
+    void Close();
+    void KeyDown(WPARAM key);
+    void KeyUp(WPARAM key);
+    void MouseMove(WPARAM wParam, LPARAM lParam);
 
-	WindowsWindow(const WindowsWindow &o) = delete;
+    WindowsWindow(const WindowsWindow &o) = delete;
 
-	static LRESULT CALLBACK WndProc(HWND windowHandle, UINT message, WPARAM wparam, LPARAM lparam);
+    static LRESULT CALLBACK WndProc(HWND windowHandle, UINT message, WPARAM wparam, LPARAM lparam);
 };

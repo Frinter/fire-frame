@@ -1,6 +1,8 @@
 #include <stdexcept>
 #include <unordered_map>
 
+#include "Windowsx.h"
+
 #include "windowswindow.hh"
 #include "windowsopenglcontext.hh"
 
@@ -177,6 +179,11 @@ void WindowsWindow::KeyUp(WPARAM key)
     m_controller->OnKeyUp(keyMap[key]);
 }
 
+void WindowsWindow::MouseMove(WPARAM wParam, LPARAM lParam)
+{
+    m_controller->OnMouseMove(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
+}
+
 LRESULT CALLBACK WindowsWindow::WndProc(HWND windowHandle, UINT message, WPARAM wparam, LPARAM lparam)
 {
     switch(message)
@@ -189,10 +196,14 @@ LRESULT CALLBACK WindowsWindow::WndProc(HWND windowHandle, UINT message, WPARAM 
         windowMap[windowHandle]->KeyUp(wparam);
         return 0;
 
+    case WM_MOUSEMOVE:
+        windowMap[windowHandle]->MouseMove(wparam, lparam);
+        return 0;
+
     case WM_CLOSE:
         windowMap[windowHandle]->Close();
         return 0;
-		
+
     case WM_DESTROY:
         PostQuitMessage(0);
         return 0;
