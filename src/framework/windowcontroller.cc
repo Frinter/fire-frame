@@ -94,6 +94,11 @@ void WindowController::OnMouseButtonUp(System::MouseButton button)
     m_mouseState.MouseButtonUp(button);
 }
 
+void WindowController::OnMouseScroll(int scrollDelta)
+{
+    m_mouseState.MouseScroll(scrollDelta);
+}
+
 WindowController::KeyboardState::KeyboardState()
 {
     m_mutex = Mutex::Create();
@@ -141,6 +146,7 @@ void WindowController::RemoveKeyboardEventHandler(IWritingKeyboardState *handler
 
 WindowController::MouseState::MouseState()
 {
+    _scrollDelta = 0;
     m_mutex = Mutex::Create();
 }
 
@@ -182,6 +188,18 @@ KeyState WindowController::MouseState::GetMouseButtonState(System::MouseButton m
     return state;
 }
 
+int WindowController::MouseState::GetScrollDelta()
+{
+    int delta;
+
+    m_mutex->Lock();
+    delta = _scrollDelta;
+    _scrollDelta = 0;
+    m_mutex->Unlock();
+
+    return delta;
+}
+
 void WindowController::MouseState::MouseMove(int xPos, int yPos)
 {
     m_mutex->Lock();
@@ -201,5 +219,12 @@ void WindowController::MouseState::MouseButtonUp(System::MouseButton mouseButton
 {
     m_mutex->Lock();
     m_states[mouseButton] = KeyState::Unpressed;
+    m_mutex->Unlock();
+}
+
+void WindowController::MouseState::MouseScroll(int scrollDelta)
+{
+    m_mutex->Lock();
+    _scrollDelta += scrollDelta;
     m_mutex->Unlock();
 }

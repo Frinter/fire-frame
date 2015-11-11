@@ -20,6 +20,7 @@ namespace Framework
         virtual void OnMouseMove(int xPos, int yPos) { };
         virtual void OnMouseButtonDown(System::MouseButton button) = 0;
         virtual void OnMouseButtonUp(System::MouseButton button) = 0;
+        virtual void OnMouseScroll(int scrollDelta) = 0;
 
         virtual void AddKeyboardEventHandler(IWritingKeyboardState *handler) = 0;
         virtual void RemoveKeyboardEventHandler(IWritingKeyboardState *handler) = 0;

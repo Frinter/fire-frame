@@ -44,17 +44,20 @@ namespace Framework
 
             virtual int GetMouseX() const;
             virtual int GetMouseY() const;
+            virtual int GetScrollDelta();
             virtual KeyState GetMouseButtonState(System::MouseButton mouseButton);
 
             virtual void MouseMove(int xPos, int yPos);
             virtual void MouseButtonDown(System::MouseButton mouseButton);
             virtual void MouseButtonUp(System::MouseButton mouseButton);
+            virtual void MouseScroll(int scrollDelta);
 
         private:
             System::Mutex *m_mutex;
 
-            unsigned int _xPos;
-            unsigned int _yPos;
+            int _xPos;
+            int _yPos;
+            int _scrollDelta;
             std::map<System::MouseButton, KeyState> m_states;
         };
 
@@ -80,6 +83,7 @@ namespace Framework
         virtual void OnMouseMove(int xPos, int yPos);
         virtual void OnMouseButtonDown(System::MouseButton);
         virtual void OnMouseButtonUp(System::MouseButton);
+        virtual void OnMouseScroll(int scrollDelta);
 
     private:
         System::Window *m_window;

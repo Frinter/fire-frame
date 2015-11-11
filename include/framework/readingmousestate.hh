@@ -10,5 +10,6 @@ namespace Framework {
         virtual int GetMouseX() const = 0;
         virtual int GetMouseY() const = 0;
         virtual KeyState GetMouseButtonState(System::MouseButton mouseButton) = 0;
+        virtual int GetScrollDelta() = 0;
     };
 }

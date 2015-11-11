@@ -33,6 +33,7 @@ private:
     void RightMouseButtonDown(WPARAM wParam, LPARAM lParam);
     void LeftMouseButtonUp(WPARAM wParam, LPARAM lParam);
     void RightMouseButtonUp(WPARAM wParam, LPARAM lParam);
+    void MouseScrollWheel(WPARAM wParam, LPARAM lParam);
 
     WindowsWindow(const WindowsWindow &o) = delete;
 

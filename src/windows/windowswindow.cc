@@ -205,6 +205,11 @@ void WindowsWindow::RightMouseButtonUp(WPARAM wParam, LPARAM lParam)
     m_controller->OnMouseButtonUp(System::MouseButton::Button2);
 }
 
+void WindowsWindow::MouseScrollWheel(WPARAM wParam, LPARAM lParam)
+{
+    m_controller->OnMouseScroll(GET_WHEEL_DELTA_WPARAM(wParam));
+}
+
 LRESULT CALLBACK WindowsWindow::WndProc(HWND windowHandle, UINT message, WPARAM wparam, LPARAM lparam)
 {
     switch(message)
@@ -235,6 +240,10 @@ LRESULT CALLBACK WindowsWindow::WndProc(HWND windowHandle, UINT message, WPARAM 
 
     case WM_RBUTTONUP:
         windowMap[windowHandle]->RightMouseButtonUp(wparam, lparam);
+        return 0;
+
+    case WM_MOUSEWHEEL:
+        windowMap[windowHandle]->MouseScrollWheel(wparam, lparam);
         return 0;
 
     case WM_CLOSE:
