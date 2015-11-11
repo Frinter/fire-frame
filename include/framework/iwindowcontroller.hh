@@ -3,6 +3,7 @@
 #include "framework/iwritingkeyboardstate.hh"
 #include "framework/readingkeyboardstate.hh"
 #include "framework/readingmousestate.hh"
+#include "framework/readingwindowstate.hh"
 #include "system/keycode.hh"
 #include "system/mousebutton.hh"
 
@@ -15,6 +16,7 @@ namespace Framework
         // The implementation of Window must guarantee that Window::Create will return before any callbacks are called
         virtual void OnWindowReady() { };
         virtual void OnWindowClose() { };
+        virtual void OnWindowResize(unsigned int width, unsigned int height) = 0;
         virtual void OnKeyUp(System::KeyCode key) { };
         virtual void OnKeyDown(System::KeyCode key) { };
         virtual void OnMouseMove(int xPos, int yPos) { };
@@ -35,5 +37,6 @@ namespace Framework
         virtual void CreateContext() = 0;
         virtual ReadingKeyboardState *GetKeyStateReader() = 0;
         virtual ReadingMouseState *GetMouseReader() = 0;
+        virtual ReadingWindowState *GetWindowReader() = 0;
     };
 }

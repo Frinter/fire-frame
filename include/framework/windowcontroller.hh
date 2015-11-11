@@ -7,6 +7,7 @@
 #include "framework/keystate.hh"
 #include "framework/readingkeyboardstate.hh"
 #include "framework/readingmousestate.hh"
+#include "framework/readingwindowstate.hh"
 #include "framework/iwindowcontroller.hh"
 #include "system/keycode.hh"
 #include "system/window.hh"
@@ -61,6 +62,21 @@ namespace Framework
             std::map<System::MouseButton, KeyState> m_states;
         };
 
+        class WindowState : public ReadingWindowState
+        {
+        public:
+            WindowState();
+            virtual ~WindowState();
+
+            void GetSize(unsigned int *width, unsigned int *height);
+            void Resize(unsigned int width, unsigned int height);
+
+        private:
+            System::Mutex *m_mutex;
+            unsigned int _width;
+            unsigned int _height;
+        };
+
     public:
         WindowController(ApplicationContext *applicationContext);
 
@@ -75,9 +91,11 @@ namespace Framework
         virtual void RemoveKeyboardEventHandler(IWritingKeyboardState *handler);
         virtual ReadingKeyboardState *GetKeyStateReader();
         virtual ReadingMouseState *GetMouseReader();
+        virtual ReadingWindowState *GetWindowReader();
 
         virtual void OnWindowReady();
         virtual void OnWindowClose();
+        virtual void OnWindowResize(unsigned int width, unsigned int height);
         virtual void OnKeyDown(System::KeyCode key);
         virtual void OnKeyUp(System::KeyCode key);
         virtual void OnMouseMove(int xPos, int yPos);
@@ -91,6 +109,7 @@ namespace Framework
         ApplicationContext *m_applicationContext;
         KeyboardState m_keyboardState;
         MouseState m_mouseState;
+        WindowState m_windowState;
         std::list<IWritingKeyboardState*> m_keyboardEventHandlers;
 
         bool m_shouldDestroyWindow;

@@ -155,6 +155,16 @@ int WindowsWindow::DoMessageLoop()
     return message.wParam;
 }
 
+void WindowsWindow::GetWindowSize(unsigned int *width, unsigned int *height)
+{
+    RECT rect;
+
+    GetClientRect(m_windowHandle, &rect);
+
+    *width = rect.right - rect.left;
+    *height = rect.bottom - rect.top;
+}
+
 void WindowsWindow::Destroy()
 {
     DestroyWindow(m_windowHandle);
@@ -173,6 +183,11 @@ void WindowsWindow::Close()
 void WindowsWindow::KeyDown(WPARAM key)
 {
     m_controller->OnKeyDown(keyMap[key]);
+}
+
+void WindowsWindow::WindowResize(WPARAM wParam, LPARAM lParam)
+{
+    m_controller->OnWindowResize(LOWORD(lParam), HIWORD(lParam));
 }
 
 void WindowsWindow::KeyUp(WPARAM key)
@@ -244,6 +259,10 @@ LRESULT CALLBACK WindowsWindow::WndProc(HWND windowHandle, UINT message, WPARAM 
 
     case WM_MOUSEWHEEL:
         windowMap[windowHandle]->MouseScrollWheel(wparam, lparam);
+        return 0;
+
+    case WM_SIZE:
+        windowMap[windowHandle]->WindowResize(wparam, lparam);
         return 0;
 
     case WM_CLOSE:

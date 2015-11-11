@@ -13,6 +13,7 @@ class WindowsWindow : public System::Window
 public:
     WindowsWindow(Framework::ApplicationContext *applicationContext, Framework::ISystemWindowController *controller, HINSTANCE processInstance, int commandShow);
     virtual ~WindowsWindow();
+    virtual void GetWindowSize(unsigned int *width, unsigned int *height);
 
     virtual int DoMessageLoop();
 	
@@ -26,6 +27,7 @@ private:
 
     void Ready();
     void Close();
+    void WindowResize(WPARAM wParam, LPARAM lParam);
     void KeyDown(WPARAM key);
     void KeyUp(WPARAM key);
     void MouseMove(WPARAM wParam, LPARAM lParam);

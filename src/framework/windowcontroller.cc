@@ -9,6 +9,7 @@ using System::Window;
 using Framework::KeyState;
 using Framework::ReadingKeyboardState;
 using Framework::ReadingMouseState;
+using Framework::ReadingWindowState;
 using Framework::WindowController;
 
 WindowController::WindowController(ApplicationContext *applicationContext)
@@ -26,6 +27,11 @@ WindowController::~WindowController()
 void WindowController::CreateClientWindow()
 {
     m_window = Window::Create(m_applicationContext, this);
+
+    unsigned int windowWidth, windowHeight;
+    m_window->GetWindowSize(&windowWidth, &windowHeight);
+    m_windowState.Resize(windowWidth, windowHeight);
+
     m_window->DoMessageLoop();
 }
 
@@ -49,6 +55,11 @@ ReadingMouseState *WindowController::GetMouseReader()
     return &m_mouseState;
 }
 
+ReadingWindowState *WindowController::GetWindowReader()
+{
+    return &m_windowState;
+}
+
 void WindowController::OnWindowReady()
 {
     m_applicationContext->WindowReady()->Trigger();
@@ -57,6 +68,11 @@ void WindowController::OnWindowReady()
 void WindowController::OnWindowClose()
 {
     m_applicationContext->Close();
+}
+
+void WindowController::OnWindowResize(unsigned int width, unsigned int height)
+{
+    m_windowState.Resize(width, height);
 }
 
 void WindowController::OnKeyDown(KeyCode key)
@@ -226,5 +242,31 @@ void WindowController::MouseState::MouseScroll(int scrollDelta)
 {
     m_mutex->Lock();
     _scrollDelta += scrollDelta;
+    m_mutex->Unlock();
+}
+
+WindowController::WindowState::WindowState()
+{
+    m_mutex = Mutex::Create();
+}
+
+WindowController::WindowState::~WindowState()
+{
+    delete m_mutex;
+}
+
+void WindowController::WindowState::GetSize(unsigned int *width, unsigned int *height)
+{
+    m_mutex->Lock();
+    *width = _width;
+    *height = _height;
+    m_mutex->Unlock();
+}
+
+void WindowController::WindowState::Resize(unsigned int width, unsigned int height)
+{
+    m_mutex->Lock();
+    _width = width;
+    _height = height;
     m_mutex->Unlock();
 }

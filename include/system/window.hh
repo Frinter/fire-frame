@@ -8,12 +8,13 @@
 
 namespace System
 {	
-	class Window {
-	public:
-		virtual ~Window() {};
-		virtual int DoMessageLoop() = 0;
-		virtual void Destroy() = 0;
+    class Window {
+    public:
+        virtual ~Window() {};
+        virtual int DoMessageLoop() = 0;
+        virtual void GetWindowSize(unsigned int *width, unsigned int *height) = 0;
+        virtual void Destroy() = 0;
 		
-		static Window *Create(Framework::ApplicationContext *applicationContext, Framework::ISystemWindowController *controller);
-	};
+        static Window *Create(Framework::ApplicationContext *applicationContext, Framework::ISystemWindowController *controller);
+    };
 }
