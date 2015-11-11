@@ -84,6 +84,16 @@ void WindowController::OnMouseMove(int xPos, int yPos)
     m_mouseState.MouseMove(xPos, yPos);
 }
 
+void WindowController::OnMouseButtonDown(System::MouseButton button)
+{
+    m_mouseState.MouseButtonDown(button);
+}
+
+void WindowController::OnMouseButtonUp(System::MouseButton button)
+{
+    m_mouseState.MouseButtonUp(button);
+}
+
 WindowController::KeyboardState::KeyboardState()
 {
     m_mutex = Mutex::Create();
@@ -141,16 +151,55 @@ WindowController::MouseState::~MouseState()
 
 int WindowController::MouseState::GetMouseX() const
 {
-    return _xPos;
+    int pos;
+
+    m_mutex->Lock();
+    pos = _xPos;
+    m_mutex->Unlock();
+
+    return pos;
 }
 
 int WindowController::MouseState::GetMouseY() const
 {
-    return _yPos;
+    int pos;
+
+    m_mutex->Lock();
+    pos = _yPos;
+    m_mutex->Unlock();
+
+    return pos;
+}
+
+KeyState WindowController::MouseState::GetMouseButtonState(System::MouseButton mouseButton)
+{
+    KeyState state;
+
+    m_mutex->Lock();
+    state = m_states[mouseButton];
+    m_mutex->Unlock();
+
+    return state;
 }
 
 void WindowController::MouseState::MouseMove(int xPos, int yPos)
 {
+    m_mutex->Lock();
     _xPos = xPos;
     _yPos = yPos;
+    m_mutex->Unlock();
+}
+
+void WindowController::MouseState::MouseButtonDown(System::MouseButton mouseButton)
+{
+    m_mutex->Lock();
+    m_states[mouseButton] = KeyState::Pressed;
+    m_mutex->Unlock();
+}
+
+void WindowController::MouseState::MouseButtonUp(System::MouseButton mouseButton)
+{
+    m_mutex->Lock();
+    m_states[mouseButton] = KeyState::Unpressed;
+    m_mutex->Unlock();
 }

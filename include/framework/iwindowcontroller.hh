@@ -4,6 +4,7 @@
 #include "framework/readingkeyboardstate.hh"
 #include "framework/readingmousestate.hh"
 #include "system/keycode.hh"
+#include "system/mousebutton.hh"
 
 namespace Framework
 {
@@ -17,7 +18,9 @@ namespace Framework
         virtual void OnKeyUp(System::KeyCode key) { };
         virtual void OnKeyDown(System::KeyCode key) { };
         virtual void OnMouseMove(int xPos, int yPos) { };
-		
+        virtual void OnMouseButtonDown(System::MouseButton button) = 0;
+        virtual void OnMouseButtonUp(System::MouseButton button) = 0;
+
         virtual void AddKeyboardEventHandler(IWritingKeyboardState *handler) = 0;
         virtual void RemoveKeyboardEventHandler(IWritingKeyboardState *handler) = 0;
         virtual void SwapBuffers() = 0;

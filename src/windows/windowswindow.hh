@@ -29,6 +29,10 @@ private:
     void KeyDown(WPARAM key);
     void KeyUp(WPARAM key);
     void MouseMove(WPARAM wParam, LPARAM lParam);
+    void LeftMouseButtonDown(WPARAM wParam, LPARAM lParam);
+    void RightMouseButtonDown(WPARAM wParam, LPARAM lParam);
+    void LeftMouseButtonUp(WPARAM wParam, LPARAM lParam);
+    void RightMouseButtonUp(WPARAM wParam, LPARAM lParam);
 
     WindowsWindow(const WindowsWindow &o) = delete;
 

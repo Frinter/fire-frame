@@ -5,6 +5,7 @@
 
 #include "windowswindow.hh"
 #include "windowsopenglcontext.hh"
+#include "system/mousebutton.hh"
 
 #define FILE_EXIT_OPTION 9001
 static char appName[] = "Test Application";
@@ -184,6 +185,26 @@ void WindowsWindow::MouseMove(WPARAM wParam, LPARAM lParam)
     m_controller->OnMouseMove(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 }
 
+void WindowsWindow::LeftMouseButtonDown(WPARAM wParam, LPARAM lParam)
+{
+    m_controller->OnMouseButtonDown(System::MouseButton::Button1);
+}
+
+void WindowsWindow::RightMouseButtonDown(WPARAM wParam, LPARAM lParam)
+{
+    m_controller->OnMouseButtonDown(System::MouseButton::Button2);
+}
+
+void WindowsWindow::LeftMouseButtonUp(WPARAM wParam, LPARAM lParam)
+{
+    m_controller->OnMouseButtonUp(System::MouseButton::Button1);
+}
+
+void WindowsWindow::RightMouseButtonUp(WPARAM wParam, LPARAM lParam)
+{
+    m_controller->OnMouseButtonUp(System::MouseButton::Button2);
+}
+
 LRESULT CALLBACK WindowsWindow::WndProc(HWND windowHandle, UINT message, WPARAM wparam, LPARAM lparam)
 {
     switch(message)
@@ -198,6 +219,22 @@ LRESULT CALLBACK WindowsWindow::WndProc(HWND windowHandle, UINT message, WPARAM 
 
     case WM_MOUSEMOVE:
         windowMap[windowHandle]->MouseMove(wparam, lparam);
+        return 0;
+
+    case WM_LBUTTONDOWN:
+        windowMap[windowHandle]->LeftMouseButtonDown(wparam, lparam);
+        return 0;
+
+    case WM_LBUTTONUP:
+        windowMap[windowHandle]->LeftMouseButtonUp(wparam, lparam);
+        return 0;
+
+    case WM_RBUTTONDOWN:
+        windowMap[windowHandle]->RightMouseButtonDown(wparam, lparam);
+        return 0;
+
+    case WM_RBUTTONUP:
+        windowMap[windowHandle]->RightMouseButtonUp(wparam, lparam);
         return 0;
 
     case WM_CLOSE:

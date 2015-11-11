@@ -44,14 +44,18 @@ namespace Framework
 
             virtual int GetMouseX() const;
             virtual int GetMouseY() const;
+            virtual KeyState GetMouseButtonState(System::MouseButton mouseButton);
 
             virtual void MouseMove(int xPos, int yPos);
+            virtual void MouseButtonDown(System::MouseButton mouseButton);
+            virtual void MouseButtonUp(System::MouseButton mouseButton);
 
         private:
             System::Mutex *m_mutex;
 
             unsigned int _xPos;
             unsigned int _yPos;
+            std::map<System::MouseButton, KeyState> m_states;
         };
 
     public:
@@ -74,6 +78,8 @@ namespace Framework
         virtual void OnKeyDown(System::KeyCode key);
         virtual void OnKeyUp(System::KeyCode key);
         virtual void OnMouseMove(int xPos, int yPos);
+        virtual void OnMouseButtonDown(System::MouseButton);
+        virtual void OnMouseButtonUp(System::MouseButton);
 
     private:
         System::Window *m_window;
