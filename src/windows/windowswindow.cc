@@ -165,6 +165,17 @@ void WindowsWindow::GetWindowSize(unsigned int *width, unsigned int *height)
     *height = rect.bottom - rect.top;
 }
 
+bool WindowsWindow::SetMousePosition(unsigned int posX, unsigned int posY)
+{
+    POINT point;
+
+    point.x = posX;
+    point.y = posY;
+
+    bool success = ClientToScreen(m_windowHandle, &point);
+    return success ? SetCursorPos(point.x, point.y) : false;
+}
+
 void WindowsWindow::Destroy()
 {
     DestroyWindow(m_windowHandle);

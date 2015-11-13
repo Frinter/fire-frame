@@ -14,6 +14,7 @@ public:
     WindowsWindow(Framework::ApplicationContext *applicationContext, Framework::ISystemWindowController *controller, HINSTANCE processInstance, int commandShow);
     virtual ~WindowsWindow();
     virtual void GetWindowSize(unsigned int *width, unsigned int *height);
+    virtual bool SetMousePosition(unsigned int posX, unsigned int posY);
 
     virtual int DoMessageLoop();
 	

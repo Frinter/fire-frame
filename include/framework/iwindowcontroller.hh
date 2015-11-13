@@ -12,6 +12,7 @@ namespace Framework
     class ISystemWindowController {
     public:
         ISystemWindowController() {}
+        ~ISystemWindowController() {}
 
         // The implementation of Window must guarantee that Window::Create will return before any callbacks are called
         virtual void OnWindowReady() { };
@@ -24,6 +25,8 @@ namespace Framework
         virtual void OnMouseButtonUp(System::MouseButton button) = 0;
         virtual void OnMouseScroll(int scrollDelta) = 0;
 
+        virtual void SetMousePosition(unsigned int posX, unsigned int posY) = 0;
+
         virtual void AddKeyboardEventHandler(IWritingKeyboardState *handler) = 0;
         virtual void RemoveKeyboardEventHandler(IWritingKeyboardState *handler) = 0;
         virtual void SwapBuffers() = 0;
@@ -34,6 +37,7 @@ namespace Framework
     class IWindowController : public ISystemWindowController
     {
     public:
+        ~IWindowController() {}
         virtual void CreateContext() = 0;
         virtual ReadingKeyboardState *GetKeyStateReader() = 0;
         virtual ReadingMouseState *GetMouseReader() = 0;

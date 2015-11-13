@@ -60,6 +60,12 @@ ReadingWindowState *WindowController::GetWindowReader()
     return &m_windowState;
 }
 
+void WindowController::SetMousePosition(unsigned int posX, unsigned int posY)
+{
+    if (m_window->SetMousePosition(posX, posY))
+        m_mouseState.MouseMove(posX, posY);
+}
+
 void WindowController::OnWindowReady()
 {
     m_applicationContext->WindowReady()->Trigger();
