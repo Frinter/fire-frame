@@ -233,7 +233,7 @@ void WindowsWindow::RightMouseButtonUp(WPARAM wParam, LPARAM lParam)
 
 void WindowsWindow::MouseScrollWheel(WPARAM wParam, LPARAM lParam)
 {
-    m_controller->OnMouseScroll(GET_WHEEL_DELTA_WPARAM(wParam));
+    m_controller->OnMouseScroll(GET_WHEEL_DELTA_WPARAM(wParam) / WHEEL_DELTA);
 }
 
 LRESULT CALLBACK WindowsWindow::WndProc(HWND windowHandle, UINT message, WPARAM wparam, LPARAM lparam)
