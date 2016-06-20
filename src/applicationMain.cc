@@ -19,11 +19,11 @@ using System::thread;
 int applicationMain()
 {
     ClientCode clientCode = LoadClientCode();
-	
+
     ApplicationState *applicationState = clientCode.GetApplicationState();
     ApplicationContext applicationContext(applicationState);
     WindowController windowController(&applicationContext);
-		
+
     auto windowThreadEntry = [&applicationContext, &windowController] () {
         windowController.CreateClientWindow();
         applicationContext.ApplicationThreadQuit()->Wait();
