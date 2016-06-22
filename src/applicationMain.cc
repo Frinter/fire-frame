@@ -29,19 +29,14 @@ int applicationMain()
         applicationContext.ApplicationThreadQuit()->Wait();
     };
 
-    auto applicationThreadEntry = [&applicationContext, &windowController, &clientCode] () {
-        applicationContext.WindowReady()->Wait();
-
-        clientCode.ApplicationThreadEntry(&applicationContext, &windowController);
-
-        applicationContext.SignalWindowDestruction();
-        applicationContext.ApplicationThreadQuit()->Trigger();
-    };
-
     thread windowThread = thread(windowThreadEntry);
-    thread applicationThread = thread(applicationThreadEntry);
+    applicationContext.WindowReady()->Wait();
 
-    applicationThread.join();
+    clientCode.ApplicationThreadEntry(&applicationContext, &windowController);
+
+    applicationContext.SignalWindowDestruction();
+    applicationContext.ApplicationThreadQuit()->Trigger();
+
     windowThread.join();
 
     return 0;
