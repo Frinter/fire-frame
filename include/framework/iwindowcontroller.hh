@@ -33,12 +33,13 @@ namespace Framework
 
         ISystemWindowController(const ISystemWindowController &o) = delete;
     };
-	
+
     class IWindowController : public ISystemWindowController
     {
     public:
         ~IWindowController() {}
         virtual void CreateContext() = 0;
+        virtual void DestroyContext() = 0;
         virtual ReadingKeyboardState *GetKeyStateReader() = 0;
         virtual ReadingMouseState *GetMouseReader() = 0;
         virtual ReadingWindowState *GetWindowReader() = 0;

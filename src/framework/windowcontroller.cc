@@ -40,6 +40,14 @@ void WindowController::CreateContext()
     m_openGLContext = OpenGLContext::Create(m_window);
 }
 
+void WindowController::DestroyContext()
+{
+    if (m_openGLContext != NULL) {
+        delete m_openGLContext;
+        m_openGLContext = NULL;
+    }
+}
+
 void WindowController::SwapBuffers()
 {
     m_openGLContext->SwapBuffers();

@@ -84,6 +84,7 @@ namespace Framework
 
         void CreateClientWindow();
         void CreateContext();
+        void DestroyContext();
 
         virtual void SwapBuffers();
 
