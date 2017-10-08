@@ -2,9 +2,9 @@
 
 namespace Framework
 {
-	enum class KeyState
-	{
-		Unpressed,
-		Pressed
-	};
+    enum class KeyState
+    {
+        Unpressed,
+        Pressed
+    };
 }
