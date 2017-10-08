@@ -113,6 +113,7 @@ namespace Framework
         KeyboardState m_keyboardState;
         MouseState m_mouseState;
         WindowState m_windowState;
+        System::Event *m_windowReady;
         std::list<IWritingKeyboardState*> m_keyboardEventHandlers;
 
         bool m_shouldDestroyWindow;

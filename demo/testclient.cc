@@ -1,6 +1,7 @@
 #include <iostream>
 
 #include "GL/gl_core_3_3.h"
+#include "framework/keystate.hh"
 #include "framework/platform.hh"
 #include "system/keycode.hh"
 #include "system/utility.hh"
@@ -10,6 +11,7 @@
 #include "ticker.hh"
 
 using Framework::ReadingKeyboardState;
+using Framework::KeyState;
 using System::KeyCode;
 using System::Utility;
 
@@ -68,6 +70,11 @@ public:
     {
         std::cout << "OtherTestController stack blur" << std::endl;
     }
+
+    virtual void OnTick()
+    {
+        std::cout << "OtherTestController tick" << std::endl;
+    }
 };
 
 class TestController : public GameController {
@@ -109,6 +116,7 @@ public:
 
     virtual void OnTick()
     {
+        std::cout << "TestController tick" << std::endl;
         ReadingKeyboardState *keyboardState = GetKeyboardState();
 
         if (m_otherController == NULL)
@@ -137,8 +145,9 @@ GetApplicationState_FunctionSignature(GetApplicationState)
     return &applicationState;
 }
 
-ApplicationThreadEntry_FunctionSignature(ApplicationThreadEntry)
+void ApplicationThreadEntry(Framework::IApplicationContext *applicationContext)
 {
+    Framework::IWindowController *windowController = applicationContext->createWindow();
     std::cout << "GraphicsThreadEntry: " << std::endl;
 
     windowController->CreateContext();
@@ -167,6 +176,8 @@ ApplicationThreadEntry_FunctionSignature(ApplicationThreadEntry)
 
     controllerStack.Push(controller);
 
+    Framework::ReadingKeyboardState *keyboardState = windowController->GetKeyStateReader();
+
     ticker.Start();
 
     while (!applicationContext->IsClosing())
@@ -178,6 +189,11 @@ ApplicationThreadEntry_FunctionSignature(ApplicationThreadEntry)
         ticker.Wait(500);
         std::cout << "Application Thread (" << ticks << " -> " << newTicks << ")" << std::endl;
         ticks = newTicks;
+
+        if (keyboardState->GetKeyState(System::KeyCode::KeyQ) == KeyState::Pressed)
+        {
+            applicationContext->Close();
+        }
     }
 
     controllerStack.Clear();

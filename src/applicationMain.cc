@@ -22,22 +22,11 @@ int applicationMain()
 
     ApplicationState *applicationState = clientCode.GetApplicationState();
     ApplicationContext applicationContext(applicationState);
-    WindowController windowController(&applicationContext);
 
-    auto windowThreadEntry = [&applicationContext, &windowController] () {
-        windowController.CreateClientWindow();
-        applicationContext.ApplicationThreadQuit()->Wait();
-    };
-
-    thread windowThread = thread(windowThreadEntry);
-    applicationContext.WindowReady()->Wait();
-
-    clientCode.ApplicationThreadEntry(&applicationContext, &windowController);
+    clientCode.ApplicationThreadEntry(&applicationContext);
 
     applicationContext.SignalWindowDestruction();
     applicationContext.ApplicationThreadQuit()->Trigger();
-
-    windowThread.join();
 
     return 0;
 }

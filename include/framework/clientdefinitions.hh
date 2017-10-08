@@ -8,5 +8,5 @@
 #define GetApplicationState_FunctionSignature(name) Framework::ApplicationState *name()
 typedef GetApplicationState_FunctionSignature(GetApplicationState_FunctionType);
 
-#define ApplicationThreadEntry_FunctionSignature(name) void name(Framework::IApplicationContext *applicationContext, Framework::IWindowController *windowController)
+#define ApplicationThreadEntry_FunctionSignature(name) void name(Framework::IApplicationContext *applicationContext)
 typedef ApplicationThreadEntry_FunctionSignature(ApplicationThreadEntry_FunctionType);

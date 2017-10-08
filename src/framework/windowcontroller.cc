@@ -3,6 +3,7 @@
 #include "framework/windowcontroller.hh"
 
 using System::KeyCode;
+using System::Event;
 using System::Mutex;
 using System::OpenGLContext;
 using System::Window;
@@ -13,8 +14,11 @@ using Framework::ReadingWindowState;
 using Framework::WindowController;
 
 WindowController::WindowController(ApplicationContext *applicationContext)
-    : m_window(NULL), m_openGLContext(NULL), m_shouldDestroyWindow(false), m_applicationContext(applicationContext)
-{ }
+    : m_window(NULL), m_openGLContext(NULL), m_shouldDestroyWindow(false),
+      m_applicationContext(applicationContext)
+{
+    m_windowReady = Event::Create(NULL);
+}
 
 WindowController::~WindowController()
 {
@@ -22,6 +26,8 @@ WindowController::~WindowController()
         delete m_openGLContext;
     if (m_window != NULL)
         delete m_window;
+    if (m_windowReady != NULL)
+        delete m_windowReady;
 }
 
 void WindowController::CreateClientWindow()

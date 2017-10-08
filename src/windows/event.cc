@@ -11,6 +11,11 @@ public:
         ResetEvent(m_eventHandle);
     }
 
+    ~WindowsEvent()
+    {
+        CloseHandle(m_eventHandle);
+    }
+
     virtual void Trigger()
     {
         SetEvent(m_eventHandle);
@@ -33,4 +38,9 @@ private:
 System::Event *System::Event::Create(const char *name)
 {
     return new WindowsEvent(name);
+}
+
+System::Event *System::Event::Create()
+{
+    return new WindowsEvent(NULL);
 }
