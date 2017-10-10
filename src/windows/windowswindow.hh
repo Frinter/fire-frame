@@ -11,13 +11,13 @@ class WindowsWindow : public System::Window
     friend class WindowsOpenGLContext;
 
 public:
-    WindowsWindow(Framework::ApplicationContext *applicationContext, Framework::ISystemWindowController *controller, HINSTANCE processInstance, int commandShow);
+    WindowsWindow(Framework::ApplicationContext *applicationContext, const char *windowName, Framework::ISystemWindowController *controller, HINSTANCE processInstance, int commandShow);
     virtual ~WindowsWindow();
     virtual void GetWindowSize(unsigned int *width, unsigned int *height);
     virtual bool SetMousePosition(unsigned int posX, unsigned int posY);
 
     virtual int DoMessageLoop();
-	
+
     virtual void Destroy();
 
 private:
@@ -25,6 +25,8 @@ private:
     Framework::ISystemWindowController *m_controller;
     Framework::ApplicationContext *m_applicationContext;
     WindowsOpenGLContext *m_openGLContext;
+
+    void makeWindow(const char *name, HINSTANCE processInstance, int commandShow);
 
     void Ready();
     void Close();

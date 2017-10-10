@@ -30,9 +30,9 @@ WindowController::~WindowController()
         delete m_windowReady;
 }
 
-void WindowController::CreateClientWindow()
+void WindowController::CreateClientWindow(const char *windowName)
 {
-    m_window = Window::Create(m_applicationContext, this);
+    m_window = Window::Create(m_applicationContext, windowName, this);
 
     unsigned int windowWidth, windowHeight;
     m_window->GetWindowSize(&windowWidth, &windowHeight);

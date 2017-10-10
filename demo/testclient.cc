@@ -136,18 +136,9 @@ private:
     OtherTestController *m_otherController;
 };
 
-static Framework::ApplicationState applicationState = {
-    .windowName = "Fire Frame Demo"
-};
-
-GetApplicationState_FunctionSignature(GetApplicationState)
-{
-    return &applicationState;
-}
-
 void ApplicationThreadEntry(Framework::IApplicationContext *applicationContext)
 {
-    Framework::IWindowController *windowController = applicationContext->createWindow();
+    Framework::IWindowController *windowController = applicationContext->createWindow("Fire Frame Demo");
     std::cout << "GraphicsThreadEntry: " << std::endl;
 
     windowController->CreateContext();

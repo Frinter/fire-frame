@@ -4,9 +4,9 @@
 
 using namespace Framework;
 
-ApplicationContext::ApplicationContext(ApplicationState *applicationState)
+ApplicationContext::ApplicationContext()
     : m_isClosing(false), m_destroyWindowFlag(false),
-      m_applicationState(applicationState), m_windowReady(System::Event::Create("WindowReady")),
+      m_windowReady(System::Event::Create("WindowReady")),
       m_applicationThreadQuit(System::Event::Create("GraphicsThreadQuit"))
 {
 }
@@ -24,12 +24,12 @@ void ApplicationContext::Close()
     m_isClosing = true;
 }
 
-IWindowController *ApplicationContext::createWindow() {
+IWindowController *ApplicationContext::createWindow(const char *windowName) {
     WindowController *windowController = new WindowController(this);
 
     ApplicationContext *self = this;
-    auto windowThreadEntry = [&self, &windowController] () {
-        windowController->CreateClientWindow();
+    auto windowThreadEntry = [&self, &windowController, &windowName] () {
+        windowController->CreateClientWindow(windowName);
         self->ApplicationThreadQuit()->Wait();
     };
 
@@ -63,11 +63,6 @@ System::Event *ApplicationContext::WindowReady() const
 System::Event *ApplicationContext::ApplicationThreadQuit() const
 {
     return m_applicationThreadQuit;
-}
-
-ApplicationState *ApplicationContext::GetState() const
-{
-    return m_applicationState;
 }
 
 System::Utility *ApplicationContext::GetSystemUtility() const

@@ -103,8 +103,13 @@ public:
 static KeyMap keyMap;
 static std::unordered_map<HWND, WindowsWindow*> windowMap;
 
-WindowsWindow::WindowsWindow(Framework::ApplicationContext *applicationContext, Framework::ISystemWindowController *controller, HINSTANCE processInstance, int commandShow)
+WindowsWindow::WindowsWindow(Framework::ApplicationContext *applicationContext, const char *windowName, Framework::ISystemWindowController *controller, HINSTANCE processInstance, int commandShow)
     : m_applicationContext(applicationContext), m_controller(controller), m_openGLContext(NULL)
+{
+    makeWindow(windowName, processInstance, commandShow);
+}
+
+void WindowsWindow::makeWindow(const char *windowName, HINSTANCE processInstance, int commandShow)
 {
     WNDCLASSEX windowClass;
 
@@ -120,13 +125,13 @@ WindowsWindow::WindowsWindow(Framework::ApplicationContext *applicationContext, 
     windowClass.hbrBackground = (HBRUSH) GetStockObject(BLACK_BRUSH);
     windowClass.lpszClassName = appName;
     windowClass.lpszMenuName  = NULL;
-    
+
     RegisterClassEx(&windowClass);
-    
-    m_windowHandle = CreateWindow(appName, m_applicationContext->GetState()->windowName, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, processInstance, NULL);
-    
+
+    m_windowHandle = CreateWindow(appName, windowName, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, processInstance, NULL);
+
     windowMap[m_windowHandle] = this;
-    
+
     ShowWindow(m_windowHandle, commandShow);
     UpdateWindow(m_windowHandle);
 }
@@ -146,7 +151,7 @@ int WindowsWindow::DoMessageLoop()
     {
         TranslateMessage(&message);
         DispatchMessage(&message);
-		
+
         // Don't do this here?
         if (m_applicationContext->ShouldDestroyWindow())
             Destroy();
@@ -283,7 +288,7 @@ LRESULT CALLBACK WindowsWindow::WndProc(HWND windowHandle, UINT message, WPARAM 
     case WM_DESTROY:
         PostQuitMessage(0);
         return 0;
-		
+
     default:
         return DefWindowProc(windowHandle, message, wparam, lparam);
     }

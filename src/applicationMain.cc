@@ -1,4 +1,3 @@
-#include "framework/applicationstate.hh"
 #include "framework/applicationcontext.hh"
 #include "framework/igraphicsthreadcontroller.hh"
 #include "framework/ilogicthreadcontroller.hh"
@@ -6,7 +5,6 @@
 #include "framework/clientcode.hh"
 #include "system/thread.hh"
 
-using Framework::ApplicationState;
 using Framework::ApplicationContext;
 using Framework::ClientCode;
 using Framework::IGraphicsThreadController;
@@ -20,8 +18,7 @@ int applicationMain()
 {
     ClientCode clientCode = LoadClientCode();
 
-    ApplicationState *applicationState = clientCode.GetApplicationState();
-    ApplicationContext applicationContext(applicationState);
+    ApplicationContext applicationContext;
 
     clientCode.ApplicationThreadEntry(&applicationContext);
 
