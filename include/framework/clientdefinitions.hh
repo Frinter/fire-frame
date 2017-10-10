@@ -1,7 +1,6 @@
 #pragma once
 
 #include "framework/applicationContext.hh"
-#include "framework/igraphicsthreadcontroller.hh"
 #include "framework/ilogicthreadcontroller.hh"
 
 #define ApplicationThreadEntry_FunctionSignature(name) void name(Framework::IApplicationContext *applicationContext)

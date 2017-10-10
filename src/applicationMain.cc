@@ -1,5 +1,4 @@
 #include "framework/applicationcontext.hh"
-#include "framework/igraphicsthreadcontroller.hh"
 #include "framework/ilogicthreadcontroller.hh"
 #include "framework/windowcontroller.hh"
 #include "framework/clientcode.hh"
@@ -7,7 +6,6 @@
 
 using Framework::ApplicationContext;
 using Framework::ClientCode;
-using Framework::IGraphicsThreadController;
 using Framework::ILogicThreadController;
 using Framework::LoadClientCode;
 using Framework::WindowController;
