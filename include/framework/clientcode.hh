@@ -1,7 +1,6 @@
 #pragma once
 
 #include "framework/clientdefinitions.hh"
-#include "framework/ilogicthreadcontroller.hh"
 
 namespace Framework
 {
