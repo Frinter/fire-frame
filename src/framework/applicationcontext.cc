@@ -29,7 +29,8 @@ IWindowController *ApplicationContext::createWindow(const char *windowName) {
 
     ApplicationContext *self = this;
     auto windowThreadEntry = [&self, &windowController, &windowName] () {
-        windowController->CreateClientWindow(windowName);
+        System::Window *window = System::Window::Create(self, windowName, windowController);
+        windowController->setWindow(window);
         self->ApplicationThreadQuit()->Wait();
     };
 

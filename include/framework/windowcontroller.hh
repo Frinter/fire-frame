@@ -82,7 +82,7 @@ namespace Framework
 
         virtual ~WindowController();
 
-        void CreateClientWindow(const char *windowName);
+        void setWindow(System::Window *window);
         void CreateContext();
         void DestroyContext();
 
