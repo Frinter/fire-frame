@@ -82,7 +82,12 @@ void WindowController::SetMousePosition(unsigned int posX, unsigned int posY)
 
 void WindowController::OnWindowReady()
 {
-    m_applicationContext->WindowReady()->Trigger();
+    m_windowReady->Trigger();
+}
+
+System::Event *WindowController::windowReady()
+{
+    return m_windowReady;
 }
 
 void WindowController::OnWindowClose()

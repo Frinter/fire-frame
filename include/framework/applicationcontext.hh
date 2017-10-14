@@ -31,7 +31,6 @@ namespace Framework
         bool IsClosing() const;
         bool ShouldDestroyWindow() const;
 
-        System::Event *WindowReady() const;
         System::Event *ApplicationThreadQuit() const;
 
         System::Utility *GetSystemUtility() const;
@@ -39,7 +38,6 @@ namespace Framework
     private:
         bool m_isClosing;
         bool m_destroyWindowFlag;
-        System::Event *m_windowReady;
         System::Event *m_applicationThreadQuit;
         std::vector<System::thread*> m_threads;
     };

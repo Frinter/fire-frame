@@ -96,6 +96,8 @@ namespace Framework
 
         virtual void SetMousePosition(unsigned int posX, unsigned int posY);
 
+        virtual System::Event *windowReady();
+
         virtual void OnWindowReady();
         virtual void OnWindowClose();
         virtual void OnWindowResize(unsigned int width, unsigned int height);

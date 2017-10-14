@@ -6,7 +6,6 @@ using namespace Framework;
 
 ApplicationContext::ApplicationContext()
     : m_isClosing(false), m_destroyWindowFlag(false),
-      m_windowReady(System::Event::Create("WindowReady")),
       m_applicationThreadQuit(System::Event::Create("GraphicsThreadQuit"))
 {
 }
@@ -36,7 +35,7 @@ IWindowController *ApplicationContext::createWindow(const char *windowName) {
 
     System::thread *windowThread = new System::thread(windowThreadEntry);
     m_threads.push_back(windowThread);
-    WindowReady()->Wait();
+    windowController->windowReady()->Wait();
 
     return windowController;
 }
@@ -54,11 +53,6 @@ bool ApplicationContext::IsClosing() const
 bool ApplicationContext::ShouldDestroyWindow() const
 {
     return m_isClosing || m_destroyWindowFlag;
-}
-
-System::Event *ApplicationContext::WindowReady() const
-{
-    return m_windowReady;
 }
 
 System::Event *ApplicationContext::ApplicationThreadQuit() const
