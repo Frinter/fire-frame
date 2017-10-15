@@ -5,8 +5,6 @@
 using namespace Framework;
 
 ApplicationContext::ApplicationContext()
-    : m_destroyWindowFlag(false),
-      m_applicationThreadQuit(System::Event::Create("GraphicsThreadQuit"))
 {
 }
 
@@ -25,7 +23,6 @@ IWindowController *ApplicationContext::createWindow(const char *windowName) {
     auto windowThreadEntry = [&self, &windowController, &windowName] () {
         System::Window *window = System::Window::Create(self, windowName, windowController);
         windowController->setWindow(window);
-        self->ApplicationThreadQuit()->Wait();
     };
 
     System::thread *windowThread = new System::thread(windowThreadEntry);
@@ -33,21 +30,6 @@ IWindowController *ApplicationContext::createWindow(const char *windowName) {
     windowController->windowReady()->Wait();
 
     return windowController;
-}
-
-void ApplicationContext::SignalWindowDestruction()
-{
-    m_destroyWindowFlag = true;
-}
-
-bool ApplicationContext::ShouldDestroyWindow() const
-{
-    return m_destroyWindowFlag;
-}
-
-System::Event *ApplicationContext::ApplicationThreadQuit() const
-{
-    return m_applicationThreadQuit;
 }
 
 System::Utility *ApplicationContext::GetSystemUtility() const

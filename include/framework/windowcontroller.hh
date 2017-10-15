@@ -89,6 +89,8 @@ namespace Framework
         void closeWindow();
         void destroyWindow();
 
+        virtual bool isWindowClosed() const;
+
         virtual void SwapBuffers();
 
         virtual void AddKeyboardEventHandler(IWritingKeyboardState *handler);
@@ -118,9 +120,10 @@ namespace Framework
         KeyboardState m_keyboardState;
         MouseState m_mouseState;
         WindowState m_windowState;
+        System::Mutex *m_mutex;
         System::Event *m_windowReady;
         std::list<IWritingKeyboardState*> m_keyboardEventHandlers;
 
-        bool m_shouldDestroyWindow;
+        bool m_isWindowClosed;
     };
 }

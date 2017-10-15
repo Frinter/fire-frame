@@ -16,8 +16,5 @@ int applicationMain()
 
     clientCode.ApplicationThreadEntry(&applicationContext);
 
-    applicationContext.SignalWindowDestruction();
-    applicationContext.ApplicationThreadQuit()->Trigger();
-
     return 0;
 }

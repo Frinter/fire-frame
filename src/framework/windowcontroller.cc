@@ -14,9 +14,10 @@ using Framework::ReadingWindowState;
 using Framework::WindowController;
 
 WindowController::WindowController(ApplicationContext *applicationContext)
-    : m_window(NULL), m_openGLContext(NULL), m_shouldDestroyWindow(false),
+    : m_window(NULL), m_openGLContext(NULL), m_isWindowClosed(false),
       m_applicationContext(applicationContext)
 {
+    m_mutex = Mutex::Create();
     m_windowReady = Event::Create(NULL);
 }
 
@@ -51,6 +52,17 @@ void WindowController::closeWindow()
 void WindowController::destroyWindow()
 {
     m_window->Destroy();
+}
+
+bool WindowController::isWindowClosed() const
+{
+    bool value;
+
+    m_mutex->Lock();
+    value = m_isWindowClosed;
+    m_mutex->Unlock();
+
+    return value;
 }
 
 void WindowController::CreateContext()
@@ -104,6 +116,10 @@ System::Event *WindowController::windowReady()
 
 void WindowController::OnWindowClose()
 {
+    m_mutex->Lock();
+    m_isWindowClosed = true;
+    m_mutex->Unlock();
+
     m_window->Destroy();
 }
 

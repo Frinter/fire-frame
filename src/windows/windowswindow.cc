@@ -288,6 +288,7 @@ LRESULT CALLBACK WindowsWindow::WndProc(HWND windowHandle, UINT message, WPARAM 
 
     case WM_DESTROY:
         PostQuitMessage(0);
+        windowMap[windowHandle] = NULL;
         return 0;
 
     default:

@@ -41,6 +41,7 @@ namespace Framework
         virtual void closeWindow() = 0;
         virtual void CreateContext() = 0;
         virtual void DestroyContext() = 0;
+        virtual bool isWindowClosed() const = 0;
         virtual ReadingKeyboardState *GetKeyStateReader() = 0;
         virtual ReadingMouseState *GetMouseReader() = 0;
         virtual ReadingWindowState *GetWindowReader() = 0;
