@@ -139,7 +139,6 @@ private:
 void ApplicationThreadEntry(Framework::IApplicationContext *applicationContext)
 {
     Framework::IWindowController *windowController = applicationContext->createWindow("Fire Frame Demo");
-    std::cout << "GraphicsThreadEntry: " << std::endl;
 
     windowController->CreateContext();
 
