@@ -170,8 +170,8 @@ void ApplicationThreadEntry(Framework::IApplicationContext *applicationContext)
     Framework::ReadingKeyboardState *keyboardState = windowController->GetKeyStateReader();
 
     ticker.Start();
-
-    while (!applicationContext->IsClosing())
+    bool closing = false;
+    while (!closing)
     {
         controller = (GameController *)controllerStack.Top();
         controller->OnTick();
@@ -183,9 +183,10 @@ void ApplicationThreadEntry(Framework::IApplicationContext *applicationContext)
 
         if (keyboardState->GetKeyState(System::KeyCode::KeyQ) == KeyState::Pressed)
         {
-            applicationContext->Close();
+            closing = true;
         }
     }
 
     controllerStack.Clear();
+    windowController->closeWindow();
 }

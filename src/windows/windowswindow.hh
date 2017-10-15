@@ -19,6 +19,7 @@ public:
     virtual int DoMessageLoop();
 
     virtual void Destroy();
+    virtual void Close();
 
 private:
     HWND m_windowHandle;
@@ -26,10 +27,9 @@ private:
     Framework::ApplicationContext *m_applicationContext;
     WindowsOpenGLContext *m_openGLContext;
 
-    void makeWindow(const char *name, HINSTANCE processInstance, int commandShow);
-
     void Ready();
-    void Close();
+
+    void onClose();
     void WindowResize(WPARAM wParam, LPARAM lParam);
     void KeyDown(WPARAM key);
     void KeyUp(WPARAM key);
@@ -42,5 +42,6 @@ private:
 
     WindowsWindow(const WindowsWindow &o) = delete;
 
+    static HWND makeWindow(const char *name, HINSTANCE processInstance, int commandShow);
     static LRESULT CALLBACK WndProc(HWND windowHandle, UINT message, WPARAM wparam, LPARAM lparam);
 };

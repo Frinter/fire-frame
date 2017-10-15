@@ -15,6 +15,7 @@ namespace System
         virtual void GetWindowSize(unsigned int *width, unsigned int *height) = 0;
         virtual bool SetMousePosition(unsigned int posX, unsigned int posY) = 0;
         virtual void Destroy() = 0;
+        virtual void Close() = 0;
 
         static Window *Create(Framework::ApplicationContext *applicationContext, const char *name, Framework::ISystemWindowController *controller);
     };

@@ -106,10 +106,15 @@ static std::unordered_map<HWND, WindowsWindow*> windowMap;
 WindowsWindow::WindowsWindow(Framework::ApplicationContext *applicationContext, const char *windowName, Framework::ISystemWindowController *controller, HINSTANCE processInstance, int commandShow)
     : m_applicationContext(applicationContext), m_controller(controller), m_openGLContext(NULL)
 {
-    makeWindow(windowName, processInstance, commandShow);
+    m_windowHandle = WindowsWindow::makeWindow(windowName, processInstance, commandShow);
+
+    ShowWindow(m_windowHandle, commandShow);
+    UpdateWindow(m_windowHandle);
+
+    windowMap[m_windowHandle] = this;
 }
 
-void WindowsWindow::makeWindow(const char *windowName, HINSTANCE processInstance, int commandShow)
+HWND WindowsWindow::makeWindow(const char *windowName, HINSTANCE processInstance, int commandShow)
 {
     WNDCLASSEX windowClass;
 
@@ -128,12 +133,7 @@ void WindowsWindow::makeWindow(const char *windowName, HINSTANCE processInstance
 
     RegisterClassEx(&windowClass);
 
-    m_windowHandle = CreateWindow(appName, windowName, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, processInstance, NULL);
-
-    windowMap[m_windowHandle] = this;
-
-    ShowWindow(m_windowHandle, commandShow);
-    UpdateWindow(m_windowHandle);
+    return CreateWindow(appName, windowName, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, processInstance, NULL);
 }
 
 WindowsWindow::~WindowsWindow()
@@ -151,10 +151,6 @@ int WindowsWindow::DoMessageLoop()
     {
         TranslateMessage(&message);
         DispatchMessage(&message);
-
-        // Don't do this here?
-        if (m_applicationContext->ShouldDestroyWindow())
-            Destroy();
     }
 
     return message.wParam;
@@ -183,7 +179,12 @@ bool WindowsWindow::SetMousePosition(unsigned int posX, unsigned int posY)
 
 void WindowsWindow::Destroy()
 {
-    DestroyWindow(m_windowHandle);
+    SendNotifyMessage(m_windowHandle, WM_DESTROY, 0, 0);
+}
+
+void WindowsWindow::Close()
+{
+    SendNotifyMessage(m_windowHandle, WM_CLOSE, 0, 0);
 }
 
 void WindowsWindow::Ready()
@@ -191,7 +192,7 @@ void WindowsWindow::Ready()
     m_controller->OnWindowReady();
 }
 
-void WindowsWindow::Close()
+void WindowsWindow::onClose()
 {
     m_controller->OnWindowClose();
 }
@@ -282,7 +283,7 @@ LRESULT CALLBACK WindowsWindow::WndProc(HWND windowHandle, UINT message, WPARAM 
         return 0;
 
     case WM_CLOSE:
-        windowMap[windowHandle]->Close();
+        windowMap[windowHandle]->onClose();
         return 0;
 
     case WM_DESTROY:

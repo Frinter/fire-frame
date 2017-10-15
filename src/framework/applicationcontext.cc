@@ -5,7 +5,7 @@
 using namespace Framework;
 
 ApplicationContext::ApplicationContext()
-    : m_isClosing(false), m_destroyWindowFlag(false),
+    : m_destroyWindowFlag(false),
       m_applicationThreadQuit(System::Event::Create("GraphicsThreadQuit"))
 {
 }
@@ -16,11 +16,6 @@ ApplicationContext::~ApplicationContext()
     {
         (*iter)->join();
     }
-}
-
-void ApplicationContext::Close()
-{
-    m_isClosing = true;
 }
 
 IWindowController *ApplicationContext::createWindow(const char *windowName) {
@@ -45,14 +40,9 @@ void ApplicationContext::SignalWindowDestruction()
     m_destroyWindowFlag = true;
 }
 
-bool ApplicationContext::IsClosing() const
-{
-    return m_isClosing;
-}
-
 bool ApplicationContext::ShouldDestroyWindow() const
 {
-    return m_isClosing || m_destroyWindowFlag;
+    return m_destroyWindowFlag;
 }
 
 System::Event *ApplicationContext::ApplicationThreadQuit() const

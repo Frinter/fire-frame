@@ -86,6 +86,9 @@ namespace Framework
         void CreateContext();
         void DestroyContext();
 
+        void closeWindow();
+        void destroyWindow();
+
         virtual void SwapBuffers();
 
         virtual void AddKeyboardEventHandler(IWritingKeyboardState *handler);

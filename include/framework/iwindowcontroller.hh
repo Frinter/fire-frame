@@ -12,7 +12,7 @@ namespace Framework
     class ISystemWindowController {
     public:
         ISystemWindowController() {}
-        ~ISystemWindowController() {}
+        virtual ~ISystemWindowController() {}
 
         // The implementation of Window must guarantee that Window::Create will return before any callbacks are called
         virtual void OnWindowReady() { };
@@ -37,7 +37,8 @@ namespace Framework
     class IWindowController : public ISystemWindowController
     {
     public:
-        ~IWindowController() {}
+        virtual ~IWindowController() {}
+        virtual void closeWindow() = 0;
         virtual void CreateContext() = 0;
         virtual void DestroyContext() = 0;
         virtual ReadingKeyboardState *GetKeyStateReader() = 0;

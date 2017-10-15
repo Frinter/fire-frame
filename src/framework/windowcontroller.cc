@@ -30,6 +30,8 @@ WindowController::~WindowController()
         delete m_windowReady;
 }
 
+// setWindow needs to be here (rather than handling this sort of thing in the constructor)
+// because there is a circular dependency betweein System::Window and Framework::WindowController
 void WindowController::setWindow(System::Window *window)
 {
     m_window = window;
@@ -39,6 +41,16 @@ void WindowController::setWindow(System::Window *window)
     m_windowState.Resize(windowWidth, windowHeight);
 
     m_window->DoMessageLoop();
+}
+
+void WindowController::closeWindow()
+{
+    m_window->Close();
+}
+
+void WindowController::destroyWindow()
+{
+    m_window->Destroy();
 }
 
 void WindowController::CreateContext()
@@ -92,7 +104,7 @@ System::Event *WindowController::windowReady()
 
 void WindowController::OnWindowClose()
 {
-    m_applicationContext->Close();
+    m_window->Destroy();
 }
 
 void WindowController::OnWindowResize(unsigned int width, unsigned int height)
