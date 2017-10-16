@@ -103,8 +103,8 @@ public:
 static KeyMap keyMap;
 static std::unordered_map<HWND, WindowsWindow*> windowMap;
 
-WindowsWindow::WindowsWindow(Framework::ApplicationContext *applicationContext, const char *windowName, Framework::ISystemWindowController *controller, HINSTANCE processInstance, int commandShow)
-    : m_applicationContext(applicationContext), m_controller(controller), m_openGLContext(NULL)
+WindowsWindow::WindowsWindow(const char *windowName, Framework::ISystemWindowController *controller, HINSTANCE processInstance, int commandShow)
+    : m_controller(controller), m_openGLContext(NULL)
 {
     m_windowHandle = WindowsWindow::makeWindow(windowName, processInstance, commandShow);
 

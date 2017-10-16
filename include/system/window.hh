@@ -2,7 +2,6 @@
 
 #include <stdio.h>
 
-#include "framework/applicationcontext.hh"
 #include "framework/iwindowcontroller.hh"
 #include "system/keycode.hh"
 
@@ -17,6 +16,6 @@ namespace System
         virtual void Destroy() = 0;
         virtual void Close() = 0;
 
-        static Window *Create(Framework::ApplicationContext *applicationContext, const char *name, Framework::ISystemWindowController *controller);
+        static Window *Create(const char *name, Framework::ISystemWindowController *controller);
     };
 }
