@@ -7,12 +7,18 @@
 #include "system/utility.hh"
 #include "framework/iwindowcontroller.hh"
 
+namespace System
+{
+    class Window;
+}
+
 namespace Framework
 {
     class IApplicationContext
     {
     public:
-        virtual IWindowController *createWindow(const char *windowName) = 0;
+        virtual IWindowController *createWindowController() = 0;
+        virtual System::Window *createWindow(const char *windowName, IWindowController *windowController) = 0;
         virtual System::Utility *GetSystemUtility() const = 0;
     };
 
@@ -22,7 +28,8 @@ namespace Framework
         ApplicationContext();
         ~ApplicationContext();
 
-        IWindowController *createWindow(const char *windowName);
+        IWindowController *createWindowController();
+        System::Window *createWindow(const char *windowName, IWindowController *windowController);
         System::Utility *GetSystemUtility() const;
 
     private:

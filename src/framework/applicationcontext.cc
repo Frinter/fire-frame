@@ -16,14 +16,16 @@ ApplicationContext::~ApplicationContext()
     }
 }
 
-IWindowController *ApplicationContext::createWindow(const char *windowName) {
-    WindowController *windowController = new WindowController(this);
+IWindowController *ApplicationContext::createWindowController()
+{
+    return new WindowController(this);
+}
 
+System::Window *ApplicationContext::createWindow(const char *windowName, IWindowController *windowController) {
+    System::Window *window;
     ApplicationContext *self = this;
-    auto windowThreadEntry = [&self, &windowController, &windowName] () {
-        System::Window *window = System::Window::Create(self, windowName, windowController);
-        windowController->setWindow(window);
-
+    auto windowThreadEntry = [&self, &windowController, &windowName, &window] () {
+        window = System::Window::Create(self, windowName, windowController);
         window->DoMessageLoop();
     };
 
@@ -31,7 +33,7 @@ IWindowController *ApplicationContext::createWindow(const char *windowName) {
     m_threads.push_back(windowThread);
     windowController->windowReady()->Wait();
 
-    return windowController;
+    return window;
 }
 
 System::Utility *ApplicationContext::GetSystemUtility() const

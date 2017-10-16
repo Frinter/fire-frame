@@ -14,8 +14,7 @@ using Framework::ReadingWindowState;
 using Framework::WindowController;
 
 WindowController::WindowController(ApplicationContext *applicationContext)
-    : m_window(NULL), m_isWindowClosed(false),
-      m_applicationContext(applicationContext)
+    : m_isWindowClosed(false), m_applicationContext(applicationContext)
 {
     m_mutex = Mutex::Create();
     m_windowReady = Event::Create(NULL);
@@ -23,17 +22,8 @@ WindowController::WindowController(ApplicationContext *applicationContext)
 
 WindowController::~WindowController()
 {
-    if (m_window != NULL)
-        delete m_window;
     if (m_windowReady != NULL)
         delete m_windowReady;
-}
-
-// setWindow needs to be here (rather than handling this sort of thing in the constructor)
-// because there is a circular dependency betweein System::Window and Framework::WindowController
-void WindowController::setWindow(System::Window *window)
-{
-    m_window = window;
 }
 
 bool WindowController::isWindowClosed() const
@@ -45,11 +35,6 @@ bool WindowController::isWindowClosed() const
     m_mutex->Unlock();
 
     return value;
-}
-
-System::Window *WindowController::getWindow() const
-{
-    return m_window;
 }
 
 ReadingKeyboardState *WindowController::GetKeyStateReader()

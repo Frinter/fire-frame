@@ -10,7 +10,6 @@
 #include "framework/readingwindowstate.hh"
 #include "framework/iwindowcontroller.hh"
 #include "system/keycode.hh"
-#include "system/window.hh"
 #include "system/openglcontext.hh"
 #include "system/mutex.hh"
 
@@ -84,7 +83,6 @@ namespace Framework
 
         void setWindow(System::Window *window);
 
-        virtual System::Window *getWindow() const;
         virtual bool isWindowClosed() const;
 
         virtual void AddKeyboardEventHandler(IWritingKeyboardState *handler);
@@ -106,7 +104,6 @@ namespace Framework
         virtual void OnMouseScroll(int scrollDelta);
 
     private:
-        System::Window *m_window;
         ApplicationContext *m_applicationContext;
         KeyboardState m_keyboardState;
         MouseState m_mouseState;

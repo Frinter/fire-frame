@@ -6,11 +6,7 @@
 #include "framework/readingwindowstate.hh"
 #include "system/keycode.hh"
 #include "system/mousebutton.hh"
-
-namespace System
-{
-    class Window;
-}
+#include "system/event.hh"
 
 namespace Framework
 {
@@ -18,8 +14,6 @@ namespace Framework
     public:
         ISystemWindowController() {}
         virtual ~ISystemWindowController() {}
-
-        virtual System::Window *getWindow() const = 0;
 
         // The implementation of Window must guarantee that Window::Create will return before any callbacks are called
         virtual void OnWindowReady() { };
@@ -42,6 +36,7 @@ namespace Framework
     {
     public:
         virtual ~IWindowController() {}
+        virtual System::Event *windowReady() = 0;
         virtual bool isWindowClosed() const = 0;
         virtual ReadingKeyboardState *GetKeyStateReader() = 0;
         virtual ReadingMouseState *GetMouseReader() = 0;
