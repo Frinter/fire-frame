@@ -1,6 +1,5 @@
 #include "framework/applicationcontext.hh"
 #include "framework/clientcode.hh"
-#include "system/thread.hh"
 
 using Framework::ApplicationContext;
 using Framework::ClientCode;
