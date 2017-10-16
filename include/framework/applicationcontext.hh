@@ -2,10 +2,9 @@
 
 #include <vector>
 
-#include "system/event.hh"
+#include "framework/iwindowcontroller.hh"
 #include "system/thread.hh"
 #include "system/utility.hh"
-#include "framework/iwindowcontroller.hh"
 
 namespace System
 {
@@ -17,7 +16,6 @@ namespace Framework
     class IApplicationContext
     {
     public:
-        virtual IWindowController *createWindowController() = 0;
         virtual System::Window *createWindow(const char *windowName, IWindowController *windowController) = 0;
         virtual System::Utility *GetSystemUtility() const = 0;
     };
@@ -28,7 +26,6 @@ namespace Framework
         ApplicationContext();
         ~ApplicationContext();
 
-        IWindowController *createWindowController();
         System::Window *createWindow(const char *windowName, IWindowController *windowController);
         System::Utility *GetSystemUtility() const;
 

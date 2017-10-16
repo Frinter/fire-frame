@@ -3,7 +3,6 @@
 #include <map>
 #include <list>
 
-#include "framework/applicationcontext.hh"
 #include "framework/keystate.hh"
 #include "framework/readingkeyboardstate.hh"
 #include "framework/readingmousestate.hh"
@@ -77,7 +76,7 @@ namespace Framework
         };
 
     public:
-        WindowController(ApplicationContext *applicationContext);
+        WindowController();
 
         virtual ~WindowController();
 
@@ -104,7 +103,6 @@ namespace Framework
         virtual void OnMouseScroll(int scrollDelta);
 
     private:
-        ApplicationContext *m_applicationContext;
         KeyboardState m_keyboardState;
         MouseState m_mouseState;
         WindowState m_windowState;

@@ -139,7 +139,7 @@ private:
 
 void ApplicationThreadEntry(Framework::IApplicationContext *applicationContext)
 {
-    Framework::IWindowController *windowController = applicationContext->createWindowController();
+    Framework::IWindowController *windowController = new Framework::WindowController();
     System::Window *window = applicationContext->createWindow("Fire Frame Demo", windowController);
 
     System::OpenGLContext *openGLContext = System::OpenGLContext::Create(window);

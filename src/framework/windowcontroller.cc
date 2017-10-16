@@ -13,8 +13,8 @@ using Framework::ReadingMouseState;
 using Framework::ReadingWindowState;
 using Framework::WindowController;
 
-WindowController::WindowController(ApplicationContext *applicationContext)
-    : m_isWindowClosed(false), m_applicationContext(applicationContext)
+WindowController::WindowController()
+    : m_isWindowClosed(false)
 {
     m_mutex = Mutex::Create();
     m_windowReady = Event::Create(NULL);

@@ -16,11 +16,6 @@ ApplicationContext::~ApplicationContext()
     }
 }
 
-IWindowController *ApplicationContext::createWindowController()
-{
-    return new WindowController(this);
-}
-
 System::Window *ApplicationContext::createWindow(const char *windowName, IWindowController *windowController) {
     System::Window *window;
     auto windowThreadEntry = [&windowController, &windowName, &window] () {
