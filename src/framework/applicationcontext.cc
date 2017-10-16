@@ -23,6 +23,8 @@ IWindowController *ApplicationContext::createWindow(const char *windowName) {
     auto windowThreadEntry = [&self, &windowController, &windowName] () {
         System::Window *window = System::Window::Create(self, windowName, windowController);
         windowController->setWindow(window);
+
+        window->DoMessageLoop();
     };
 
     System::thread *windowThread = new System::thread(windowThreadEntry);

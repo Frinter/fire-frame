@@ -111,6 +111,10 @@ WindowsWindow::WindowsWindow(Framework::ApplicationContext *applicationContext, 
     ShowWindow(m_windowHandle, commandShow);
     UpdateWindow(m_windowHandle);
 
+    unsigned int windowWidth, windowHeight;
+    GetWindowSize(&windowWidth, &windowHeight);
+    m_controller->OnWindowResize(windowWidth, windowHeight);
+
     windowMap[m_windowHandle] = this;
 }
 

@@ -187,6 +187,7 @@ void ApplicationThreadEntry(Framework::IApplicationContext *applicationContext)
         }
     }
 
+    window->Destroy();
     controllerStack.Clear();
 
     delete openGLContext;

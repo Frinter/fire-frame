@@ -34,12 +34,6 @@ WindowController::~WindowController()
 void WindowController::setWindow(System::Window *window)
 {
     m_window = window;
-
-    unsigned int windowWidth, windowHeight;
-    m_window->GetWindowSize(&windowWidth, &windowHeight);
-    m_windowState.Resize(windowWidth, windowHeight);
-
-    m_window->DoMessageLoop();
 }
 
 bool WindowController::isWindowClosed() const
@@ -94,8 +88,6 @@ void WindowController::OnWindowClose()
     m_mutex->Lock();
     m_isWindowClosed = true;
     m_mutex->Unlock();
-
-    m_window->Destroy();
 }
 
 void WindowController::OnWindowResize(unsigned int width, unsigned int height)
