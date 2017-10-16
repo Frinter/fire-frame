@@ -4,12 +4,12 @@
 
 namespace System
 {
-	class OpenGLContext {
-	public:
-		virtual ~OpenGLContext() {};
+    class OpenGLContext {
+    public:
+        virtual ~OpenGLContext() {};
 
-		virtual void SwapBuffers() = 0;
-		
-		static OpenGLContext *Create(Window *window);
-	};
+        virtual void SwapBuffers() = 0;
+
+        static OpenGLContext *Create(Window *window);
+    };
 }
