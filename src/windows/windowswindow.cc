@@ -177,8 +177,11 @@ bool WindowsWindow::SetMousePosition(unsigned int posX, unsigned int posY)
     point.x = posX;
     point.y = posY;
 
-    bool success = ClientToScreen(m_windowHandle, &point);
-    return success ? SetCursorPos(point.x, point.y) : false;
+    bool success = ClientToScreen(m_windowHandle, &point) ? SetCursorPos(point.x, point.y) : false;
+    if (success)
+        m_controller->OnMouseMove(point.x, point.y);
+
+    return success;
 }
 
 void WindowsWindow::Destroy()

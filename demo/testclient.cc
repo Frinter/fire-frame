@@ -171,6 +171,8 @@ void ApplicationThreadEntry(Framework::IApplicationContext *applicationContext)
     Framework::ReadingKeyboardState *keyboardState = windowController->GetKeyStateReader();
 
     ticker.Start();
+
+    window->SetMousePosition(20, 20);
     while (!windowController->isWindowClosed())
     {
         controller = (GameController *)controllerStack.Top();

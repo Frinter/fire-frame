@@ -93,8 +93,6 @@ namespace Framework
         virtual ReadingMouseState *GetMouseReader();
         virtual ReadingWindowState *GetWindowReader();
 
-        virtual void SetMousePosition(unsigned int posX, unsigned int posY);
-
         virtual System::Event *windowReady();
 
         virtual void OnWindowReady();

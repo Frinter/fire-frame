@@ -32,8 +32,6 @@ namespace Framework
         virtual void OnMouseButtonUp(System::MouseButton button) = 0;
         virtual void OnMouseScroll(int scrollDelta) = 0;
 
-        virtual void SetMousePosition(unsigned int posX, unsigned int posY) = 0;
-
         virtual void AddKeyboardEventHandler(IWritingKeyboardState *handler) = 0;
         virtual void RemoveKeyboardEventHandler(IWritingKeyboardState *handler) = 0;
 
