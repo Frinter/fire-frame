@@ -4,10 +4,9 @@
 #include "Windowsx.h"
 
 #include "windowswindow.hh"
-#include "windowsopenglcontext.hh"
 #include "system/mousebutton.hh"
+#include "system/keycode.hh"
 
-#define FILE_EXIT_OPTION 9001
 static char appName[] = "Test Application";
 
 using System::KeyCode;

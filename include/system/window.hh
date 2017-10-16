@@ -3,7 +3,6 @@
 #include <stdio.h>
 
 #include "framework/iwindowcontroller.hh"
-#include "system/keycode.hh"
 
 namespace System
 {
