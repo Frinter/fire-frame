@@ -139,6 +139,7 @@ private:
 void ApplicationThreadEntry(Framework::IApplicationContext *applicationContext)
 {
     Framework::IWindowController *windowController = applicationContext->createWindow("Fire Frame Demo");
+    System::Window *window = windowController->getWindow();
 
     windowController->CreateContext();
 
@@ -181,7 +182,7 @@ void ApplicationThreadEntry(Framework::IApplicationContext *applicationContext)
 
         if (keyboardState->GetKeyState(System::KeyCode::KeyQ) == KeyState::Pressed)
         {
-            windowController->closeWindow();
+            window->Close();
         }
     }
 

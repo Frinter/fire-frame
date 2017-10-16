@@ -7,12 +7,19 @@
 #include "system/keycode.hh"
 #include "system/mousebutton.hh"
 
+namespace System
+{
+    class Window;
+}
+
 namespace Framework
 {
     class ISystemWindowController {
     public:
         ISystemWindowController() {}
         virtual ~ISystemWindowController() {}
+
+        virtual System::Window *getWindow() const = 0;
 
         // The implementation of Window must guarantee that Window::Create will return before any callbacks are called
         virtual void OnWindowReady() { };
@@ -38,7 +45,6 @@ namespace Framework
     {
     public:
         virtual ~IWindowController() {}
-        virtual void closeWindow() = 0;
         virtual void CreateContext() = 0;
         virtual void DestroyContext() = 0;
         virtual bool isWindowClosed() const = 0;

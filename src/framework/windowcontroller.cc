@@ -44,16 +44,6 @@ void WindowController::setWindow(System::Window *window)
     m_window->DoMessageLoop();
 }
 
-void WindowController::closeWindow()
-{
-    m_window->Close();
-}
-
-void WindowController::destroyWindow()
-{
-    m_window->Destroy();
-}
-
 bool WindowController::isWindowClosed() const
 {
     bool value;
@@ -68,6 +58,11 @@ bool WindowController::isWindowClosed() const
 void WindowController::CreateContext()
 {
     m_openGLContext = OpenGLContext::Create(m_window);
+}
+
+System::Window *WindowController::getWindow() const
+{
+    return m_window;
 }
 
 void WindowController::DestroyContext()

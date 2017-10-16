@@ -86,9 +86,7 @@ namespace Framework
         void CreateContext();
         void DestroyContext();
 
-        void closeWindow();
-        void destroyWindow();
-
+        virtual System::Window *getWindow() const;
         virtual bool isWindowClosed() const;
 
         virtual void SwapBuffers();
