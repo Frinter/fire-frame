@@ -14,7 +14,7 @@ using Framework::ReadingWindowState;
 using Framework::WindowController;
 
 WindowController::WindowController(ApplicationContext *applicationContext)
-    : m_window(NULL), m_openGLContext(NULL), m_isWindowClosed(false),
+    : m_window(NULL), m_isWindowClosed(false),
       m_applicationContext(applicationContext)
 {
     m_mutex = Mutex::Create();
@@ -23,8 +23,6 @@ WindowController::WindowController(ApplicationContext *applicationContext)
 
 WindowController::~WindowController()
 {
-    if (m_openGLContext != NULL)
-        delete m_openGLContext;
     if (m_window != NULL)
         delete m_window;
     if (m_windowReady != NULL)
@@ -55,27 +53,9 @@ bool WindowController::isWindowClosed() const
     return value;
 }
 
-void WindowController::CreateContext()
-{
-    m_openGLContext = OpenGLContext::Create(m_window);
-}
-
 System::Window *WindowController::getWindow() const
 {
     return m_window;
-}
-
-void WindowController::DestroyContext()
-{
-    if (m_openGLContext != NULL) {
-        delete m_openGLContext;
-        m_openGLContext = NULL;
-    }
-}
-
-void WindowController::SwapBuffers()
-{
-    m_openGLContext->SwapBuffers();
 }
 
 ReadingKeyboardState *WindowController::GetKeyStateReader()

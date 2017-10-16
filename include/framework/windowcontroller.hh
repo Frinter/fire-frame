@@ -83,13 +83,9 @@ namespace Framework
         virtual ~WindowController();
 
         void setWindow(System::Window *window);
-        void CreateContext();
-        void DestroyContext();
 
         virtual System::Window *getWindow() const;
         virtual bool isWindowClosed() const;
-
-        virtual void SwapBuffers();
 
         virtual void AddKeyboardEventHandler(IWritingKeyboardState *handler);
         virtual void RemoveKeyboardEventHandler(IWritingKeyboardState *handler);
@@ -113,7 +109,6 @@ namespace Framework
 
     private:
         System::Window *m_window;
-        System::OpenGLContext *m_openGLContext;
         ApplicationContext *m_applicationContext;
         KeyboardState m_keyboardState;
         MouseState m_mouseState;

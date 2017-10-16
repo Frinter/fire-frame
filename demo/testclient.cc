@@ -5,6 +5,7 @@
 #include "framework/platform.hh"
 #include "system/keycode.hh"
 #include "system/utility.hh"
+#include "system/openglcontext.hh"
 
 #include "controllerstack.hh"
 #include "gamecontroller.hh"
@@ -141,7 +142,7 @@ void ApplicationThreadEntry(Framework::IApplicationContext *applicationContext)
     Framework::IWindowController *windowController = applicationContext->createWindow("Fire Frame Demo");
     System::Window *window = windowController->getWindow();
 
-    windowController->CreateContext();
+    System::OpenGLContext *openGLContext = System::OpenGLContext::Create(window);
 
     const GLubyte *renderer = glGetString(GL_RENDERER);
     const GLubyte *vendor = glGetString(GL_VENDOR);
@@ -187,5 +188,8 @@ void ApplicationThreadEntry(Framework::IApplicationContext *applicationContext)
     }
 
     controllerStack.Clear();
+
+    delete openGLContext;
+
     std::cout << "Last client message" << std::endl;
 }

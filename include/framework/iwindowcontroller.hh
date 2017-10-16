@@ -36,7 +36,6 @@ namespace Framework
 
         virtual void AddKeyboardEventHandler(IWritingKeyboardState *handler) = 0;
         virtual void RemoveKeyboardEventHandler(IWritingKeyboardState *handler) = 0;
-        virtual void SwapBuffers() = 0;
 
         ISystemWindowController(const ISystemWindowController &o) = delete;
     };
@@ -45,8 +44,6 @@ namespace Framework
     {
     public:
         virtual ~IWindowController() {}
-        virtual void CreateContext() = 0;
-        virtual void DestroyContext() = 0;
         virtual bool isWindowClosed() const = 0;
         virtual ReadingKeyboardState *GetKeyStateReader() = 0;
         virtual ReadingMouseState *GetMouseReader() = 0;
