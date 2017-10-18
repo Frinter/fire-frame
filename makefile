@@ -12,8 +12,8 @@ ifeq ($(SYSTEM_TARGET),MINGW)
 include $(wildcard build/windows/*.d)
 else
   CXX = g++
-  PLATFORM_LIBS = -lGL
-  PLATFORM_POST_LIBS =
+  PLATFORM_LIBS =
+  PLATFORM_POST_LIBS = -lGL -lX11
   PLATFORM_LINKFLAGS =
   PLATFORM_OBJECTS =
 
