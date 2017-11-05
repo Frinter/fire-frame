@@ -4,30 +4,30 @@
 
 namespace System
 {
-    class thread
+    class Thread
     {
     public:
         typedef std::function<void()> Callable;
 
-        class IThreadImplementation
+        class ThreadImplementation
         {
         public:
-            virtual ~IThreadImplementation() {}
-            
+            virtual ~ThreadImplementation() {}
+
             virtual void start() = 0;
             virtual void join() = 0;
         };
 
     private:
-        IThreadImplementation *createImplementation(Callable function);
-        
+        ThreadImplementation *createImplementation(Callable function);
+
     public:
-        thread(Callable function);
-        ~thread();
-		
+        Thread(Callable function);
+        ~Thread();
+
         void join();
-		
+
     private:
-        IThreadImplementation *_implementation;
+        ThreadImplementation *_implementation;
     };
 }

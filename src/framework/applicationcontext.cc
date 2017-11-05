@@ -10,7 +10,7 @@ ApplicationContext::ApplicationContext()
 
 ApplicationContext::~ApplicationContext()
 {
-    for (std::vector<System::thread*>::iterator iter = m_threads.begin(); iter != m_threads.end(); ++iter)
+    for (std::vector<System::Thread*>::iterator iter = m_threads.begin(); iter != m_threads.end(); ++iter)
     {
         (*iter)->join();
     }
@@ -23,7 +23,7 @@ System::Window *ApplicationContext::createWindow(const char *windowName, IWindow
         window->DoMessageLoop();
     };
 
-    System::thread *windowThread = new System::thread(windowThreadEntry);
+    System::Thread *windowThread = new System::Thread(windowThreadEntry);
     m_threads.push_back(windowThread);
     windowController->windowReady()->Wait();
 

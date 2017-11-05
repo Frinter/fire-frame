@@ -30,6 +30,6 @@ namespace Framework
         System::Utility *GetSystemUtility() const;
 
     private:
-        std::vector<System::thread*> m_threads;
+        std::vector<System::Thread*> m_threads;
     };
 }
