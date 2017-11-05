@@ -5,8 +5,6 @@ using Framework::ApplicationContext;
 using Framework::ClientCode;
 using Framework::LoadClientCode;
 
-using System::thread;
-
 int applicationMain()
 {
     ClientCode clientCode = LoadClientCode();
