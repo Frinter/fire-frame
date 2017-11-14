@@ -1,8 +1,6 @@
-
-
 extern int applicationMain();
 
-int main()
+int main(int argc, char **argv)
 {
-    return 0;
+    return applicationMain();
 }

@@ -13,7 +13,7 @@ include $(wildcard build/windows/*.d)
 else
   CXX = g++
   PLATFORM_LIBS =
-  PLATFORM_POST_LIBS = -lGL -lX11
+  PLATFORM_POST_LIBS = -lGL -lX11 -pthread
   PLATFORM_LINKFLAGS =
   PLATFORM_OBJECTS = $(patsubst src/%.c,build/%.o,$(wildcard src/linux/*.c)) $(patsubst src/%.cc,build/%.o,$(wildcard src/linux/*.cc))
 
