@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "framework/clientcode.hh"
 
 extern ApplicationThreadEntry_FunctionSignature(ApplicationThreadEntry);
