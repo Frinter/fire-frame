@@ -1,10 +1,10 @@
+#include <X11/Xlib.h>
 #include "system/window.hh"
-#include "X11/Xlib.h"
 
 class LinuxWindow : public System::Window
 {
 public:
-    LinuxWindow();
+    LinuxWindow(Framework::ISystemWindowController *controller);
     virtual ~LinuxWindow();
 
     virtual int DoMessageLoop();
@@ -13,7 +13,11 @@ public:
     virtual void Destroy();
     virtual void Close();
 
+    Display *getDisplay() const;
+    ::Window getWindowHandle() const;
+
 private:
     Display *_display;
     ::Window _window;
+    Framework::ISystemWindowController *_controller;
 };

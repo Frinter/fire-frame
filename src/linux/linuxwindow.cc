@@ -1,29 +1,7 @@
-#include "system/window.hh"
-#include "X11/Xlib.h"
+#include "linuxwindow.hh"
 
-class LinuxWindow : public System::Window
-{
-public:
-    LinuxWindow();
-    virtual ~LinuxWindow();
-
-    virtual int DoMessageLoop();
-    virtual void GetWindowSize(unsigned int *width, unsigned int *height);
-    virtual bool SetMousePosition(unsigned int posX, unsigned int posY);
-    virtual void Destroy();
-    virtual void Close();
-
-private:
-    Display *_display;
-    ::Window _window;
-};
-
-System::Window *System::Window::Create(const char *windowName, Framework::ISystemWindowController *controller)
-{
-    return new LinuxWindow();
-}
-
-LinuxWindow::LinuxWindow()
+LinuxWindow::LinuxWindow(Framework::ISystemWindowController *controller)
+    : _controller(controller)
 {
     _display = XOpenDisplay(NULL);
     _window = XCreateSimpleWindow(
@@ -44,6 +22,8 @@ LinuxWindow::~LinuxWindow()
 
 int LinuxWindow::DoMessageLoop()
 {
+    _controller->OnWindowReady();
+
     bool running = true;
     while (running) {
         XEvent event;
@@ -74,4 +54,19 @@ void LinuxWindow::Destroy()
 
 void LinuxWindow::Close()
 {
+}
+
+::Window LinuxWindow::getWindowHandle() const
+{
+    return _window;
+}
+
+Display *LinuxWindow::getDisplay() const
+{
+    return _display;
+}
+
+System::Window *System::Window::Create(const char *windowName, Framework::ISystemWindowController *controller)
+{
+    return new LinuxWindow(controller);
 }
