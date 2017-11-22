@@ -27,7 +27,7 @@ INCLUDE_DIRS := -Iinclude
 SRC := $(wildcard src/*.cc) $(wildcard src/framework/*.cc)
 OBJECTS := $(SRC:src/%.cc=$(OBJ_DIR)/%.o) $(PLATFORM_OBJECTS) build/gl_core_3_3.o
 LIBS := $(PLATFORM_LIBS) $(PLATFORM_POST_LIBS)
-CFLAGS := $(INCLUDE_DIRS) -DSYSTEM_TARGET=$(SYSTEM_TARGET)
+CFLAGS := $(INCLUDE_DIRS) -DSYSTEM_TARGET=$(SYSTEM_TARGET) -std=c++11
 
 PLATFORM_LAYER_SRC := $(SRC) $(PLATFORM_SRC)
 PLATFORM_LAYER_LIBS := -Llib $(PLATFORM_LIBS) $(PLATFORM_POST_LIBS)
@@ -63,25 +63,25 @@ $(OBJ_DIR)/%.o: src/%.c $(OBJ_DIR)/%.d
 	gcc -c -o $@ $(CFLAGS) $<
 
 $(OBJ_DIR)/%.o: src/%.cc $(OBJ_DIR)/%.d
-	g++ -c -o $@ $(CFLAGS) -std=c++11 $<
+	g++ -c -o $@ $(CFLAGS) $<
 
 $(OBJ_DIR)/%.o: test/%.cc $(OBJ_DIR)/%.d
-	g++ -c -o $@ $(CFLAGS) -std=c++11 $(TEST_CFLAGS) $<
+	g++ -c -o $@ $(CFLAGS) $(TEST_CFLAGS) $<
 
 $(OBJ_DIR)/demo/%.o: demo/%.cc $(OBJ_DIR)/demo/%.d
-	g++ -c -o $@ $(CFLAGS) -std=c++11 $(TEST_CFLAGS) $<
+	g++ -c -o $@ $(CFLAGS) $(TEST_CFLAGS) $<
 
 $(OBJ_DIR)/%.d: src/%.c
 	gcc $(CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
 
 $(OBJ_DIR)/%.d: src/%.cc
-	g++ $(CFLAGS) -std=c++11 -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
+	g++ $(CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
 
 $(OBJ_DIR)/%.d: test/%.cc
-	g++ $(CFLAGS) -std=c++11 $(TEST_CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
+	g++ $(CFLAGS) $(TEST_CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
 
 $(OBJ_DIR)/demo/%.d: demo/%.cc
-	g++ $(CFLAGS) -std=c++11 $(TEST_CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
+	g++ $(CFLAGS) $(TEST_CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
 
 release: $(PLATFORM_LAYER_TARGET)
 demo: $(DEMO_TARGET)
