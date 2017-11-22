@@ -3,8 +3,6 @@
 #include "linuxwindow.hh"
 #include "system/openglcontext.hh"
 
-#include <iostream>
-
 class LinuxOpenGLContext : public System::OpenGLContext
 {
 public:
@@ -14,6 +12,7 @@ public:
         Display *display = _window->getDisplay();
         ::Window windowHandle = _window->getWindowHandle();
         GLint attributes[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
+
         XVisualInfo *visualInfo = glXChooseVisual(display, 0, attributes);
         Colormap colorMap = XCreateColormap(display, windowHandle, visualInfo->visual, AllocNone);
 
