@@ -1,4 +1,5 @@
-#define NULL 0
+#include <time.h>
+#include <unistd.h>
 
 #include "system/utility.hh"
 
@@ -9,11 +10,14 @@ class LinuxUtility : public Utility
 public:
     virtual void Sleep(int milliseconds)
     {
+        ::usleep(1000 * milliseconds);
     }
 
-    virtual int GetTicks()
+    virtual unsigned long GetTicks()
     {
-        return 0;
+        struct timespec result;
+        clock_gettime(CLOCK_REALTIME, &result);
+        return (1000 * result.tv_sec) + (result.tv_nsec / 1.0e6);
     }
 };
 
