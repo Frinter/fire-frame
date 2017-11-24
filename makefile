@@ -15,7 +15,7 @@ else
   PLATFORM_LIBS =
   PLATFORM_POST_LIBS = -lGL -lX11 -pthread
   PLATFORM_LINKFLAGS =
-  PLATFORM_OBJECTS = $(patsubst src/%.c,build/%.o,$(wildcard src/linux/*.c)) $(patsubst src/%.cc,build/%.o,$(wildcard src/linux/*.cc))
+  PLATFORM_OBJECTS = $(patsubst src/%.cc,build/%.o,$(wildcard src/linux/*.cc))
 
 include $(wildcard build/linux/*.d)
 endif
@@ -25,7 +25,7 @@ SUB_DIRS := $(shell find src -type d -print)
 BUILD_DIRS := $(patsubst src/%,build/%,$(SUB_DIRS)) build/demo
 INCLUDE_DIRS := -Iinclude
 SRC := $(wildcard src/*.cc) $(wildcard src/framework/*.cc)
-OBJECTS := $(SRC:src/%.cc=$(OBJ_DIR)/%.o) $(PLATFORM_OBJECTS) build/gl_core_3_3.o
+OBJECTS := $(SRC:src/%.cc=$(OBJ_DIR)/%.o) $(PLATFORM_OBJECTS)
 LIBS := $(PLATFORM_LIBS) $(PLATFORM_POST_LIBS)
 CFLAGS := $(INCLUDE_DIRS) -DSYSTEM_TARGET=$(SYSTEM_TARGET) -std=c++11
 

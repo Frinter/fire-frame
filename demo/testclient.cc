@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "GL/gl_core_3_3.h"
+#include "GL/gl.h"
 #include "framework/keystate.hh"
 #include "framework/platform.hh"
 #include "system/keycode.hh"
