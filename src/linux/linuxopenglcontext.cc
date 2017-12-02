@@ -1,15 +1,15 @@
 #include <GL/glx.h>
 
-#include "linuxwindow.hh"
 #include "system/openglcontext.hh"
+#include "linuxwindow.hh"
 
 class LinuxOpenGLContext : public System::OpenGLContext
 {
 public:
-    LinuxOpenGLContext(System::Window *window)
-        : _window((LinuxWindow *)window)
+    LinuxOpenGLContext(LinuxWindow *window)
+        : _window(window)
     {
-        Display *display = _window->getDisplay();
+        ::Display *display = _window->getDisplay();
         ::Window windowHandle = _window->getWindowHandle();
         GLint attributes[] = { GLX_RGBA, GLX_DEPTH_SIZE, 24, GLX_DOUBLEBUFFER, None };
 
@@ -23,10 +23,12 @@ public:
 
     ~LinuxOpenGLContext()
     {
+        glXDestroyContext(_window->getDisplay(), _context);
     }
 
     void SwapBuffers()
     {
+        glXSwapBuffers(_window->getDisplay(), _window->getWindowHandle());
     }
 
 private:
@@ -36,5 +38,5 @@ private:
 
 System::OpenGLContext *System::OpenGLContext::Create(System::Window *window)
 {
-    return new LinuxOpenGLContext(window);
+    return new LinuxOpenGLContext((LinuxWindow *)window);
 }
