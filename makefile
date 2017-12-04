@@ -21,8 +21,8 @@ include $(wildcard build/linux/*.d)
 endif
 
 OBJ_PLATFORM_DIR := $(OBJ_DIR)/$(SYSTEM_TARGET)
-SUB_DIRS := $(shell find src -type d -print)
-BUILD_DIRS := $(patsubst src/%,build/%,$(SUB_DIRS)) build/demo
+SUB_DIRS := $(filter-out src,$(shell find src -type d -print))
+BUILD_DIRS := $(patsubst src/%,build/%,$(SUB_DIRS)) $(patsubst test/%,build/%,$(SUB_TEST_DIRS)) build/demo
 INCLUDE_DIRS := -Iinclude
 SRC := $(wildcard src/*.cc) $(wildcard src/framework/*.cc)
 OBJECTS := $(SRC:src/%.cc=$(OBJ_DIR)/%.o) $(PLATFORM_OBJECTS)
@@ -33,10 +33,12 @@ PLATFORM_LAYER_SRC := $(SRC) $(PLATFORM_SRC)
 PLATFORM_LAYER_LIBS := -Llib $(PLATFORM_LIBS) $(PLATFORM_POST_LIBS)
 PLATFORM_LAYER_TARGET := $(BIN_DIR)/platform.$(SYSTEM_TARGET).64.a
 
-TEST_SRC := $(wildcard test/*.cc)
-TEST_OBJECTS := $(patsubst test/%.cc,build/%.o,$(TEST_SRC))
-TESTABLES_OBJECTS := $(OBJ_DIR)/demo/ticker.o
-TEST_INCLUDE := -Idemo
+TEST_SUB_DIRS := $(filter-out test,$(shell find test -type d -print))
+TEST_OBJ_DIRS := build/test $(patsubst test/%,build/test/%,$(TEST_SUB_DIRS))
+TEST_SRC := $(shell find test -type f -name "*.cc" -print)
+TEST_OBJECTS := $(TEST_SRC:test/%.cc=$(OBJ_DIR)/test/%.o)
+TESTABLES_OBJECTS := $(PLATFORM_LAYER_TARGET) $(OBJ_DIR)/demo/ticker.o
+TEST_INCLUDE := -Idemo -Itest
 TEST_CFLAGS := $(TEST_INCLUDE)
 TEST_LIBS :=
 TEST_TARGET := $(BIN_DIR)/test
@@ -52,36 +54,41 @@ DEMO_TARGET := $(BIN_DIR)/demo
 .PRECIOUS: build/%.d
 
 clean:
-	rm -R build
+	@rm -Rf build
 
 $(TEST_TARGET) $(PLATFORM_LAYER_TARGET): | $(BIN_DIR)
-$(OBJECTS) $(TEST_OBJECTS) $(DEMO_OBJECTS): | $(OBJ_DIR) $(BUILD_DIRS)
-$(BUILD_DIRS) $(OBJ_DIR) $(BIN_DIR):
-	mkdir -p $@
+$(OBJECTS) $(DEMO_OBJECTS): | $(OBJ_DIR) $(BUILD_DIRS)
+$(TEST_OBJECTS): | $(TEST_OBJ_DIRS)
+$(BUILD_DIRS) $(TEST_OBJ_DIRS) $(OBJ_DIR) $(BIN_DIR):
+	@mkdir -p $@
 
 $(OBJ_DIR)/%.o: src/%.c $(OBJ_DIR)/%.d
-	gcc -c -o $@ $(CFLAGS) $<
+	@echo Building: $<
+	@gcc -c -o $@ $(CFLAGS) $<
 
 $(OBJ_DIR)/%.o: src/%.cc $(OBJ_DIR)/%.d
-	g++ -c -o $@ $(CFLAGS) $<
+	@echo Building: $<
+	@g++ -c -o $@ $(CFLAGS) $<
 
-$(OBJ_DIR)/%.o: test/%.cc $(OBJ_DIR)/%.d
-	g++ -c -o $@ $(CFLAGS) $(TEST_CFLAGS) $<
+$(OBJ_DIR)/test/%.o: test/%.cc $(OBJ_DIR)/test/%.d
+	@echo Building: $<
+	@g++ -c -o $@ $(CFLAGS) $(TEST_CFLAGS) $<
 
 $(OBJ_DIR)/demo/%.o: demo/%.cc $(OBJ_DIR)/demo/%.d
-	g++ -c -o $@ $(CFLAGS) $(TEST_CFLAGS) $<
+	@echo Building: $<
+	@g++ -c -o $@ $(CFLAGS) $(TEST_CFLAGS) $<
 
 $(OBJ_DIR)/%.d: src/%.c
-	gcc $(CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
+	@gcc $(CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
 
 $(OBJ_DIR)/%.d: src/%.cc
-	g++ $(CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
+	@g++ $(CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
 
-$(OBJ_DIR)/%.d: test/%.cc
-	g++ $(CFLAGS) $(TEST_CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
+$(OBJ_DIR)/test/%.d: test/%.cc
+	@g++ $(CFLAGS) $(TEST_CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
 
 $(OBJ_DIR)/demo/%.d: demo/%.cc
-	g++ $(CFLAGS) $(TEST_CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
+	@g++ $(CFLAGS) $(TEST_CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
 
 release: $(PLATFORM_LAYER_TARGET)
 demo: $(DEMO_TARGET)
