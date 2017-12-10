@@ -139,15 +139,23 @@ private:
 
 void ApplicationThreadEntry(Framework::IApplicationContext *applicationContext)
 {
+    std::cout << "in client code" << std::endl;
     Framework::IWindowController *windowController = new Framework::WindowController();
+    std::cout << "Made window controller" << std::endl;
     System::Window *window = applicationContext->createWindow("Fire Frame Demo", windowController);
+    std::cout << "Made window" << std::endl;
 
     System::OpenGLContext *openGLContext = System::OpenGLContext::Create(window);
+    std::cout << "Made OpenGL context" << std::endl;
 
     const GLubyte *renderer = glGetString(GL_RENDERER);
+    std::cout << "Made OpenGL context" << std::endl;
     const GLubyte *vendor = glGetString(GL_VENDOR);
+    std::cout << "Made OpenGL context" << std::endl;
     const GLubyte *version = glGetString(GL_VERSION);
+    std::cout << "Made OpenGL context" << std::endl;
     const GLubyte *glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
+    std::cout << "Made OpenGL context" << std::endl;
 
     std::cout << "- renderer: " << renderer << std::endl;
     std::cout << "- vendor: " << vendor << std::endl;
