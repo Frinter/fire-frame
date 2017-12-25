@@ -1,6 +1,10 @@
 #include <iostream>
 
-#include "GL/gl.h"
+#if TARGET_PLATFORM==MINGW
+#  include "GL/gl_core_3_3.h"
+#else
+#  include "GL/gl.h"
+#endif
 #include "framework/keystate.hh"
 #include "framework/platform.hh"
 #include "system/keycode.hh"
