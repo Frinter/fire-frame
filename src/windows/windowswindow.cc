@@ -225,22 +225,22 @@ void WindowsWindow::MouseMove(WPARAM wParam, LPARAM lParam)
 
 void WindowsWindow::LeftMouseButtonDown(WPARAM wParam, LPARAM lParam)
 {
-    m_controller->OnMouseButtonDown(System::MouseButton::Button1);
+    m_controller->OnMouseButtonDown(System::MouseButton::ButtonOne);
 }
 
 void WindowsWindow::RightMouseButtonDown(WPARAM wParam, LPARAM lParam)
 {
-    m_controller->OnMouseButtonDown(System::MouseButton::Button2);
+    m_controller->OnMouseButtonDown(System::MouseButton::ButtonTwo);
 }
 
 void WindowsWindow::LeftMouseButtonUp(WPARAM wParam, LPARAM lParam)
 {
-    m_controller->OnMouseButtonUp(System::MouseButton::Button1);
+    m_controller->OnMouseButtonUp(System::MouseButton::ButtonOne);
 }
 
 void WindowsWindow::RightMouseButtonUp(WPARAM wParam, LPARAM lParam)
 {
-    m_controller->OnMouseButtonUp(System::MouseButton::Button2);
+    m_controller->OnMouseButtonUp(System::MouseButton::ButtonTwo);
 }
 
 void WindowsWindow::MouseScrollWheel(WPARAM wParam, LPARAM lParam)
