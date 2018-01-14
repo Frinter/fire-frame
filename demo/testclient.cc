@@ -153,13 +153,9 @@ void ApplicationThreadEntry(Framework::IApplicationContext *applicationContext)
     std::cout << "Made OpenGL context" << std::endl;
 
     const GLubyte *renderer = glGetString(GL_RENDERER);
-    std::cout << "Made OpenGL context" << std::endl;
     const GLubyte *vendor = glGetString(GL_VENDOR);
-    std::cout << "Made OpenGL context" << std::endl;
     const GLubyte *version = glGetString(GL_VERSION);
-    std::cout << "Made OpenGL context" << std::endl;
     const GLubyte *glslVersion = glGetString(GL_SHADING_LANGUAGE_VERSION);
-    std::cout << "Made OpenGL context" << std::endl;
 
     std::cout << "- renderer: " << renderer << std::endl;
     std::cout << "- vendor: " << vendor << std::endl;
