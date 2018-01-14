@@ -4,7 +4,7 @@
 #include "GL/wgl_core_3_3.h"
 #include "windowsopenglcontext.hh"
 
-WindowsOpenGLContext::WindowsOpenGLContext(WindowsWindow *window) {
+WindowsOpenGLContext::WindowsOpenGLContext(HWND windowHandle) {
     PIXELFORMATDESCRIPTOR pfd;
     memset(&pfd, 0, sizeof(PIXELFORMATDESCRIPTOR));
     pfd.nSize = sizeof(PIXELFORMATDESCRIPTOR);
@@ -15,7 +15,7 @@ WindowsOpenGLContext::WindowsOpenGLContext(WindowsWindow *window) {
     pfd.cDepthBits = 32;
     pfd.iLayerType = PFD_MAIN_PLANE;
 
-    m_deviceContext = GetDC(window->m_windowHandle);
+    m_deviceContext = GetDC(windowHandle);
     int pixelFormatIndex = ChoosePixelFormat(m_deviceContext, &pfd);
     SetPixelFormat(m_deviceContext, pixelFormatIndex, &pfd);
 

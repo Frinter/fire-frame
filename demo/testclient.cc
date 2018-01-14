@@ -149,7 +149,7 @@ void ApplicationThreadEntry(Framework::IApplicationContext *applicationContext)
     System::Window *window = applicationContext->createWindow("Fire Frame Demo", windowController);
     std::cout << "Made window" << std::endl;
 
-    System::OpenGLContext *openGLContext = System::OpenGLContext::Create(window);
+    System::OpenGLContext *openGLContext = window->getOrCreateOpenGLContext();
     std::cout << "Made OpenGL context" << std::endl;
 
     const GLubyte *renderer = glGetString(GL_RENDERER);
@@ -203,8 +203,6 @@ void ApplicationThreadEntry(Framework::IApplicationContext *applicationContext)
 
     window->Destroy();
     controllerStack.Clear();
-
-    delete openGLContext;
 
     std::cout << "Last client message" << std::endl;
 }

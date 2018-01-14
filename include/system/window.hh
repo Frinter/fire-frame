@@ -6,6 +6,8 @@
 
 namespace System
 {
+    class OpenGLContext;
+
     class Window {
     public:
         virtual ~Window() {};
@@ -14,6 +16,8 @@ namespace System
         virtual bool SetMousePosition(unsigned int posX, unsigned int posY) = 0;
         virtual void Destroy() = 0;
         virtual void Close() = 0;
+
+        virtual OpenGLContext *getOrCreateOpenGLContext() = 0;
 
         static Window *Create(const char *name, Framework::ISystemWindowController *controller);
     };

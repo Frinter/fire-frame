@@ -4,6 +4,7 @@
 #include "Windowsx.h"
 
 #include "windowswindow.hh"
+#include "windowsopenglcontext.hh"
 #include "system/mousebutton.hh"
 #include "system/keycode.hh"
 
@@ -141,6 +142,9 @@ HWND WindowsWindow::makeWindow(const char *windowName, HINSTANCE processInstance
 
 WindowsWindow::~WindowsWindow()
 {
+    if (m_openGLContext != NULL)
+        delete m_openGLContext;
+
     windowMap[m_windowHandle] = NULL;
 }
 
@@ -157,6 +161,14 @@ int WindowsWindow::DoMessageLoop()
     }
 
     return message.wParam;
+}
+
+System::OpenGLContext *WindowsWindow::getOrCreateOpenGLContext()
+{
+    if (m_openGLContext == NULL)
+        m_openGLContext = new WindowsOpenGLContext(m_windowHandle);
+
+    return m_openGLContext;
 }
 
 void WindowsWindow::GetWindowSize(unsigned int *width, unsigned int *height)

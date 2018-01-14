@@ -22,6 +22,8 @@ public:
     virtual void GetWindowSize(unsigned int *width, unsigned int *height);
     virtual bool SetMousePosition(unsigned int posX, unsigned int posY);
 
+    virtual System::OpenGLContext *getOrCreateOpenGLContext();
+
     virtual int DoMessageLoop();
 
     virtual void Destroy();
