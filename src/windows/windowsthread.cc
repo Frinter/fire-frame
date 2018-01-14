@@ -34,7 +34,7 @@ DWORD WINAPI startThread(LPVOID args)
 {
     Implementation *self = (Implementation *)args;
     self->run();
-    return NULL;
+    return 1;
 }
 
 Thread::ThreadImplementation *Thread::createImplementation(Thread::Callable function)
