@@ -1,7 +1,7 @@
 #include <stdexcept>
 #include <unordered_map>
 
-#include "Windowsx.h"
+#include "windowsx.h"
 
 #include "windowswindow.hh"
 #include "windowsopenglcontext.hh"
