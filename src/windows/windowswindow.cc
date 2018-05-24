@@ -107,6 +107,7 @@ WindowsWindow::WindowsWindow(const char *windowName, Framework::ISystemWindowCon
     : m_controller(controller), m_openGLContext(NULL)
 {
     m_windowHandle = WindowsWindow::makeWindow(windowName, processInstance, commandShow);
+    windowMap[m_windowHandle] = this;
 
     ShowWindow(m_windowHandle, commandShow);
     UpdateWindow(m_windowHandle);
@@ -114,8 +115,6 @@ WindowsWindow::WindowsWindow(const char *windowName, Framework::ISystemWindowCon
     unsigned int windowWidth, windowHeight;
     GetWindowSize(&windowWidth, &windowHeight);
     m_controller->OnWindowResize(windowWidth, windowHeight);
-
-    windowMap[m_windowHandle] = this;
 }
 
 HWND WindowsWindow::makeWindow(const char *windowName, HINSTANCE processInstance, int commandShow)
