@@ -71,32 +71,28 @@ $(BUILD_DIRS) $(TEST_OBJ_DIRS) $(OBJ_DIR) $(BIN_DIR):
 	@mkdir -p $@
 
 $(OBJ_DIR)/%.o: src/%.c $(OBJ_DIR)/%.d
-	@echo Building: $<
-	@$(GCC) -c -o $@ $(CFLAGS) $<
+	$(GCC) -c -o $@ $(CFLAGS) $<
 
 $(OBJ_DIR)/%.o: src/%.cc $(OBJ_DIR)/%.d
-	@echo Building: $<
-	@$(CPP) -c -o $@ $(CFLAGS) $<
+	$(CPP) -c -o $@ $(CFLAGS) $<
 
 $(OBJ_DIR)/test/%.o: test/%.cc $(OBJ_DIR)/test/%.d
-	@echo Building: $<
-	@$(CPP) -c -o $@ $(CFLAGS) $(TEST_CFLAGS) $<
+	$(CPP) -c -o $@ $(CFLAGS) $(TEST_CFLAGS) $<
 
 $(OBJ_DIR)/demo/%.o: demo/%.cc $(OBJ_DIR)/demo/%.d
-	@echo Building: $<
-	@$(CPP) -c -o $@ $(CFLAGS) $(TEST_CFLAGS) $<
+	$(CPP) -c -o $@ $(CFLAGS) $(TEST_CFLAGS) $<
 
 $(OBJ_DIR)/%.d: src/%.c
-	@$(GCC) $(CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
+	$(GCC) $(CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
 
 $(OBJ_DIR)/%.d: src/%.cc
-	@$(CPP) $(CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
+	$(CPP) $(CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
 
 $(OBJ_DIR)/test/%.d: test/%.cc
-	@$(CPP) $(CFLAGS) $(TEST_CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
+	$(CPP) $(CFLAGS) $(TEST_CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
 
 $(OBJ_DIR)/demo/%.d: demo/%.cc
-	@$(CPP) $(CFLAGS) $(TEST_CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
+	$(CPP) $(CFLAGS) $(TEST_CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
 
 release: $(PLATFORM_LAYER_TARGET)
 demo: $(DEMO_TARGET)
