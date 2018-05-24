@@ -8,6 +8,9 @@ ifeq ($(SYSTEM_TARGET),MINGW)
   PLATFORM_LINKFLAGS = -Wl,-subsystem,windows
   PLATFORM_MAIN_OBJECTS =
   PLATFORM_OBJECTS = $(patsubst src/%.c,build/%.o,$(wildcard src/windows/*.c)) $(patsubst src/%.cc,build/%.o,$(wildcard src/windows/*.cc)) $(patsubst src/%.cc,build/%.o,$(wildcard src/mingw/*.cc))
+  CPP = x86_64-w64-mingw32-c++
+  GCC = x86_64-w64-mingw32-gcc
+  AR  = x86_64-w64-mingw32-ar
 
 include $(wildcard build/windows/*.d)
 else
@@ -16,6 +19,9 @@ else
   PLATFORM_POST_LIBS = -lGL -lX11 -pthread
   PLATFORM_LINKFLAGS =
   PLATFORM_OBJECTS = $(patsubst src/%.cc,build/%.o,$(wildcard src/linux/*.cc))
+  CPP = c++
+  GCC = gcc
+  AR  = ar
 
 include $(wildcard build/linux/*.d)
 endif
@@ -47,12 +53,14 @@ TEST_LINK_FLAGS := -static-libgcc -static-libstdc++
 DEMO_SRC := $(wildcard demo/*.cc)
 DEMO_OBJECTS := $(patsubst demo/%.cc,build/demo/%.o,$(DEMO_SRC))
 DEMO_LIBS := -Llib $(PLATFORM_LIBS) $(PLATFORM_POST_LIBS)
-DEMO_TARGET := $(BIN_DIR)/demo
+DEMO_TARGET := $(BIN_DIR)/demo.exe
 
 .DEFAULT_GOAL = release
 .PHONY: test release demo
 .PRECIOUS: build/%.d
 
+debug-make:
+	@echo $(PLATFORM_OBJECTS)
 clean:
 	@rm -Rf build
 
@@ -64,31 +72,31 @@ $(BUILD_DIRS) $(TEST_OBJ_DIRS) $(OBJ_DIR) $(BIN_DIR):
 
 $(OBJ_DIR)/%.o: src/%.c $(OBJ_DIR)/%.d
 	@echo Building: $<
-	@gcc -c -o $@ $(CFLAGS) $<
+	@$(GCC) -c -o $@ $(CFLAGS) $<
 
 $(OBJ_DIR)/%.o: src/%.cc $(OBJ_DIR)/%.d
 	@echo Building: $<
-	@g++ -c -o $@ $(CFLAGS) $<
+	@$(CPP) -c -o $@ $(CFLAGS) $<
 
 $(OBJ_DIR)/test/%.o: test/%.cc $(OBJ_DIR)/test/%.d
 	@echo Building: $<
-	@g++ -c -o $@ $(CFLAGS) $(TEST_CFLAGS) $<
+	@$(CPP) -c -o $@ $(CFLAGS) $(TEST_CFLAGS) $<
 
 $(OBJ_DIR)/demo/%.o: demo/%.cc $(OBJ_DIR)/demo/%.d
 	@echo Building: $<
-	@g++ -c -o $@ $(CFLAGS) $(TEST_CFLAGS) $<
+	@$(CPP) -c -o $@ $(CFLAGS) $(TEST_CFLAGS) $<
 
 $(OBJ_DIR)/%.d: src/%.c
-	@gcc $(CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
+	@$(GCC) $(CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
 
 $(OBJ_DIR)/%.d: src/%.cc
-	@g++ $(CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
+	@$(CPP) $(CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
 
 $(OBJ_DIR)/test/%.d: test/%.cc
-	@g++ $(CFLAGS) $(TEST_CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
+	@$(CPP) $(CFLAGS) $(TEST_CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
 
 $(OBJ_DIR)/demo/%.d: demo/%.cc
-	@g++ $(CFLAGS) $(TEST_CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
+	@$(CPP) $(CFLAGS) $(TEST_CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
 
 release: $(PLATFORM_LAYER_TARGET)
 demo: $(DEMO_TARGET)
@@ -96,12 +104,12 @@ test: $(TEST_TARGET)
 	@$(TEST_TARGET)
 
 $(PLATFORM_LAYER_TARGET): $(OBJECTS)
-	ar cr $@ $^
+	$(AR) cr $@ $^
 
 $(DEMO_TARGET): $(DEMO_OBJECTS) $(PLATFORM_LAYER_TARGET)
-	g++ $(PLATFORM_LINK_FLAGS) -static-libgcc -static-libstdc++ -Iinclude -o $@ $(DEMO_OBJECTS) $(PLATFORM_LIBS) $(PLATFORM_LAYER_TARGET) $(PLATFORM_POST_LIBS)
+	$(CPP) $(PLATFORM_LINK_FLAGS) -static-libgcc -static-libstdc++ -Iinclude -o $@ $(DEMO_OBJECTS) $(PLATFORM_LIBS) $(PLATFORM_LAYER_TARGET) $(PLATFORM_POST_LIBS)
 
 $(TEST_TARGET): $(TEST_OBJECTS) $(TESTABLES_OBJECTS)
-	g++ -g $(TEST_LINK_FLAGS) -o $@ $^
+	$(CPP) -g $(TEST_LINK_FLAGS) -o $@ $^
 
 include $(wildcard build/*.d)
