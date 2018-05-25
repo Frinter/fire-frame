@@ -33,7 +33,7 @@ INCLUDE_DIRS := -Iinclude
 SRC := $(wildcard src/*.cc) $(wildcard src/framework/*.cc)
 OBJECTS := $(SRC:src/%.cc=$(OBJ_DIR)/%.o) $(PLATFORM_OBJECTS)
 LIBS := $(PLATFORM_LIBS) $(PLATFORM_POST_LIBS)
-CFLAGS := $(INCLUDE_DIRS) -DSYSTEM_TARGET=$(SYSTEM_TARGET) -std=c++11
+CFLAGS := $(INCLUDE_DIRS) -DSYSTEM_TARGET=$(SYSTEM_TARGET)
 
 PLATFORM_LAYER_SRC := $(SRC) $(PLATFORM_SRC)
 PLATFORM_LAYER_LIBS := -Llib $(PLATFORM_LIBS) $(PLATFORM_POST_LIBS)
@@ -74,13 +74,13 @@ $(OBJ_DIR)/%.o: src/%.c $(OBJ_DIR)/%.d
 	$(GCC) -c -o $@ $(CFLAGS) $<
 
 $(OBJ_DIR)/%.o: src/%.cc $(OBJ_DIR)/%.d
-	$(CPP) -c -o $@ $(CFLAGS) $<
+	$(CPP) -c -o $@ $(CFLAGS) -std=c++11 $<
 
 $(OBJ_DIR)/test/%.o: test/%.cc $(OBJ_DIR)/test/%.d
-	$(CPP) -c -o $@ $(CFLAGS) $(TEST_CFLAGS) $<
+	$(CPP) -c -o $@ $(CFLAGS) -std=c++11 $(TEST_CFLAGS) $<
 
 $(OBJ_DIR)/demo/%.o: demo/%.cc $(OBJ_DIR)/demo/%.d
-	$(CPP) -c -o $@ $(CFLAGS) $(TEST_CFLAGS) $<
+	$(CPP) -c -o $@ $(CFLAGS) -std=c++11 $(TEST_CFLAGS) $<
 
 $(OBJ_DIR)/%.d: src/%.c
 	$(GCC) $(CFLAGS) -MM -MT $(OBJ_DIR)/$*.o -MF $@ $<
