@@ -264,48 +264,48 @@ LRESULT CALLBACK WindowsWindow::WndProc(HWND windowHandle, UINT message, WPARAM 
     switch(message)
     {
     case WM_KEYDOWN:
-        windowMap[windowHandle]->KeyDown(wparam);
+        windowMap.at(windowHandle)->KeyDown(wparam);
         return 0;
 
     case WM_KEYUP:
-        windowMap[windowHandle]->KeyUp(wparam);
+        windowMap.at(windowHandle)->KeyUp(wparam);
         return 0;
 
     case WM_MOUSEMOVE:
-        windowMap[windowHandle]->MouseMove(wparam, lparam);
+        windowMap.at(windowHandle)->MouseMove(wparam, lparam);
         return 0;
 
     case WM_LBUTTONDOWN:
-        windowMap[windowHandle]->LeftMouseButtonDown(wparam, lparam);
+        windowMap.at(windowHandle)->LeftMouseButtonDown(wparam, lparam);
         return 0;
 
     case WM_LBUTTONUP:
-        windowMap[windowHandle]->LeftMouseButtonUp(wparam, lparam);
+        windowMap.at(windowHandle)->LeftMouseButtonUp(wparam, lparam);
         return 0;
 
     case WM_RBUTTONDOWN:
-        windowMap[windowHandle]->RightMouseButtonDown(wparam, lparam);
+        windowMap.at(windowHandle)->RightMouseButtonDown(wparam, lparam);
         return 0;
 
     case WM_RBUTTONUP:
-        windowMap[windowHandle]->RightMouseButtonUp(wparam, lparam);
+        windowMap.at(windowHandle)->RightMouseButtonUp(wparam, lparam);
         return 0;
 
     case WM_MOUSEWHEEL:
-        windowMap[windowHandle]->MouseScrollWheel(wparam, lparam);
+        windowMap.at(windowHandle)->MouseScrollWheel(wparam, lparam);
         return 0;
 
     case WM_SIZE:
-        windowMap[windowHandle]->WindowResize(wparam, lparam);
+        windowMap.at(windowHandle)->WindowResize(wparam, lparam);
         return 0;
 
     case WM_CLOSE:
-        windowMap[windowHandle]->onClose();
+        windowMap.at(windowHandle)->onClose();
         return 0;
 
     case WM_DESTROY:
         PostQuitMessage(0);
-        windowMap[windowHandle] = NULL;
+        windowMap.at(windowHandle) = NULL;
         return 0;
 
     default:
