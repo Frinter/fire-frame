@@ -136,7 +136,17 @@ HWND WindowsWindow::makeWindow(const char *windowName, HINSTANCE processInstance
 
     RegisterClassEx(&windowClass);
 
-    return CreateWindow(appName, windowName, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, processInstance, NULL);
+    POINT point = {0, 0};
+    HMONITOR hmon = MonitorFromPoint(point, MONITOR_DEFAULTTONEAREST);
+    MONITORINFO mi = { sizeof(mi) };
+    if (!GetMonitorInfo(hmon, &mi))
+        return NULL;
+
+    //return CreateWindow(appName, windowName, WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, processInstance, NULL);
+    return CreateWindow(appName, windowName, WS_POPUP,
+                        mi.rcMonitor.left, mi.rcMonitor.top,
+                        mi.rcMonitor.right - mi.rcMonitor.left, mi.rcMonitor.bottom - mi.rcMonitor.top,
+                        NULL, NULL, processInstance, NULL);
 }
 
 WindowsWindow::~WindowsWindow()
