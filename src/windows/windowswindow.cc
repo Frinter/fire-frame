@@ -261,54 +261,59 @@ void WindowsWindow::MouseScrollWheel(WPARAM wParam, LPARAM lParam)
 
 LRESULT CALLBACK WindowsWindow::WndProc(HWND windowHandle, UINT message, WPARAM wparam, LPARAM lparam)
 {
-    switch(message)
+    try
     {
-    case WM_KEYDOWN:
-        windowMap.at(windowHandle)->KeyDown(wparam);
-        return 0;
+        switch(message)
+        {
+        case WM_KEYDOWN:
+            windowMap.at(windowHandle)->KeyDown(wparam);
+            return 0;
 
-    case WM_KEYUP:
-        windowMap.at(windowHandle)->KeyUp(wparam);
-        return 0;
+        case WM_KEYUP:
+            windowMap.at(windowHandle)->KeyUp(wparam);
+            return 0;
 
-    case WM_MOUSEMOVE:
-        windowMap.at(windowHandle)->MouseMove(wparam, lparam);
-        return 0;
+        case WM_MOUSEMOVE:
+            windowMap.at(windowHandle)->MouseMove(wparam, lparam);
+            return 0;
 
-    case WM_LBUTTONDOWN:
-        windowMap.at(windowHandle)->LeftMouseButtonDown(wparam, lparam);
-        return 0;
+        case WM_LBUTTONDOWN:
+            windowMap.at(windowHandle)->LeftMouseButtonDown(wparam, lparam);
+            return 0;
 
-    case WM_LBUTTONUP:
-        windowMap.at(windowHandle)->LeftMouseButtonUp(wparam, lparam);
-        return 0;
+        case WM_LBUTTONUP:
+            windowMap.at(windowHandle)->LeftMouseButtonUp(wparam, lparam);
+            return 0;
 
-    case WM_RBUTTONDOWN:
-        windowMap.at(windowHandle)->RightMouseButtonDown(wparam, lparam);
-        return 0;
+        case WM_RBUTTONDOWN:
+            windowMap.at(windowHandle)->RightMouseButtonDown(wparam, lparam);
+            return 0;
 
-    case WM_RBUTTONUP:
-        windowMap.at(windowHandle)->RightMouseButtonUp(wparam, lparam);
-        return 0;
+        case WM_RBUTTONUP:
+            windowMap.at(windowHandle)->RightMouseButtonUp(wparam, lparam);
+            return 0;
 
-    case WM_MOUSEWHEEL:
-        windowMap.at(windowHandle)->MouseScrollWheel(wparam, lparam);
-        return 0;
+        case WM_MOUSEWHEEL:
+            windowMap.at(windowHandle)->MouseScrollWheel(wparam, lparam);
+            return 0;
 
-    case WM_SIZE:
-        windowMap.at(windowHandle)->WindowResize(wparam, lparam);
-        return 0;
+        case WM_SIZE:
+            windowMap.at(windowHandle)->WindowResize(wparam, lparam);
+            return 0;
 
-    case WM_CLOSE:
-        windowMap.at(windowHandle)->onClose();
-        return 0;
+        case WM_CLOSE:
+            windowMap.at(windowHandle)->onClose();
+            return 0;
 
-    case WM_DESTROY:
-        PostQuitMessage(0);
-        windowMap.at(windowHandle) = NULL;
-        return 0;
-
-    default:
-        return DefWindowProc(windowHandle, message, wparam, lparam);
+        case WM_DESTROY:
+            PostQuitMessage(0);
+            windowMap.at(windowHandle) = NULL;
+            return 0;
+        }
     }
+    catch (std::out_of_range e)
+    {
+    }
+
+    return DefWindowProc(windowHandle, message, wparam, lparam);
 }
