@@ -170,6 +170,7 @@ void ApplicationThreadEntry(Framework::IApplicationContext *applicationContext)
 
     unsigned int ticks = systemTimer.GetTicks();
     unsigned int newTicks;
+    bool fullscreen = false;
 
     ControllerStack controllerStack(windowController);
     GameController *controller = new TestController();
@@ -194,6 +195,20 @@ void ApplicationThreadEntry(Framework::IApplicationContext *applicationContext)
         if (keyboardState->GetKeyState(System::KeyCode::KeyQ) == KeyState::Pressed)
         {
             window->Close();
+        }
+
+        if (keyboardState->GetKeyState(System::KeyCode::KeyF) == KeyState::Pressed)
+        {
+            if (fullscreen)
+            {
+                window->makeWindowed();
+                fullscreen = false;
+            }
+            else
+            {
+                window->makeBorderlessFullscreen();
+                fullscreen = true;
+            }
         }
     }
 

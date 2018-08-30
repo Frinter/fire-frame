@@ -19,15 +19,18 @@ public:
     );
 
     virtual ~WindowsWindow();
-    virtual void GetWindowSize(unsigned int *width, unsigned int *height);
-    virtual bool SetMousePosition(unsigned int posX, unsigned int posY);
+    virtual void GetWindowSize(unsigned int *width, unsigned int *height) override;
+    virtual bool SetMousePosition(unsigned int posX, unsigned int posY) override;
 
-    virtual System::OpenGLContext *getOrCreateOpenGLContext();
+    virtual void makeBorderlessFullscreen() override;
+    virtual void makeWindowed() override;
 
-    virtual int DoMessageLoop();
+    virtual System::OpenGLContext *getOrCreateOpenGLContext() override;
 
-    virtual void Destroy();
-    virtual void Close();
+    virtual int DoMessageLoop() override;
+
+    virtual void Destroy() override;
+    virtual void Close() override;
 
 private:
     HWND m_windowHandle;

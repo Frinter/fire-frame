@@ -17,6 +17,9 @@ namespace System
         virtual void Destroy() = 0;
         virtual void Close() = 0;
 
+        virtual void makeBorderlessFullscreen() = 0;
+        virtual void makeWindowed() = 0;
+
         virtual OpenGLContext *getOrCreateOpenGLContext() = 0;
 
         static Window *Create(const char *name, Framework::ISystemWindowController *controller);
