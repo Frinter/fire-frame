@@ -141,6 +141,45 @@ private:
     OtherTestController *m_otherController;
 };
 
+class KeyboardHandler : public Framework::IWritingKeyboardState
+{
+public:
+    KeyboardHandler(System::Window *window)
+        : _window(window), _fullscreen(false)
+    {
+    }
+
+    virtual void PressKey(System::KeyCode key) override
+    {
+        if (key == System::KeyCode::KeyQ)
+        {
+            _window->Close();
+        }
+
+        if (key == System::KeyCode::KeyF)
+        {
+            if (_fullscreen)
+            {
+                _window->makeWindowed();
+                _fullscreen = false;
+            }
+            else
+            {
+                _window->makeBorderlessFullscreen();
+                _fullscreen = true;
+            }
+        }
+    }
+
+    virtual void UnpressKey(System::KeyCode key) override
+    {
+    }
+
+private:
+    System::Window *_window;
+    bool _fullscreen;
+};
+
 void ApplicationThreadEntry(Framework::IApplicationContext *applicationContext)
 {
     std::cout << "in client code" << std::endl;
@@ -172,6 +211,9 @@ void ApplicationThreadEntry(Framework::IApplicationContext *applicationContext)
     unsigned int newTicks;
     bool fullscreen = false;
 
+    KeyboardHandler keyboardHandler(window);
+    windowController->AddKeyboardEventHandler(&keyboardHandler);
+
     ControllerStack controllerStack(windowController);
     GameController *controller = new TestController();
 
@@ -191,25 +233,6 @@ void ApplicationThreadEntry(Framework::IApplicationContext *applicationContext)
         ticker.Wait(500);
         std::cout << "Application Thread (" << ticks << " -> " << newTicks << ")" << std::endl;
         ticks = newTicks;
-
-        if (keyboardState->GetKeyState(System::KeyCode::KeyQ) == KeyState::Pressed)
-        {
-            window->Close();
-        }
-
-        if (keyboardState->GetKeyState(System::KeyCode::KeyF) == KeyState::Pressed)
-        {
-            if (fullscreen)
-            {
-                window->makeWindowed();
-                fullscreen = false;
-            }
-            else
-            {
-                window->makeBorderlessFullscreen();
-                fullscreen = true;
-            }
-        }
     }
 
     window->Destroy();
