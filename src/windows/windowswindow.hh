@@ -20,10 +20,12 @@ public:
 
     virtual ~WindowsWindow();
     virtual void GetWindowSize(unsigned int *width, unsigned int *height) override;
+    virtual void setWindowPosition(unsigned int posX, unsigned int posY, unsigned int width, unsigned int height) override;
     virtual bool SetMousePosition(unsigned int posX, unsigned int posY) override;
 
-    virtual void makeBorderlessFullscreen() override;
-    virtual void makeWindowed() override;
+    virtual void makeFullscreen() override;
+    virtual void makeBorderless() override;
+    virtual void makeBordered() override;
 
     virtual System::OpenGLContext *getOrCreateOpenGLContext() override;
 

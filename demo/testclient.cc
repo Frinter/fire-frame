@@ -160,12 +160,14 @@ public:
         {
             if (_fullscreen)
             {
-                _window->makeWindowed();
+                _window->makeBordered();
+                _window->setWindowPosition(100, 100, 600, 500);
                 _fullscreen = false;
             }
             else
             {
-                _window->makeBorderlessFullscreen();
+                _window->makeBorderless();
+                _window->makeFullscreen();
                 _fullscreen = true;
             }
         }

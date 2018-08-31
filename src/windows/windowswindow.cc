@@ -147,7 +147,7 @@ WindowsWindow::~WindowsWindow()
     windowMap[m_windowHandle] = NULL;
 }
 
-void WindowsWindow::makeBorderlessFullscreen()
+void WindowsWindow::makeFullscreen()
 {
     POINT point = {0, 0};
     HMONITOR hmon = MonitorFromPoint(point, MONITOR_DEFAULTTONEAREST);
@@ -156,15 +156,17 @@ void WindowsWindow::makeBorderlessFullscreen()
     if (!GetMonitorInfo(hmon, &mi))
         return;
 
-    SetWindowLong(m_windowHandle, GWL_STYLE, WS_POPUP);
-    SetWindowPos(m_windowHandle, HWND_TOP,
-                 mi.rcMonitor.left, mi.rcMonitor.top,
-                 mi.rcMonitor.right - mi.rcMonitor.left, mi.rcMonitor.bottom - mi.rcMonitor.top,
-                 SWP_SHOWWINDOW
+    setWindowPosition(mi.rcMonitor.left, mi.rcMonitor.top,
+                      mi.rcMonitor.right - mi.rcMonitor.left, mi.rcMonitor.bottom - mi.rcMonitor.top
     );
 }
 
-void WindowsWindow::makeWindowed()
+void WindowsWindow::makeBorderless()
+{
+    SetWindowLong(m_windowHandle, GWL_STYLE, WS_POPUP);
+}
+
+void WindowsWindow::makeBordered()
 {
     SetWindowLong(m_windowHandle, GWL_STYLE, WS_OVERLAPPEDWINDOW);
 }
@@ -190,6 +192,11 @@ System::OpenGLContext *WindowsWindow::getOrCreateOpenGLContext()
         m_openGLContext = new WindowsOpenGLContext(m_windowHandle);
 
     return m_openGLContext;
+}
+
+void WindowsWindow::setWindowPosition(unsigned int posX, unsigned int posY, unsigned int width, unsigned int height)
+{
+    SetWindowPos(m_windowHandle, HWND_TOP, posX, posY, width, height, SWP_SHOWWINDOW);
 }
 
 void WindowsWindow::GetWindowSize(unsigned int *width, unsigned int *height)
