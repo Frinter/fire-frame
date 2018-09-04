@@ -17,7 +17,7 @@ namespace Framework
     class WindowController : public IWindowController
     {
     private:
-        class KeyboardState : public ReadingKeyboardState, public IWritingKeyboardState
+        class KeyboardState : public ReadingKeyboardState, public KeyboardInputHandlerInterface
         {
         public:
             KeyboardState();
@@ -84,8 +84,8 @@ namespace Framework
 
         virtual bool isWindowClosed() const;
 
-        virtual void AddKeyboardEventHandler(IWritingKeyboardState *handler);
-        virtual void RemoveKeyboardEventHandler(IWritingKeyboardState *handler);
+        virtual void AddKeyboardEventHandler(KeyboardInputHandlerInterface *handler);
+        virtual void RemoveKeyboardEventHandler(KeyboardInputHandlerInterface *handler);
         virtual ReadingKeyboardState *GetKeyStateReader();
         virtual ReadingMouseState *GetMouseReader();
         virtual ReadingWindowState *GetWindowReader();
@@ -108,7 +108,7 @@ namespace Framework
         WindowState m_windowState;
         System::Mutex *m_mutex;
         System::Event *m_windowReady;
-        std::list<IWritingKeyboardState*> m_keyboardEventHandlers;
+        std::list<KeyboardInputHandlerInterface*> m_keyboardEventHandlers;
 
         bool m_isWindowClosed;
     };

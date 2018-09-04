@@ -5,6 +5,7 @@
 #else
 #  include "GL/gl.h"
 #endif
+#include "framework/keyboardinputhandlerinterface.hh"
 #include "framework/keystate.hh"
 #include "framework/platform.hh"
 #include "system/keycode.hh"
@@ -141,7 +142,7 @@ private:
     OtherTestController *m_otherController;
 };
 
-class KeyboardHandler : public Framework::IWritingKeyboardState
+class KeyboardHandler : public Framework::KeyboardInputHandlerInterface
 {
 public:
     KeyboardHandler(System::Window *window)

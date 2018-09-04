@@ -78,7 +78,7 @@ void WindowController::OnKeyDown(KeyCode key)
 {
     m_keyboardState.PressKey(key);
 
-    for (std::list<IWritingKeyboardState*>::iterator iter = m_keyboardEventHandlers.begin(); iter != m_keyboardEventHandlers.end(); iter++)
+    for (std::list<KeyboardInputHandlerInterface*>::iterator iter = m_keyboardEventHandlers.begin(); iter != m_keyboardEventHandlers.end(); iter++)
     {
         (*iter)->PressKey(key);
     }
@@ -88,7 +88,7 @@ void WindowController::OnKeyUp(KeyCode key)
 {
     m_keyboardState.UnpressKey(key);
 
-    for (std::list<IWritingKeyboardState*>::iterator iter = m_keyboardEventHandlers.begin(); iter != m_keyboardEventHandlers.end(); iter++)
+    for (std::list<KeyboardInputHandlerInterface*>::iterator iter = m_keyboardEventHandlers.begin(); iter != m_keyboardEventHandlers.end(); iter++)
     {
         (*iter)->UnpressKey(key);
     }
@@ -149,12 +149,12 @@ void WindowController::KeyboardState::UnpressKey(KeyCode key)
     m_mutex->Unlock();
 }
 
-void WindowController::AddKeyboardEventHandler(IWritingKeyboardState *handler)
+void WindowController::AddKeyboardEventHandler(KeyboardInputHandlerInterface *handler)
 {
     m_keyboardEventHandlers.push_back(handler);
 }
 
-void WindowController::RemoveKeyboardEventHandler(IWritingKeyboardState *handler)
+void WindowController::RemoveKeyboardEventHandler(KeyboardInputHandlerInterface *handler)
 {
     m_keyboardEventHandlers.remove(handler);
 }

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "framework/iwritingkeyboardstate.hh"
+#include "framework/keyboardinputhandlerinterface.hh"
 #include "framework/readingkeyboardstate.hh"
 #include "framework/readingmousestate.hh"
 #include "framework/readingwindowstate.hh"
@@ -26,8 +26,8 @@ namespace Framework
         virtual void OnMouseButtonUp(System::MouseButton button) = 0;
         virtual void OnMouseScroll(int scrollDelta) = 0;
 
-        virtual void AddKeyboardEventHandler(IWritingKeyboardState *handler) = 0;
-        virtual void RemoveKeyboardEventHandler(IWritingKeyboardState *handler) = 0;
+        virtual void AddKeyboardEventHandler(KeyboardInputHandlerInterface *handler) = 0;
+        virtual void RemoveKeyboardEventHandler(KeyboardInputHandlerInterface *handler) = 0;
 
         ISystemWindowController(const ISystemWindowController &o) = delete;
     };
